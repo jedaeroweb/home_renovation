@@ -1,0 +1,249 @@
+<%
+  ad1_active=false
+  ad2_active=false
+  ad3_active=false
+
+  @speciality_category
+
+  if params[:controller] == 'ads'
+    if @speciality_category.present?
+      case @speciality_category.id
+        when 1
+          ad1_active=true
+        when 2
+          ad2_active=true
+        when 3
+          ad3_active=true
+      end
+    end
+  end
+%>
+<header id="header">
+  <div id="hm-hide" class="container">
+    <div class="row">
+      <div class="col-12 col-xl-2">
+        <% unless current_page?(root_path) %>
+          <div id="mobile-back">
+            <%=link_to 'javascript:history.go(-1);' do %>
+              <span class="material-icons" class="d-block d-lg-none">keyboard_arrow_left</span>
+            <% end %>
+          </div>
+        <% end %>
+        <div id="mobile-menu-back">&nbsp;</div>
+        <div id="mobile-menu" class="d-block d-lg-none">
+          <%=link_to '' do %>
+            <span class="material-icons">menu</span>
+          <% end %>
+        </div>
+        <div id="top-user-menu">
+          <%=link_to '',id: 'mobile-menu-close',class: 'd-block d-lg-none' do %>
+            <span class="material-icons">cancel</span>
+          <% end %>
+          <ul>
+            <% if user_signed_in? %>
+              <li id="user-info">
+                <%= link_to mypage_path do %>
+                  <%=display_user_photo(current_user) %>
+                  <span style="color:#0CF"><%= current_user.name.truncate_bytes(16) %></span> 님
+                <% end %>
+              </li>
+              <li>
+                <%= link_to new_user_point_log_path do %>
+                  <i class="material-icons">control_point_duplicate</i><span><%= t(:charge) %></span>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to new_ad_path(category: params[:category]) do %>
+                  <i class="material-icons">add</i><span><%= t(:new_ad) %></span>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to destroy_user_session_path, :id => "p_logout" do %>
+                  <i class="material-icons">highlight_off</i><span><%= t(:logout) %></span>
+                <% end %>
+              </li>
+            <% else %>
+              <li>
+                <%= link_to new_user_session_path do %>
+                  <i class="material-icons">login</i><span><%= t(:login) %></span>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to new_user_registration_path do %>
+                  <i class="material-icons">person_add</i><span><%= t(:new_user)%></span>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+        <h1><%=link_to t(:service_name),'/' %></h1>
+      </div>
+      <div class="col-12 col-xl-10 text-right">
+        <ul id="top-menu" class="d-none d-xl-block">
+          <% if user_signed_in? %>
+            <li id="user-info">
+              <%= link_to mypage_path do %>
+                <%=display_user_photo(current_user) %>
+                <span><%= current_user.name.truncate_bytes(16) %></span> 님(<%=number_with_delimiter(current_user.point)  %>P)
+              <% end %>
+            </li>
+            <li>
+              <%= link_to mypage_path do %>
+                <span><%=t(:mypage) %></span>
+              <% end %>
+            </li>
+            <li><%=link_to '포인트충전',point_charge_path %></li>
+            <li id="p_logout_l">
+              <%= link_to t(:logout), destroy_user_session_path, :id => "p_logout" %>
+            </li>
+          <% else %>
+            <li>
+              <%= link_to t(:login),new_user_session_path %>
+            </li>
+            <li>
+              <%= link_to t(:new_user),new_user_registration_path %>
+            </li>
+            <li style="border-left:1px solid #ccc;line-height:100%;padding-left:20px;margin-left:20px"><%=link_to '회사소개',intro_path %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div style="border-top:1px solid #ccc;height:1px">
+    &nbsp;
+  </div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-xl-2 d-none d-xl-block">
+        <div id="show-menu">
+          <i class="material-icons">menu</i>
+          <h4 class="d-xl-none visible-xxl-block">전문분야</h4>
+        </div>
+      </div>
+      <div class="col-12 col-xl-10">
+        <nav>
+          <ul class="nav">
+            <li class="d-none d-xl-block<% if ad1_active %> active<% end %>">
+              <%= link_to ads_path(:category=>1),class:'main-menu' do %>
+                <%=t(:menu_construction) %>
+              <% end %>
+            </li>
+            <li class="d-none d-xl-block<% if ad2_active %> active<% end %>">
+              <%= link_to ads_path(:category=>2),class:'main-menu' do %>
+                <%=t(:menu_interior) %>
+              <% end %>
+            </li>
+            <li class="d-none d-xl-block<% if ad3_active %> active<% end %>">
+              <%= link_to ads_path(:category=>3),class:'main-menu' do %>
+                <%=t(:menu_part) %>
+              <% end %>
+            </li>
+            <li class="d-block d-xl-none <% if params[:controller] == 'ads' %> active<% end %>"><%=link_to t(:menu_ad),ads_path,class:'main-menu' %></li>
+            <li class="<% if ['simulations','requests'].include? params[:controller] %> active<% end %>">
+              <%= link_to simulations_path,class:'main-menu' do %>
+                <%= raw(t(:menu_simulation)) %>
+              <% end %>
+            </li>
+            <li class="<% if ['shoppings'].include? params[:controller] %> active<% end %>">
+              <%= link_to shoppings_path,class:'main-menu' do %>
+                <%= t(:shopping, scope: [:activerecord, :models]) %>
+              <% end %>
+            </li>
+            <li class="<% if ['communities','blogs','companies','faqs','notices','reviews','reservations','questions','contacts'].include? params[:controller] %> active<% end %>">
+              <%= link_to communities_path,class:'main-menu' do %>
+                <%= t(:menu_community) %>
+              <% end %>
+            </li>
+          </ul>
+        </nav>
+        <div id="counsel-info" class="d-none d-xl-block">
+          <span class="title">고객상담</span>
+          <%=link_to '031-503-1513','tel://031-503-1513' %>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-xl-2 d-none d-xl-block">
+
+    </div>
+<div class="col-12 col-xl-10 d-none d-xl-block">
+    <div id="sub-menu">
+      <% unless Speciality.where(speciality_category_id: 1, enable: true).count.zero? %>
+        <ul class="sl-dropdown-menu">
+          <% Speciality.where(speciality_category_id: 1, enable: true).each do |speciality|
+            if @speciality.present?
+              if @speciality.id==speciality.id
+                a_class=' class=active'
+              end
+            end
+          %>
+            <li<%=a_class %>><%= link_to speciality.title, ads_path(speciality: speciality) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <% unless Speciality.where(speciality_category_id:2, enable: true).count.zero? %>
+        <ul class="sl-dropdown-menu">
+          <% Speciality.where(speciality_category_id:2, enable: true).each do |speciality|
+            if @speciality.present?
+              if @speciality.id==speciality.id
+                a_class=' class=active'
+              end
+            end
+          %>
+            <li<%=a_class %>><%= link_to speciality.title, ads_path(speciality: speciality) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+      <% unless Speciality.where(speciality_category_id: 3, enable: true).count.zero? %>
+        <ul class="sl-dropdown-menu">
+          <% Speciality.where(speciality_category_id: 3, enable: true).each do |speciality|
+            if @speciality.present?
+              if @speciality.id==speciality.id
+                a_class=' class=active'
+              end
+            end
+          %>
+            <li<%=a_class %>><%= link_to speciality.title, ads_path(speciality: speciality) %></li>
+          <% end %>
+        </ul>
+      <% end %>
+
+      <ul>
+        <li<% if ['simulations'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:simulation,scope:[:activerecord,:models]), simulations_path %></li>
+        <li<% if ['requests'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:request,scope:[:activerecord,:models]), requests_path %></li>
+      </ul>
+      <ul>
+        <% unless @product_categories.empty? %>
+          <% @product_categories.each do |product_category|
+            a_class=''
+
+            if @product_category.present?
+              if @product_category.id==product_category.id
+                a_class=' class=active'
+              end
+            end
+          %>
+            <li<%=a_class %>><%= link_to product_category.title, shoppings_path(category: product_category) %></li>
+          <% end %>
+        <% end %>
+      </ul>
+
+      <ul>
+        <li<% if ['companies'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:new_company), new_company_path %></li>
+        <li<% if ['notices'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:notice,scope:[:activerecord,:models]), notices_path %></li>
+        <li<% if ['faqs'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:faq,scope:[:activerecord,:models]), faqs_path %></li>
+        <li<% if ['questions'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:question,scope:[:activerecord,:models]), questions_path %></li>
+        <li<% if ['reviews'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:review,scope:[:activerecord,:models]), reviews_path %></li>
+        <li<% if ['blogs'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:blog,scope:[:activerecord,:models]), blogs_path %></li>
+        <li
+          <% if current_page?(new_reservation_path) %> class="active"
+          <% end %>><%= link_to t(:reservation,scope:[:activerecord,:models]), new_reservation_path %></li>
+        <li<% if ['contacts'].include? params[:controller] %> class="active"<% end %>><%= link_to t(:contact,scope:[:activerecord,:models]), new_contact_path %></li>
+      </ul>
+</div>
+    </div>
+  </div>
+</div>

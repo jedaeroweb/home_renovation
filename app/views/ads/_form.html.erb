@@ -1,0 +1,225 @@
+<div class="col-12">
+  <%= form_with(model: ad, local: true, id: 'ad_form') do |form| %>
+    <% if ad.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <h2><%= pluralize(ad.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+        <ul>
+          <% ad.errors.full_messages.each do |msg| %>
+            <li>
+              <%= msg %>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="form-row">
+      <article class="col-12 col-lg-6">
+        <div class="card">
+          <div class="card-body" style="padding-top:10px;padding-bottom:10px">
+            <div class="row">
+              <h3 class="col-3">분야</h3>
+            <div class="col-9">
+            <p style="margin:0"><span id="category-title"><%=@speciality.speciality_category.title %></span> &gt; <%=@speciality.title %></p>
+
+            <%= form.hidden_field :speciality_id, :value => @ad.speciality_id ||= @speciality.id %>
+
+            </div>
+          </div>
+        </div>
+        </div>
+      </article>
+      <article class="col-12 col-lg-6">
+        <div class="card">
+          <div class="card-body" style="padding-top:10px;padding-bottom:10px">
+            <div class="row">
+            <h3 class="col-3">지역</h3>
+            <div class="col-9">
+              <p style="margin:0"><%=@address.address.title  %> &gt; <%=@address.title %></p>
+              <%= form.hidden_field :address_id, :value => @ad.address_id ||= @address.id %>
+            </div>
+          </div>
+          </div>
+        </div>
+      </article>
+      <article id="add-ad-default" class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h3 style="margin-bottom:30px">기본정보</h3>
+            <div class="form-row">
+            <div class="col-12 form-group">
+              <%=form.collection_radio_buttons(:ad_category_id, AdCategory.where(enable: true), :id, :title) do |b| %>
+                <div class="form-check form-check-inline">
+                <%= b.label(class: "form-check-label") do %><%= b.radio_button(class: "form-check-input") %><span><%= b.object.title %></span><% end %>
+                </div>
+              <% end  %>
+            </div>
+              <div class="col-12 form-group" style="display:none">
+                <%= form.label :title, :class => 'control-label' %>
+                <%= form.text_field :title, {:class => "form-control"} %>
+              </div>
+            <% if @speciality.need_floor %>
+            <div class="col-12 form-group">
+              <%= form.fields_for :ad_floor,ad.build_ad_floor do |af| %>
+              <%= af.label :floor_id, :class => 'control-label' %>
+              <%= af.select :floor_id, options_from_collection_for_select(Floor.where(:enable => true), 'id', 'title',nil ), {}, { :class => "form-control input-lg" } %>
+              <% end %>
+            </div>
+              <% end %>
+            <% if @speciality.need_size %>
+            <div class="col-12 form-group">
+              <%= form.fields_for :ad_size,ad.build_ad_size do |as| %>
+              <%= as.label :size_id, :class => 'control-label' %>
+              <%= as.select :size_id, options_from_collection_for_select(Size.where(:enable => true), 'id', 'title', nil), {}, { :class => "form-control input-lg" } %>
+                <% end  %>
+            </div>
+            <% end %>
+            <% if @speciality.need_material %>
+              <div class="col-12 form-group">
+                <%= form.fields_for :ad_material,ad.build_ad_material do |am| %>
+                  <%= am.label :material_id, :class => 'control-label' %>
+                  <%= am.select :material_id, options_from_collection_for_select(Material.where(:enable => true), 'id', 'title', nil), {}, { :class => "form-control input-lg" } %>
+                <% end  %>
+              </div>
+            <% end %>
+
+
+              <div class="col-12 col-xl-6 form-group">
+                <%= form.label :start_date, :class => 'control-label' %>
+                <%= form.date_field :start_date, {:class => "form-control",min: Date.today.strftime("%F") } %>
+              </div>
+              <% unless @speciality.speciality_category.id==1 %>
+                <%=form.hidden_field :end_date  %>
+              <div class="col-12 form-group">
+                <%= form.label '작업일수', :class => 'control-label' %>
+                <%= form.select :process_date, {'1일':1, '2일':2, '3일':3, '4일':4 }, {}, { :class => "form-control input-lg" } %>
+                <p>* 추가 인원 및 작업기간 등은 작업내용 설명에 작성해 주세요.</p>
+              </div>
+                <% unless @speciality.speciality_men_count.zero? %>
+                <div class="col-12 form-group">
+                  <%= form.label '작업인원', :class => 'control-label' %>
+                    <ul id="speciality-men-list" style="list-style:none">
+                    <% @speciality.speciality_men.each do |speciality_man| %>
+                        <li>
+                        <label class="control-label"><%=speciality_man.title %></label>
+                        <input type="number" value="<%=speciality_man.need_count %>" class="form-control input-lg speciality-men-count" min="0" max="100">명
+                      <input type="hidden" class="speciality-pay" value="<%=speciality_man.pay %>">
+                        </li>
+                    <% end %>
+                    </ul>
+                </div>
+                <% end %>
+                <div class="col-12 form-group">
+                  <%= form.label '작업시간', :class => 'control-label' %>
+
+                  <ul style="list-style: none">
+                    <%= form.fields_for :ad_service_time,ad.build_ad_service_time  do |st| %>
+                  <% ServiceTime.where(enable: true).each_with_index  do |service_time,index|
+                    st_checked=false;
+                        if index.zero?
+                          st_checked=true
+                        end
+
+                  %>
+
+                    <li><label><%=st.radio_button :service_time_id, service_time.id,:checked => st_checked %>&nbsp;&nbsp;<%=service_time.title %><span style="display:none"><%=service_time.time %></span></label></li>
+                        <% end %>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
+
+
+
+              <% if @speciality.speciality_category.id==1 %>
+              <div class="col-12 form-group">
+                <%= form.label :budget, :class => 'control-label' %>
+                <%= form.number_field :budget, {:class => "form-control"} %>
+                <div class="form-check">
+                  <label class="form-check-label">
+                  <%= form.check_box :budget_propose, {class: 'form-check-input'} %>
+                    예산제안받기
+                      </label>
+                </div>
+              </div>
+
+                <% else %>
+                <div class="col-12 form-group">
+                  <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                      <button class="nav-link active" id="nav-home-tab" data-toggle="tab" data-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">추천금액입력</button>
+                      <button class="nav-link" id="nav-profile-tab" data-toggle="tab" data-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">직접입력</button>
+                    </div>
+                  </nav>
+
+                  <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab" style="padding:3em">
+                      <h3>추천금액 : <span id="e-price">0</span>원</h3>
+                      <p>*현장여건이나 개인적 기능, 완성도에 따라 일당은 조정됩니다.</p>
+
+                    </div>
+                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" style="padding:3em">
+                      <%= form.number_field :budget, {:class => "form-control-lg"} %>원
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+
+          </div>
+          </div>
+      </article>
+
+              <article class="col-12">
+                <div class="card">
+                  <div class="card-body">
+                    <h3 style="margin-bottom:30px">추가정보</h3>
+                    <div class="form-row">
+              <div class="col-12 form-group">
+                <%
+                  if @speciality.speciality_category_id==1
+                    label='도면'
+                    label_text='건축 내용설명'
+                    content_text='건축을 이렇게 저렇게 요렇게 해주세요'+"\n"+'이건 이렇게'+"\n"+'저건 저렇게'
+                  else
+                    label='현장사진'
+                    label_text='작업 내용설명 / <span class="text-danger">[주의]</span> 전화번호 기입금지'
+                    content_text='작업을 이렇게 저렇게 요렇게 해주세요'+"\n"+'이건 이렇게'+"\n"+'저건 저렇게'
+                  end
+                %>
+                <%= form.fields_for :ad_pictures,ad.ad_pictures.build do |pp| %>
+                  <%= pp.label label %>
+                  <%= pp.file_field :picture, :class => "form-control-file",accept: "image/*" %>
+                <% end %>
+                <%= form.fields_for :ad_pictures,ad.ad_pictures.build do |pp| %>
+                  <%= pp.file_field :picture, :class => "form-control-file" ,accept: "image/*"%>
+                <% end %>
+                <%= form.fields_for :ad_pictures,ad.ad_pictures.build do |pp| %>
+                  <%= pp.file_field :picture, :class => "form-control-file",accept: "image/*" %>
+                <% end %>
+                <%= form.fields_for :ad_pictures,ad.ad_pictures.build do |pp| %>
+                  <%= pp.file_field :picture, :class => "form-control-file",accept: "image/*" %>
+                <% end %>
+              </div>
+                    <%= form.fields_for :ad_content,ad.build_ad_content do |c| %>
+                    <div class="col-12 form-group">
+                      <%= c.label 'content' do %><%=raw(label_text) %><% end %>
+                      <%= c.text_area :content, value: content_text, class: 'form-control', rows: 10 %>
+                    </div>
+                      <% end %>
+                    </div>
+            </div>
+        </div>
+      </article>
+    <div class="col-12 form-submit">
+      <%= form.submit :class => 'btn btn-primary btn-block btn-lg' %>
+    </div>
+
+      <div class="col-12">
+        <h3 style="margin-top:3em">공고작성 단계 5 / 5</h3>
+        <div class="progress">
+          <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

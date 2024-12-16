@@ -1,0 +1,30 @@
+<%
+  aa_class='nav-link'
+  unless @simulation_category.present?
+    aa_class+=' active'
+  end
+%>
+<div class="col-12">
+  <nav class="sub_nav">
+    <ul class="nav nav-pills nav-fill nav-point scroll">
+      <li class="nav-item"><%=link_to t(:all),simulations_path,class: aa_class %></li>
+      <% unless @simulation_categories.empty? %>
+        <% @simulation_categories.each do |simulation_category|
+          a_class='nav-link'
+
+          if @simulation_category.present?
+            if @simulation_category.id==simulation_category.id
+              a_class+=' active'
+            end
+          end
+
+          if simulation_category.simulations_count.zero?
+            a_class+=' disabled'
+          end
+        %>
+          <li class="nav-item"><%=link_to simulation_category.title,url_for(category: simulation_category),{:class=>a_class} %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </nav>
+</div>

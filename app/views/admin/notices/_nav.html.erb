@@ -1,0 +1,51 @@
+<%
+    a_class = 'nav-link'
+    b_class = 'nav-link'
+    c_class = 'nav-link'
+    d_class = 'nav-link'
+    e_class = 'nav-link'
+    f_class = 'nav-link'
+    g_class = 'nav-link'
+
+    if params[:controller] == 'admin/reviews'
+      a_class += ' active'
+    end
+
+    if params[:controller] == 'admin/reservations'
+      b_class += ' active'
+    end
+
+    if params[:controller] == 'admin/notices'
+      c_class += ' active'
+    end
+
+    if ['admin/questions','admin/answers'].include?  params[:controller]
+      d_class += ' active'
+    end
+
+    if params[:controller] == 'admin/contacts'
+      e_class += ' active'
+    end
+
+    if params[:controller] == 'admin/faqs'
+      f_class += ' active'
+    end
+
+    if params[:controller] == 'admin/faq_categories'
+      g_class += ' active'
+    end
+
+  %>
+  <div class="col-12">
+    <nav class="sub-nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><%= link_to t(:review, scope: [:activerecord, :models]), admin_reviews_path, { :class => a_class } %></li>
+        <li class="nav-item"><%= link_to t(:reservation, scope: [:activerecord, :models]), admin_reservations_path, { :class => b_class } %></li>
+        <li class="nav-item"><%= link_to t(:notice, scope: [:activerecord, :models]), admin_notices_path, { :class => c_class } %></li>
+        <li class="nav-item"><%= link_to t(:question, scope: [:activerecord, :models]), admin_questions_path, { :class => d_class } %></li>
+        <li class="nav-item"><%= link_to t(:contact, scope: [:activerecord, :models]), admin_contacts_path, { :class => e_class } %></li>
+        <li class="nav-item"><%= link_to t(:faq, scope: [:activerecord, :models]), admin_faqs_path, { :class => f_class } %></li>
+        <li class="nav-item"><%= link_to t(:faq_category, scope: [:activerecord, :models]), admin_faq_categories_path, { :class => g_class } %></li>
+      </ul>
+    </nav>
+  </div>

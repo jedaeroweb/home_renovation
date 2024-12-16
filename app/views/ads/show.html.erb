@@ -1,0 +1,79 @@
+<%
+  n_params={}
+
+  if params[:speciality].present?
+    n_params[:speciality]=params[:speciality]
+  else
+    if params[:category].present?
+      n_params[:category]=params[:category]
+    else
+      n_params[:category]= @ad.ad_category_id
+    end
+  end
+
+  bidding_display=true
+
+  if user_signed_in?
+    if current_user.id==@ad.user_id
+      bidding_display=false
+    end
+  end
+
+%>
+<div id="show-ad" class="container">
+  <div class="row">
+    <h2 class="col-12 text-left">
+      <%= @ad.title %>
+      <% if @ad.complete %>
+        <span class="badge badge-success"><%=t(:ordered) %></span>
+      <% else %>
+        <% if @ad.created_at.to_date==Date.today.to_date %>
+          <span class="badge badge-danger"><%=t(:new) %></span>
+        <% end %>
+      <% end %>
+    </h2>
+    <%= render 'show' %>
+  </div>
+  <div class="row">
+      <div class="col-12">
+      <article>
+        <h3>입찰내역</h3>
+        <div class="card">
+        <div class="card-body">
+        <% unless @bidding_count.zero? %>
+          <%=@bidding_count %>개의 업체가 지원하였습니다 &gt; <%=link_to '입찰내역보기',biddings_path(ad:@ad) %>
+          <% else %>
+          아직 지원한 업체가 없습니다.
+            <% end %>
+            </div>
+            </div>
+        <% if bidding_display %>
+        <% if @ad.complete %>
+          <span class="btn btn-block btn-secondary disabled">낙찰된 공고입니다</span>
+          <% else %>
+          <%=link_to t(:bidding),new_bidding_path(ad: @ad),class: 'btn btn-block btn-primary' %>
+        <% end %>
+          <% end %>
+      </article>
+      </div>
+    </div>
+    <div class="row">
+      <% if @ad.ad_content.present? %>
+      <article class="col-12" style="margin-top:30px;">
+        <h3><%=t(:content,scope: [:activerecord,:attributes,:ad_content]) %></h3>
+        <div class="card">
+          <div class="card-body">
+            <div class="sl_content_text" itemprop="text"><%=simple_format @ad.ad_content.content %></div>
+          </div>
+        </div>
+      </article>
+      <% end %>
+    </div>
+
+  <div class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:go_list),ads_path(params: n_params),{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </div>
+
+</div>

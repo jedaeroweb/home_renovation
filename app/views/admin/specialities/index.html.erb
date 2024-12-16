@@ -1,0 +1,97 @@
+<%= render 'nav' %>
+<div class="col-12">
+      <h2 class="float-left hidden-title"><%= t(:specialities_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@speciality_count %></span>
+          <%=raw t(:there_are_n_specialities,count: @speciality_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col>
+          <col style="width:200px">
+          <col style="width:200px">
+          <col style="width:200px">
+          <% if can?(:update, Speciality) || can?(:delete, Speciality) %>
+            <col<%=manage_width(Speciality) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <th><%= t(:picture,scope:[:activerecord,:attributes,:speciality_picture]) %></th>
+          <th class="text-right"><%= t(:speciality_men,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <th class="text-right"><%= t(:company_specialities_count,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <th class="text-right"><%= t(:ads_count,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:speciality]) %></th>
+          <% if can?(:update, Speciality) || can?(:delete, Speciality) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @speciality_count.zero? %>
+          <% @specialities.each_with_index do |speciality,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="speciality_display<%=index %>" value="<%=speciality.id %>" <% if speciality.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="speciality_display<%=index %>"><% if speciality.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to speciality.title,admin_speciality_path(speciality) %></td>
+              <td>
+                <% if speciality.speciality_picture.present? %>
+                  <%= image_tag speciality.speciality_picture.picture.small_thumb.url %>
+                <% else %>
+                  <%= t(:not_insert) %>
+                <% end %>
+              </td>
+              <td class="text-right">
+                <% if speciality.speciality_men_count.zero? %>
+                <%=link_to t(:add),new_admin_speciality_man_path(speciality: speciality) %>
+                <% else %>
+                  <% speciality.speciality_men.each do |speciality_man| %>
+                    <div><%=speciality_man.title %> : <%=speciality_man.pay %></div>
+                  <% end %>
+                  <%=link_to t(:add),new_admin_speciality_man_path(speciality: speciality) %>
+          <% end %>
+              </td>
+              <td class="text-right"><%= speciality.company_specialities_count %></td>
+              <td class="text-right"><%= speciality.ads_count %></td>
+              <td class="text-right"><%= I18n.l speciality.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, speciality) or can?(:delete, speciality) %>
+                <td class="text-right">
+                  <% if can? :update, speciality %>
+                    <%= link_to edit_admin_speciality_path(speciality), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, speciality %>
+                    <%= link_to admin_speciality_path(speciality), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @specialities %>
+      </div>
+      <%= link_to t(:add), new_admin_speciality_path, :class => "btn btn-primary" %>
+    </article>

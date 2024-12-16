@@ -1,0 +1,44 @@
+<section class="row">
+  <div class="col-12 col-lg-6 simulation-material-result">
+    <h3><%=@simulation_material.simulation.title %> + <%=@simulation_material.material.title %> 적산 이미지, 비용</h3>
+    <% if @simulation_material.simulation_material_pictures_count.zero? %>
+      <figure class="image-rounded">
+        <%=image_tag 'none.gif',class: 'figure-img img-fluid'  %>
+      </figure>
+      <% else %>
+      <%= link_to @simulation_material.simulation_material_pictures[0].picture.large_thumb.url, :class => 'simple_image' do %>
+    <figure class="image-rounded">
+      <%=image_tag @simulation_material.simulation_material_pictures[0].picture.large_thumb.url,id: 'product-image',class: 'figure-img img-fluid'  %>
+    </figure>
+        <% end %>
+    <% if @simulation_material.simulation_material_pictures_count>1 %>
+      <ul class="select-smallthumb-large">
+        <% @simulation_material.simulation_material_pictures.each do |simulation_material_picture| %>
+          <li>
+            <%= link_to simulation_material_path(@simulation_material, { simulation_material_picture_id: simulation_material_picture }) do %><%= image_tag simulation_material_picture.picture.small_thumb.url %><% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+      <% end %>
+  </div>
+  <div class="col-12 col-lg-6">
+    <% if @simulation_material.simulation.simulation_content.present? %>
+      <h3><%=@simulation_material.simulation.title %></h3>
+      <div style="background:#eee;padding:15px">
+        <%= simple_format @simulation_material.simulation.simulation_content.content %>
+      </div>
+    <% end %>
+  </div>
+</section>
+<section class="row">
+  <div class="col-12">
+    <h4 class="jumbotron jumbotron-fluid text-center"><%= t(:price,scope: [:activerecord,:attributes,:simulation_material]) %> 약 <%=number_to_currency @simulation_material.simulation.size.size*@simulation_material.material.price %></h4>
+  </div>
+  <div class="col-12">
+    <%= render 'user_simulation_materials/form', user_simulation_material:@user_simulation_material ,simulation_material: @simulation_material %>
+  </div>
+  <div class="col-12">
+    <%=render 'simulation_materials/index' %>
+  </div>
+</section>

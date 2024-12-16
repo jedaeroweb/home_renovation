@@ -1,0 +1,3 @@
+class SiteSetting < ApplicationRecord
+
+end

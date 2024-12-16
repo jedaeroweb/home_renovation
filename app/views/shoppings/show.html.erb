@@ -1,0 +1,143 @@
+<main id="show-shopping" class="container">
+  <section class="row">
+    <div class="col-12 col-lg-6">
+      <%
+        if @product.product_pictures.present?
+
+          if @product_picture
+            @product_picture_picture = @product_picture.picture
+          else
+            @product_picture_picture = @product.product_pictures[0].picture
+          end
+      %>
+        <%= link_to @product_picture_picture.large_thumb.url, :class => 'simple_image' do %>
+          <figure>
+            <%= image_tag @product_picture_picture.medium_thumb.url, :id=>"product-image" %>
+          </figure>
+        <% end %>
+        <% if @product.product_pictures_count>1 %>
+        <ul class="select-smallthumb">
+          <% @product.product_pictures.each do |product_picture| %>
+            <li>
+              <%= link_to shopping_path(@product, { product_picture_id: product_picture }) do %><%= image_tag product_picture.picture.small_thumb.url %><% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+      <% end %>
+    </div>
+    <%=hidden_field_tag 'shopping_id',@product.id,id: 'shopping_id' %>
+    <div id="product-info" class="col-12 col-lg-6">
+      <%= form_with(model: @order, local: true, class: 'payment-form', style:'display:block;margin:0;padding:0;width:100%') do |form| %>
+        <h2 class="text-left" style="margin-bottom:1em"><%= t(:title, scope: [:activerecord, :attributes, :product]) %> : <span class="title"><%= @product.title %></span></h2>
+      <dl style="border-bottom: 1px solid #ccc;padding-bottom:1em">
+        <dt><%= t(:price, scope: [:activerecord, :attributes, :product]) %></dt>
+        <dd>
+          <%
+            if @product.discount.zero?
+               certain_price = @product.price
+            else
+              certain_price =  @product.price - @product.discount
+            %>
+          <span style="text-decoration: line-through"><%= number_to_currency @product.price %></span>
+            &nbsp;&nbsp;
+          <% end %>
+            <input type="hidden" id="certain-price" value="<%=certain_price %>">
+            <span><%= number_to_currency (certain_price) %></span>
+        </dd>
+        <dt><%=t(:view_count) %></dt>
+        <dd><%=@product.impressionist_count(:filter=>:ip_address) %></dd>
+        <%= form.fields_for :order_products,@order.order_products.build do |op| %>
+          <%=op.hidden_field :product_id, value: @product.id %>
+        <dt><%= t(:quantity, scope: [:activerecord, :attributes, :order_product]) %></dt>
+        <dd>
+          <div class="number-button-set">
+            <span class="button bt-down">-</span>
+            <%= op.text_field :quantity, readonly: true  %>
+            <span class="button bt-up">+</span>
+          </div>
+          <div class="clear" style="height:1px">&nbsp;</div>
+        </dd>
+          <% end %>
+      </dl>
+
+
+
+    <%=form.hidden_field :title, value: @product.title %>
+    <%=form.hidden_field :total_price, value: certain_price %>
+
+        <div class="row">
+          <h4 class="col-6 tetx-left">총 상품금액</h4>
+          <div class="col-6 text-right">
+            <span id="total-price-text" class="text-danger" style="font-size:150%"><%=number_to_currency certain_price*1 %></span>
+          </div>
+        </div>
+
+          <% if user_signed_in? %>
+            <%= hidden_field_tag 'user_address_count',current_user.user_addresses_count, {id: 'user_addresses_count' } %>
+            <%= form.submit :class => "btn btn-primary btn-large btn-block",value: t(:buy),style: 'margin-top:0.5rem' %>
+          <% else %>
+          <%=link_to '구입 / '+t(:login_first),new_user_session_path,class: 'btn btn-primary btn-block btn-lg' %>
+          <% end %>
+      <% end %>
+      <% if user_signed_in?  %>
+        <!-- <%= form_with(model: ShoppingCart, local: true) do |form| %>
+          <%= hidden_field_tag :product_id,@product.id %>
+          <%= form.submit t(:add_cart), :class => "btn btn-secondary btn-block" %>
+        <% end %> -->
+        <% end  %>
+      <p style="margin-top:1em">택배배송<br />
+      <span class="text-secondary">
+      <% if user_signed_in?  %>
+        <% if current_user.user_addresses_count.zero? %>
+         배송주소를 입력하지 않았습니다. <%=link_to t(:add),new_user_address_path(shopping_id: @product.id),class:'btn btn-link modal-link' %>
+          <% else %>
+        <%=current_user.user_address.address %>(<%=current_user.user_address.postcode %>)<%=current_user.user_address.address_detail %> <%=link_to t(:edit),edit_user_address_path(current_user.user_address.id,shopping_id: @product.id),class:'btn btn-link modal-link' %>
+        <% end %>
+          <% else %>
+        제주 추가 3,000원, 제주 외 도서지역 추가 3,000원 / 3000
+        <% end %>
+      </span>
+      </p>
+      <p class="text-danger">주문일 기준 7일이내 도착 가능</p>
+      <p>
+        <%= link_to shares_path(url: url_for(only_path: false)),class: 'modal-link' do %>
+          <span class="material-icons">share</span> <%=t(:share) %>
+        <% end %>
+      </p>
+      <p>상담전화 031-503-1513</p>
+    </div>
+    <div class="col-12">
+
+      <% if @product.content.present? %>
+        <div class="sl_content_text" itemprop="text"><%=@product.content %></div>
+      <% end %>
+      <% if user_signed_in? %>
+        <% if  @product.company_id==session[:company_id] %>
+          <div class="col-12 text-right">
+            <%=link_to t(:edit), edit_product_path(@product), :class => "btn btn-secondary" %>
+            <%= link_to product_path(@product), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+              <%= t(:delete) %>
+            <% end %>
+          </div>
+        <% end  %>
+      <% end %>
+    </div>
+  </section>
+  <section class="row">
+    <h3 class="col-12 section-header">
+      <% if @speciality_category.present? %>
+        <%=@speciality_category.title %>
+      <% end %>
+      &nbsp;관련 상품
+    </h3>
+    <% unless @product_count.zero? %>
+      <% @products.each do |product| %>
+        <%=render 'shoppings/index_media',product: product %>
+      <% end %>
+    <% end %>
+  </section>
+</main>
+<script>
+    var userCode='<%=ENV['importJs'] %>';
+</script>

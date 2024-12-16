@@ -1,0 +1,12 @@
+<main id="new-bidding" class="container">
+  <section class="row">
+    <h2 class="col-12 text-center"><%=t(:new_bidding) %></h2>
+  </section>
+  <section class="row">
+    <%= render 'ads/show' %>
+  </section>
+  <section class="row">
+    <h3 class="col-12"><%=t(:bidding) %></h3>
+    <%= render 'form', bidding: @bidding %>
+  </section>
+</main>

@@ -1,0 +1,40 @@
+<%= form_with(model: [:admin, simulation], local: true) do |form| %>
+  <% if simulation.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(simulation.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% simulation.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :simulation_category_id %>
+        <%= form.select :simulation_category_id, options_from_collection_for_select(SimulationCategory.where(:enable => true).all, 'id', 'title', simulation.simulation_category_id), {}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :size_id %>
+        <%= form.select :size_id, options_from_collection_for_select(Size.where(:enable => true).all, 'id', 'title', simulation.size_id), {:include_blank=>t(:select_option)}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => 'form-control', :required => 'required' %>
+      </div>
+      <%= form.fields_for :simulation_pictures do |p| %>
+      <div class="form-group">
+          <%= p.label :picture %>
+          <%= p.file_field :picture, :class => "form-control-file" %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

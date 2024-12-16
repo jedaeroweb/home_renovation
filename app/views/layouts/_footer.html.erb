@@ -1,0 +1,68 @@
+<footer>
+  <div class="container">
+    <div class="row">
+      <article class="col-12 col-md-6">
+        <div class="row" style="margin-bottom:1em">
+          <div class="col-12">
+            <h3 class="float-left" style="text-transform: uppercase">Notice</h3>
+            <!-- <%=link_to t(:more),notices_path, class:'float-right' %> -->
+          </div>
+        </div>
+        <div class="row">
+          <% @notices.each do |notice| %>
+          <div class="col-12 col-md-6">
+            <h4><%=link_to notice.title,notice %></h4>
+            <p><%= I18n.l notice.created_at.to_date, :format => :long %></p>
+          </div>
+          <% end %>
+        </div>
+      </article>
+      <article id="customer-center" class="col-12 col-md-6">
+        <h3>고객센터</h3>
+        <p class="point">031-문의-문의</p>
+        <p>평일 : 09:00 ~ 18:00 주말,공휴일 휴무</p>
+      </article>
+    </div>
+  </div>
+  <section style="background:#fff">
+  <div class="container">
+    <div class="row">
+      <nav class="col-12">
+        <ul>
+          <li><%=link_to t(:intro),intro_path %></li>
+          <li><%=link_to t(:agreement),agreement_path %></li>
+          <li><%=link_to privacy_path,class: 'point-color' do %>
+             <%= t(:privacy) %>
+            <% end %>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  </section>
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <dl class="dl-horizontal">
+          <dt>주소</dt>
+          <dd>경기도 수원시</dd>
+          <dt>사업자등록번호</dt>
+          <dd>670-31-01025 <%=link_to '사업자정보확인','https://www.ftc.go.kr/bizCommPop.do?wrkr_no=670-31-01025',:target => '_blank' %></dd>
+          <dt>대표</dt>
+          <dd>잠자는사자</dd>
+        </dl>
+        <p>COPYRIGHT ⓒ. 2022, <%=t(:company) %>. ALL RIGHT RESERVED.</p>
+      </div>
+      <div class="col-12 col-md-6 d-none d-xl-block">
+        <dl class="dl-horizontal">
+          <dt>Tel</dt>
+          <dd><%=link_to '031-문의-문의','tel://031-문의-문의' %></dd>
+          <dt>E-mail</dt>
+          <dd><%=link_to 'cs@jedaeroweb.co.kr','mail://cs@jedaeroweb.co.kr' %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</footer>
+
+

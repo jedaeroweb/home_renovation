@@ -1,0 +1,23 @@
+<div id="show-notice" class="container">
+  <div class="row">
+    <article class="col-12" itemscope itemprop="article" itemtype="http://schema.org/Article"<% if params[:n_popup].present? %> style="padding-left:0;padding-right:0"<% end %>>
+      <div class="sl_content_header">
+        <h3 itemprop="name"><%= @notice.title %></h3>
+        <p class="text-right"<% if params[:n_popup].present? %> style="padding-left:16px;padding-right:16px"<% end %>><%= t(:created_at, scope: [:activerecord, :attributes, :notice]) %> : <%= I18n.l @notice.created_at.to_date, :format => :long %></p>
+      </div>
+      <% if @notice.notice_picture.present? %>
+        <%= image_tag @notice.notice_picture.picture.large_thumb.url %>
+      <% end %>
+      <div class="sl_content_main"<% if params[:n_popup].present? %> style="padding-left:16px;padding-right:16px"<% end %>>
+        <div class="sl_content_text" itemprop="text"><%=simple_format @notice.notice_content.content %></div>
+      </div>
+    </article>
+  </div>
+  <% unless params[:n_popup].present? %>
+  <div class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:link_list),notices_path,{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </div>
+  <% end %>
+</div>

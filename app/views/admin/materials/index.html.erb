@@ -1,0 +1,77 @@
+<div class="col-12">
+  <h2 class="float-left hidden-title"><%= t(:materials_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@material_count %></span>
+          <%=raw t(:there_are_n_materials,count: @material_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, Material) || can?(:delete, Material) %>
+            <col<%=manage_width(Material) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:material]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:material]) %></th>
+          <th><%= t(:picture,scope:[:activerecord,:attributes,:material]) %></th>
+          <th class="text-right"><%= t(:price,scope:[:activerecord,:attributes,:material]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:material]) %></th>
+          <% if can?(:update, Material) || can?(:delete, Material) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @material_count.zero? %>
+          <% @materials.each_with_index do |material,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="material_display<%=index %>" value="<%=material.id %>" <% if material.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="material_display<%=index %>"><% if material.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to material.title,admin_material_path(material) %></td>
+              <td>
+                <%= image_tag material.picture.small_thumb.url %>
+              </td>
+              <td class="text-right"><%= number_to_currency material.price %></td>
+              <td class="text-right"><%= I18n.l material.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, material) or can?(:delete, material) %>
+                <td class="text-right">
+                  <% if can? :update, material %>
+                    <%= link_to edit_admin_material_path(material), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, material %>
+                    <%= link_to admin_material_path(material), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @materials %>
+      </div>
+      <%= link_to t(:add), new_admin_material_path, :class => "btn btn-primary" %>
+    </article>

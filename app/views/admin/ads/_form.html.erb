@@ -1,0 +1,74 @@
+<%= form_with(model: [:admin, ad], local: true) do |form| %>
+  <% if ad.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(ad.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% ad.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+        <div class="form-group col-12 col-lg-4">
+          <%= label_tag 'speciality_category_id',t(:speciality_category,scope: [:activerecord,:models]) %>
+          <%= select_tag 'speciality_category_id',options_from_collection_for_select(SpecialityCategory.where(:enable => true), 'id', 'title', params[:speciality_category_id]  ||=  (ad.speciality.present? ? ad.speciality.speciality_category_id : nil )), {  :include_blank => t(:all),:class => "form-control"} %>
+        </div>
+        <div class="form-group col-12 col-lg-8">
+          <%= form.label :speciality_id  %>
+          <% if ad.speciality.present? || params[:speciality_category_id].present? %>
+            <%= form.select :speciality_id, options_from_collection_for_select(Speciality.where(speciality_category_id: params[:speciality_category_id]  ||=  (ad.speciality.present? ? ad.speciality.speciality_category_id : nil ),:enable => true), 'id', 'title', ad.speciality_id),{:include_blank => t(:all)}, {:id=>'speciality_id', :class => "form-control"} %>
+          <% else %>
+            <%= form.select :speciality_id,{},{:include_blank => '전문분야분류를 선택해주세요'},{:id=>'speciality_id', :class => "form-control"} %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-12 col-lg-4">
+          <%= label_tag 'parent_address_id',t(:parent_address_id,scope: [:activerecord,:attributes,:address]) %>
+          <%= select_tag 'parent_address_id',options_from_collection_for_select(Address.where(address_level_id: 1, :enable => true), 'id', 'title',  params[:parent_address_id]  ||=  (ad.address.present? ? ad.address.parent_address_id : nil )), {  :include_blank => t(:all),:class => "form-control"} %>
+        </div>
+        <div class="form-group col-12 col-lg-8">
+          <%= form.label :address_id %>
+          <% if ad.address.present? || params[:parent_address_id].present? %>
+            <%= form.select :address_id, options_from_collection_for_select(Address.where(address_level_id: 2, parent_address_id: params[:parent_address_id]  ||=  (ad.address.present? ? ad.address.parent_address_id : nil ),:enable => true), 'id', 'title', ad.address_id),{:include_blank => t(:all)},{:id=>'address_id', :class => "form-control"} %>
+          <% else %>
+            <%= form.select :address_id, {}, {:include_blank => '상위지역을 선택해주세요'},{ :id=>'address_id', :class => "form-control"} %>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= form.label :ad_category_id %>
+        <%= form.select :ad_category_id, options_from_collection_for_select(AdCategory.where(:enable => true).all, 'id', 'title', ad.ad_category), {}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :user_id %>
+        <%= form.select 'user_id',options_from_collection_for_select(User.where(:enable => true), 'id', 'name', ad.user_id),{:include_blank => t(:all)}, {:class => "form-control"} %>
+      </div>
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => "form-control", :required => "required" %>
+      </div>
+      <div class="form-group">
+        <%= form.label :start_date %>
+        <%= form.date_field :start_date,  { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :budget %>
+        <%= form.number_field :budget, :class => "form-control", :required => "required" %>
+      </div>
+      <%= form.fields_for :ad_picture do |pp| %>
+        <div class="form-group">
+          <%= pp.label :picture %>
+          <%= pp.file_field :picture, :class => "form-control-file" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <%= form.submit :class => 'btn btn-primary btn-block btn-lg' %>
+<% end %>

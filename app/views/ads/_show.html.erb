@@ -1,0 +1,72 @@
+<% if @ad.ad_pictures.present? %>
+  <div class="col-12 col-lg-6 col-xl-4 col-xxl-3<% if @ad.complete %> disabled<% end %>">
+    <article>
+      <h3>현장이미지</h3>
+      <%
+
+        if @ad_picture
+          @ad_picture = @ad_picture.picture
+        else
+          @ad_picture = @ad.ad_pictures[0].picture
+        end
+      %>
+      <%= link_to @ad_picture.large_thumb.url, :class => 'simple_image' do %>
+        <figure>
+          <%= image_tag @ad_picture.medium_thumb.url, :id=>"product-image" %>
+        </figure>
+      <% end %>
+      <% if @ad.ad_pictures_count>1 %>
+        <ul class="shopping-smallthumb">
+          <% @ad.ad_pictures.each do |ad_picture| %>
+            <li>
+              <%= link_to ad_path(@ad, { ad_picture_id: ad_picture }) do %><%= image_tag ad_picture.picture.small_thumb.url %><% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    </article>
+  </div>
+<% end %>
+<div id="ad-info" class="col-12<%  if @ad.ad_pictures.present? %> col-lg-6 col-xl-8 col-xxl-9<% end %>">
+  <article>
+    <h3>기본정보</h3>
+    <div class="card">
+      <dl class="card-body">
+        <dt><%= t(:address, scope: [:activerecord, :models]) %></dt>
+        <dd>
+          <% if @ad.address.address.present? %>
+            <%=@ad.address.address.title %> &gt;
+          <% end %>
+          <%=@ad.address.title %>
+        </dd>
+        <dt><%= t(:speciality_id, scope: [:activerecord, :attributes, :ad]) %></dt>
+        <dd><%= @ad.speciality.speciality_category.title %> &gt; <%= @ad.speciality.title %></dd>
+        <dt><%= t(:budget, scope: [:activerecord, :attributes, :ad]) %></dt>
+        <dd>
+          <% if @ad.budget_propose %>
+            대략
+          <% end  %>
+          <%= number_to_currency @ad.budget %>
+          <% if @ad.speciality.speciality_category_id==1 %>
+            /
+            <% if @ad.budget_propose %>
+              <span class="text-success">예산 제안 받음</span>
+            <% else %>
+              <span class="text-danger">변동없음</span>
+            <% end %>
+          <% end %>
+        </dd>
+        <dt><%= t(:start_date, scope: [:activerecord, :attributes, :ad]) %></dt>
+        <dd><%= I18n.l @ad.start_date.to_date, :format => :long %></dd>
+        <% if @ad.end_date.present? %>
+          <dt><%= t(:end_date, scope: [:activerecord, :attributes, :ad]) %></dt>
+          <dd><%= I18n.l @ad.end_date.to_date, :format => :long %></dd>
+        <% end %>
+        <dt><%= t(:user_id, scope: [:activerecord, :attributes, :ad]) %></dt>
+        <dd><%=link_to user_info_path(@ad.user)  do %><%=display_user_photo(@ad.user) %>&nbsp;&nbsp;<%= @ad.user.name.truncate_bytes(60) %> /  <%=@ad.user.ads_count %>개의 공고 작성함<% end %></dd>
+        <dt><%= t(:created_at, scope: [:activerecord, :attributes, :ad]) %></dt>
+        <dd><%= I18n.l @ad.created_at.to_date, :format => :long %></dd>
+      </dl>
+    </div>
+  </article>
+</div>

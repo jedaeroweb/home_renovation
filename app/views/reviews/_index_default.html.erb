@@ -1,0 +1,33 @@
+<div class="row">
+  <% unless @review_count.zero? %>
+    <% @reviews.each do |review| %>
+      <div class="col-12 col-sm-6 col-md-3 col-xxl-2">
+        <h3 class="mt-0"><%= link_to  review_path(review) do %>
+            <% unless review.company.company_pictures_count.zero? %><%=image_tag review.company.company_pictures[0].picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %><% end %>
+            <%=review.company.title %>
+        </h3>
+            <p style="color:#666;font-weight: normal;font-size:90%">
+                    <% review.company.company_specialities.each do |company_speciality|  %>
+                    <%=company_speciality.speciality.title %>
+                    <% end %>
+          <% end %>
+          </p>
+        <p><span style="display:inline-block;vertical-align: top"><%=t(:rating, scope: [:activerecord, :attributes, :review]) %> : </span>  <% (1..review.rating).each do %>
+                  <span class="material-icons" style="color:orange">
+                    star_rate
+                  </span>
+
+          <% end  %>
+        </p>
+          <p><%=t(:user_id, scope: [:activerecord, :attributes, :review]) %> : <% unless review.user.user_pictures_count.zero? %><%=image_tag review.user.user_picture.picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp; <% end %><%=review.user.name.truncate_bytes(16) %>님</p>
+
+        <div><%=simple_format review.review_content.content %></div>
+
+      </div>
+    <% end %>
+  <% else %>
+  <% end %>
+  <div id="sl_bottom_menu">
+    <%= paginate @reviews %>
+  </div>
+</div>

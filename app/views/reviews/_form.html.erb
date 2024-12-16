@@ -1,0 +1,41 @@
+<%= form_with(model: review, local: true) do |form| %>
+  <% if review.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(review.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% review.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :rating %>
+        <%= form.select :rating, {'1점': 1, '2점': 2, '3점': 3, '4점': 4, '5점': 5}, {}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <% if params[:bidding_id].present? %>
+        <%= form.hidden_field :bidding_id, value: params[:bidding_id] %>
+        <% else %>
+        <% if params[:bidding].present? %>
+          <%= form.hidden_field :bidding_id, value: params[:bidding] %>
+        <% end %>
+          <% end  %>
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => 'form-control', :required => 'required' %>
+      </div>
+      <%= form.fields_for :review_content,review.build_review_content do |c| %>
+          <%= c.label :content %>
+          <%= c.text_area :content, :id => "sl_content", class: 'form-control', rows: 10 %>
+      <% end %>
+    </div>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

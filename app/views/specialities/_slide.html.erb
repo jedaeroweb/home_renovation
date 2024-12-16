@@ -1,0 +1,33 @@
+<section id="speciality-slide" class="d-none d-lg-block">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 section-header">
+				<h2><%= t(:speciality,scope: [:activerecord,:models]) %></h2>
+			</div>
+			<div class="col-12">
+				<% unless @speciality_slide_count.zero? %>
+				<div class="swiper swiper-container" style="margin-top:30px;position:relative;padding-bottom:20px">
+					<ul class="swiper-wrapper">
+							<% @speciality_slides.each do |speciality| %>
+								<li class="swiper-slide">
+									<%= link_to ads_path(speciality: speciality) do %>
+									<figure>
+										<%=image_tag speciality.speciality_picture.picture.small_thumb.url,class: "rounded-circle",height: '100px',width: '100px' %>
+										<figcaption><%=speciality.title %></figcaption>
+									</figure>
+										<% end %>
+								</li>
+									<% end %>
+				</ul>
+				<% else %>
+					<article class="speciality col-12">
+						<%= t(:no_data) %>
+					</article>
+				<% end %>
+				</div>
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+			</div>
+		</div>
+	</div>
+</section>

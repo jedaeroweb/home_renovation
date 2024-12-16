@@ -1,0 +1,21 @@
+<%= form_with(url: bidding_accept_path(bidding), local: true) do |form| %>
+  <% if bidding.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(bidding.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% bidding.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="form-group">
+    <%= form.hidden_field :accept, value:true %>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg",value: '이 업체로 진행' %>
+  </div>
+<% end %>

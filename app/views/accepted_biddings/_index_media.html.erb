@@ -1,0 +1,20 @@
+<article class="accepted-biddings col-6 col-md-3 col-xxl-2" style="margin-bottom:10px;">
+  <div class="row">
+    <div class="col-12">
+      <div style="border:1px solid red">
+      <h3 style="padding:10px;margin:0;"><%= link_to accepted_bidding.ad.title, accepted_bidding_path(accepted_bidding) %></h3>
+      <div style="background-color: #eee;padding:10px">
+      <p>
+     <% unless accepted_bidding.ad.user.user_pictures_count.zero? %><%=image_tag accepted_bidding.ad.user.user_picture.picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp;&nbsp;<% end %><%= accepted_bidding.ad.user.name %>
+      </p>
+      <p>
+      <% unless accepted_bidding.company.company_pictures_count.zero? %><%=image_tag accepted_bidding.company.company_pictures[0].picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp;&nbsp;<% end %><%= accepted_bidding.company.title %>
+      </p>
+
+      </div>
+        <div style="background-color: #eee;padding:10px;border-top:1px dotted #999">
+          <p style="margin:0;padding:0"><%= I18n.l accepted_bidding.created_at.to_date, :format => :long %></p>
+        </div>
+    </div>
+    </div>
+</article>

@@ -1,0 +1,18 @@
+<div id="show-review" class="container">
+  <div class="row">
+    <article class="col-12" itemscope itemprop="article" itemtype="http://schema.org/Article">
+      <div class="sl_content_header">
+        <h3 itemprop="name"><%= @review.title %></h3>
+        <p class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :review]) %> : <%= I18n.l @review.created_at.to_date, :format => :long %></p>
+      </div>
+      <div class="sl_content_main">
+        <div class="sl_content_text" itemprop="text"><%=@review.review_content.content %></div>
+      </div>
+    </article>
+  </div>
+  <div class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:link_list),reviews_path,{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </div>
+</div>

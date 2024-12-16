@@ -1,0 +1,72 @@
+<div class="col-12">
+      <h2 class="float-left hidden-title"><%= t(:speciality_category_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@speciality_category_count %></span>
+          <%=raw t(:there_are_n_speciality_categories,count: @speciality_category_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col style="width:200px">
+          <% if can?(:update, SpecialityCategory) || can?(:delete, SpecialityCategory) %>
+            <col<%=manage_width(SpecialityCategory) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:speciality_category]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:speciality_category]) %></th>
+          <th class="text-right"><%= t(:specialities_count,scope:[:activerecord,:attributes,:speciality_category]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:speciality_category]) %></th>
+          <% if can?(:update, SpecialityCategory) || can?(:delete, SpecialityCategory) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @speciality_category_count.zero? %>
+          <% @speciality_categories.each_with_index do |speciality_category,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="speciality_category_display<%=index %>" value="<%=speciality_category.id %>" <% if speciality_category.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="speciality_category_display<%=index %>"><% if speciality_category.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to speciality_category.title,admin_speciality_category_path(speciality_category) %></td>
+              <td class="text-right"><%=speciality_category.specialities_count %></td>
+              <td class="text-right"><%= I18n.l speciality_category.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, speciality_category) or can?(:delete, speciality_category) %>
+                <td class="text-right">
+                  <% if can? :update, speciality_category %>
+                    <%= link_to edit_admin_speciality_category_path(speciality_category), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, speciality_category %>
+                    <%= link_to admin_speciality_category_path(speciality_category), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @speciality_categories %>
+      </div>
+      <%= link_to t(:add), new_admin_speciality_category_path, :class => "btn btn-primary" %>
+    </article>

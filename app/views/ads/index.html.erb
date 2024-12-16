@@ -1,0 +1,117 @@
+<%
+  render_templete='index_default'
+
+  if session[:ad_list_type].present?
+    if session[:ad_list_type]=='module'
+      render_templete='index_module'
+    end
+  end
+
+%>
+<main id="ads" class="container">
+  <section class="row">
+    <% if @speciality_category.present? %>
+      <h2 class="col-12 text-center"><%=@speciality_category.title %></h2>
+      <% end  %>
+    <% if session[:search_detail].present? %>
+      <%=render 'search_form_detail' %>
+    <%  else %>
+      <%=render 'search_form' %>
+    <% end %>
+    <div class="col-12">
+      <ul class="type-selector">
+        <li><%=link_to url_for(category: params[:category],list_type: 'list') do %><span class="material-icons">view_list</span><% end %></li>
+        <li><%=link_to url_for(category: params[:category],list_type: 'module') do %><span class="material-icons">view_module</span><% end %></li>
+      </ul>
+    </div>
+    <div class="col-12">
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @ad_count %></span>
+          <%= raw t(:there_are_n_ads, count: @ad_count) %>
+        </p>
+      </div>
+    </div>
+  </section>
+  <%=render render_templete %>
+    <section class="row">
+      <h3 class="col-12 section-header">체결현황</h3>
+      <% unless @accepted_bidding_count.zero? %>
+        <% @accepted_biddings.each do |accepted_bidding| %>
+          <%=render 'accepted_biddings/index_media',accepted_bidding: accepted_bidding %>
+        <% end %>
+      <% else %>
+        <div class="orders col-12">
+          <%= t(:no_data) %>
+        </div>
+      <% end %>
+    </section>
+  <% unless @blog_count.zero? %>
+  <section class="row">
+    <h3 class="col-12 section-header">
+      <% if @speciality_category.present? %>
+        <%=@speciality_category.title %>
+      <% end %>
+      &nbsp; 해외 갤러리
+    </h3>
+      <% @blogs.each do |blog| %>
+        <%=render 'blogs/index_media',blog: blog %>
+      <% end %>
+  </section>
+  <% end %>
+
+  <% if @speciality_category.present? || @speciality.present? %>
+    <section class="row">
+      <div class="col-12 section-header">
+
+        <% if @speciality.present? %>
+          <h3 class="float-left"><%=@speciality.title %>전문업체</h3>
+          <div class="float-right">
+            <%=link_to companies_path(speciality: @speciality),class: 'more-link' do %>
+              <span><%=t(:more) %></span>
+            <% end %>
+          </div>
+        <% else %>
+          <% if @speciality_category.present? %>
+            <h3 class="float-left"><%=@speciality_category.title %>전문업체</h3>
+            <div class="float-right">
+              <%=link_to companies_path(category: @speciality_category),class: 'more-link' do %>
+                <span><%=t(:more) %></span>
+              <% end %>
+            </div>
+          <% else %>
+            <h3 class="float-left">>전문업체</h3>
+            <div class="float-right">
+              <%=link_to companies_path,class: 'more-link' do %>
+                <span><%=t(:more) %></span>
+              <% end %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+      <% unless @company_count.zero? %>
+        <% @companies.each do |company| %>
+          <%=render 'companies/index_media',company: company %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
+
+
+    <section class="row">
+      <h3 class="col-12 section-header">
+        <% if @speciality_category.present? %>
+          <%=@speciality_category.title %>
+        <% end %>
+        &nbsp;관련 상품
+      </h3>
+      <% unless @product_count.zero? %>
+        <% @products.each do |product| %>
+          <%=render 'shoppings/index_media',product: product %>
+        <% end %>
+      <% end %>
+    </section>
+  <%=link_to new_ad_path(category: params['category'], speciality: params['speciality']),class:'ad-add-button' do %>
+    <span><%=t(:new_ad) %></span>
+  <% end %>
+</main>

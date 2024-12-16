@@ -1,0 +1,41 @@
+<section class="row">
+  <div class="col-12 col-lg-6">
+    <h3><%=@simulation.title %></h3>
+    <%
+      if @simulation.simulation_pictures.present?
+
+        if @simulation_picture
+          @simulation_picture_picture = @simulation_picture.picture
+        else
+          @simulation_picture_picture = @simulation.simulation_pictures[0].picture
+        end
+    %>
+      <%= link_to @simulation_picture_picture.large_thumb.url, :class => 'simple_image' do %>
+        <figure>
+          <%= image_tag @simulation_picture_picture.medium_thumb.url, :id=>"product-image" %>
+        </figure>
+      <% end %>
+      <% if @simulation.simulation_pictures_count>1 %>
+        <ul class="select-smallthumb">
+          <% @simulation.simulation_pictures.each do |simulation_picture| %>
+            <li>
+              <%= link_to simulations_path(id: @simulation, simulation_picture_id: simulation_picture) do %><%= image_tag simulation_picture.picture.small_thumb.url %><% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="col-12 col-lg-6">
+    <div style="background:#eee">
+    <%=render 'simulation_materials/index' %>
+    </div>
+  </div>
+  <div class="col-12">
+    <% if @simulation.simulation_content.present? %>
+      <div style="background:#eee;padding:15px;margin-top:30px">
+        <%= simple_format @simulation.simulation_content.content %>
+      </div>
+    <% end %>
+  </div>
+</section>

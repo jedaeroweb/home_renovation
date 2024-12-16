@@ -1,0 +1,36 @@
+<%
+  render_templete='index_default'
+
+  if session[:blog_list_type].present?
+    if session[:blog_list_type]=='list'
+      render_templete='index_list'
+    end
+  end
+
+%>
+<main id="blogs" class="container">
+  <%= render 'communities/nav' %>
+  <div class="row">
+    <% if session[:search_detail].present? %>
+      <%=render 'search_form_detail' %>
+    <%  else %>
+      <%=render 'search_form' %>
+    <% end %>
+    <div class="col-12">
+      <ul class="type-selector">
+        <li><%=link_to url_for(list_type: 'list') do %><span class="material-icons">view_list</span><% end %></li>
+        <li><%=link_to url_for(list_type: 'module') do %><span class="material-icons">view_module</span><% end %></li>
+      </ul>
+    </div>
+    <div class="col-12">
+      <h2 class="float-left hidden-title"><%= t(:blog,scope: [:activerecord,:models]) %></h2>
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @blog_count %></span>
+          <%= raw t(:there_are_n_blogs, count: @blog_count) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <%=render render_templete %>
+</main>

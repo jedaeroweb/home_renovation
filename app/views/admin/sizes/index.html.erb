@@ -1,0 +1,72 @@
+<div class="col-12">
+  <h2 class="float-left hidden-title"><%= t(:sizes_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@size_count %></span>
+          <%=raw t(:there_are_n_sizes,count: @size_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, Size) || can?(:delete, Size) %>
+            <col<%=manage_width(Size) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:size]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:size]) %></th>
+          <th class="text-right"><%= t(:size,scope:[:activerecord,:attributes,:size]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:size]) %></th>
+          <% if can?(:update, Size) || can?(:delete, Size) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @size_count.zero? %>
+          <% @sizes.each_with_index do |size,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="size_display<%=index %>" value="<%=size.id %>" <% if size.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="size_display<%=index %>"><% if size.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to size.title,admin_size_path(size) %></td>
+              <td class="text-right"><%= link_to size.size %></td>
+              <td class="text-right"><%= I18n.l size.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, size) or can?(:delete, size) %>
+                <td class="text-right">
+                  <% if can? :update, size %>
+                    <%= link_to edit_admin_size_path(size), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, size %>
+                    <%= link_to admin_size_path(size), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @sizes %>
+      </div>
+      <%= link_to t(:add), new_admin_size_path, :class => "btn btn-primary" %>
+    </article>

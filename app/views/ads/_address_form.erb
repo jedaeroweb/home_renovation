@@ -1,0 +1,51 @@
+<%
+  n_params={}
+  progress=3
+  f_progress=5
+  percentage=20
+
+  if params[:speciality].present?
+    n_params[:speciality]=params[:speciality]
+  end
+
+  if params[:parent_address].present?
+    progress=4
+  end
+
+%>
+<section id="ad-form" class="col-12 ad-pre-form">
+  <article class="row">
+  <% if params[:parent_address].present? %>
+      <h3 class="col-12">현장의 지역을 선택해주세요</h3>
+      <div class="col-12">
+      <ul class="row">
+  <% Address.where(address_level_id: 2, parent_address_id: params[:parent_address], enable: true).each do |address|
+    n_params[:address_id]=address.id
+  %>
+      <li class="col-12 col-sm-6 col-md-4 col-lg-3"><%=link_to address.title, new_ad_path(n_params),class: 'btn btn-light btn-block btn-large' %></li>
+  <% end %>
+      </ul>
+      </div>
+<% else %>
+      <h3 class="col-12">현장의 지역분류를 선택해주세요</h3>
+      <div class="col-12">
+        <ul class="row">
+  <% Address.where(address_level_id: 1, enable: true).each do |parent_address|
+
+    n_params[:parent_address]=parent_address.id
+  %>
+  <li class="col-12 col-sm-6 col-md-4 col-lg-3"><%=link_to parent_address.title, new_ad_path(n_params),class: 'btn btn-light btn-block btn-large' %></li>
+  <% end %>
+      </ul>
+      </div>
+<% end %>
+  </article>
+  <div class="row">
+    <div class="col-12">
+      <h3>공고작성 단계 <%=progress %> / <%=f_progress %></h3>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <%=percentage*progress%>%" aria-valuenow="<%=percentage*progress%>" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,51 @@
+<main id="reservations" class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2 class="float-left d-none d-lg-block"><%= t(:reservation,scope: [:activerecord,:models]) %></h2>
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @notice_count %></span>
+          <%= raw t(:there_are_n_notices, count: @notice_count) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div id="notice_main" class="table-responsive">
+        <table class="table">
+          <colgroup>
+            <col>
+            <col style="width:100px">
+            <col style="width:220px">
+          </colgroup>
+          <thead class="thead-default">
+          <tr>
+            <th><%= t(:title, scope: [:activerecord, :attributes, :notice]) %></th>
+            <th class="text-center"><%= t(:label_count) %></th>
+            <th class="text-center"><%= t(:created_at, scope: [:activerecord, :attributes, :notice]) %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% unless @notice_count.zero? %>
+            <% @notices.each do |notice| %>
+              <tr>
+                <td><%= link_to notice.title, notice %></td>
+                <td class="text-right"><%= notice.impressionist_count(:filter => :ip_address) %></td>
+                <td class="text-right text-secondary"><%= I18n.l notice.created_at.to_date, :format => :long %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4"><%= t(:no_data) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <div id="sl_bottom_menu">
+          <%= paginate @notices %>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

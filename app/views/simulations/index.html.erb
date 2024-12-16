@@ -1,0 +1,53 @@
+<main id="simulations">
+  <section class="container">
+      <div class="row">
+        <h2 class="col-12 text-center"><%=t(:simulation,scope:[:activerecord,:models]) %></h2>
+        <%= render 'nav' %>
+        <div class="col-12 text-right">
+          <p class="summary text-right">
+            <span id="list_count" style="display:none"><%= @simulation_count %></span>
+            <%= raw t(:there_are_n_simulations, count: @simulation_count) %>
+          </p>
+        </div>
+      </div>
+  </section>
+
+
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-2">
+          <% unless @simulation_count.zero? %>
+            <ul id="simulation-slide">
+              <% @simulations.each do |simulation| %>
+                <li class="swiper-slide<% if simulation.id==@simulation.id %> active<% end %>">
+                  <%= link_to simulations_path(id: simulation) do %>
+                    <figure>
+                      <% if simulation.simulation_pictures.present? %>
+                      <%=image_tag simulation.simulation_pictures[0].picture.small_thumb.url,class: "rounded" %>
+                        <% else %>
+                        <%= image_tag 'none.gif',width:150,height:150,class: 'figure-img img-fluid rounded' %>
+                         <% end %>
+                      <figcaption><%=simulation.title %></figcaption>
+                    </figure>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          <% else %>
+            <article class="simulation col-12">
+              <%= t(:no_data) %>
+            </article>
+          <% end %>
+        </div>
+        <div class="col-12 col-md-10">
+          <% if @simulation_material.present? %>
+            <%=render 'simulation_materials/show' %>
+          <% else %>
+            <%=render 'simulations/show' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

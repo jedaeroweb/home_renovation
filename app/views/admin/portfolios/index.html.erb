@@ -1,0 +1,90 @@
+<%
+  a_class='nav-link'
+  unless @blog_category.present?
+    a_class+=' active'
+  end
+%>
+<div class="col-12">
+  <h2 class="float-left hidden-title"><%= t(:portfolio_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@portfolio_count %></span>
+          <%=raw t(:there_are_n_portfolios,count: @portfolio_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col>
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, Portfolio) || can?(:delete, Portfolio) %>
+            <col<%=manage_width(Portfolio) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:portfolio]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:portfolio]) %></th>
+          <th><%= t(:company_id, scope: [:activerecord, :attributes, :portfolio]) %></th>
+          <th class="text-right"><%= t(:picture,scope:[:activerecord,:attributes,:blog_picture]) %></th>
+          <th class="text-right"><%= t(:label_count) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:portfolio]) %></th>
+          <% if can?(:update, Portfolio) || can?(:delete, Portfolio) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @portfolio_count.zero? %>
+          <% @portfolios.each_with_index do |portfolio,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="portfolio_display<%=index %>" value="<%=portfolio.id %>" <% if portfolio.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="portfolio_display<%=index %>"><% if portfolio.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to portfolio.title,admin_portfolio_path(portfolio) %></td>
+              <td><%=portfolio.company.title %></td>
+              <td class="text-right">
+                <% if portfolio.portfolio_picture.present? %>
+                  <%= image_tag portfolio.portfolio_picture.picture.small_thumb.url %>
+                <% else %>
+                  <%= t(:not_insert) %>
+                <% end %>
+              </td>
+              <td class="text-right"><%= portfolio.impressionist_count(:filter => :ip_address) %></td>
+              <td class="text-right"><%= I18n.l portfolio.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, portfolio) or can?(:delete, portfolio) %>
+                <td class="text-right">
+                  <% if can? :update, portfolio %>
+                    <%= link_to edit_admin_portfolio_path(portfolio), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, portfolio %>
+                    <%= link_to admin_portfolio_path(portfolio), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @portfolios %>
+      </div>
+      <%= link_to t(:add), new_admin_portfolio_path, :class => "btn btn-primary" %>
+    </article>

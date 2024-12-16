@@ -1,0 +1,17 @@
+<article class="order col-12 col-sm-6 col-md-3">
+  <div class="row">
+    <div class="col-5 col-sm-12">
+      <br />
+      <% unless bidding.company.company_pictures_count.zero? %><%=image_tag bidding.company.company_pictures[0].picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp;&nbsp;<% end %><%= bidding.company.title %>
+    </div>
+    <div class="col-7 col-sm-12">
+      <h3><%= link_to bidding.ad.title, accepted_bidding_path(bidding) %></h3>
+      <p><%= I18n.l bidding.created_at.to_date, :format => :long %></p>
+      <% if bidding.reviews_count.zero? %>
+        <%=link_to t(:new_review),new_review_path(bidding: bidding), class: 'btn btn-block btn-lg btn-primary' %>
+      <% else %>
+        <%=link_to t(:show_review),reviews_path(bidding: bidding), class: 'btn btn-block btn-lg btn-success' %>
+      <% end %>
+    </div>
+  </div>
+</article>

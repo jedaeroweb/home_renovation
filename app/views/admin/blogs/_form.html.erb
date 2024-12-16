@@ -1,0 +1,53 @@
+<%= form_with(model: [:admin, blog], local: true) do |form| %>
+  <% if blog.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(blog.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% blog.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <%= form.label :blog_category_id %>
+        <%
+          if blog.blog_category_id.present?
+            blog_category=blog.blog_category_id
+          else
+            if params[:category].present?
+              blog_category = params[:category]
+            end
+          end
+        %>
+        <%= form.select :blog_category_id, options_from_collection_for_select(BlogCategory.where(:enable => true).all, 'id', 'title', blog_category), {}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :user_id %>
+        <%= form.select :user_id, options_from_collection_for_select(User.where(:enable => true).all, 'id', 'name', blog.user_id), {}, { :class => "form-control" } %>
+      </div>
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => 'form-control', :required => 'required' %>
+      </div>
+      <%= form.fields_for :blog_picture do |p| %>
+        <div class="form-group">
+          <%= p.label :picture %>
+          <%= p.file_field :picture, :class => "form-control-file" %>
+        </div>
+      <% end %>
+        <div class="form-group">
+          <%= form.label :content %>
+          <%= form.rich_text_area :content, style: 'min-height:20em' %>
+        </div>
+    </div>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

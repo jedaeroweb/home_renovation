@@ -1,0 +1,83 @@
+<%= form_with(model: user_address, local: true, id: 'user_address_form') do |form| %>
+  <div class="modal-header">
+    <h3 class="modal-title">
+      <% if params[:action]=='edit' %>
+      <%=t(:edit_user_address) %>
+        <% else %>
+      <%=t(:new_user_address) %>
+        <% end %>
+    </h3>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="form-row">
+            <div class="col-9">
+              <%= form.label :postcode %>
+              <%= form.text_field :postcode, id: 'zonecode' ,:class=>"form-control" %>
+              <%= hidden_field_tag 'shopping_id',params[:shopping_id] %>
+            </div>
+            <div class="col-3">
+              <label for="validationDefault02" style="display:block;text-indent: -9999px">주소찾기</label>
+              <button type="button" id="postcode" class="bt-main btn btn-secondary">주소찾기</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= form.label :address %>
+          <%= form.text_field :address, id: 'addrDefault' ,:class=>"form-control" %>
+        </div>
+        <div class="form-group">
+          <%= form.label :address_detail %>
+          <%= form.text_field :address_detail, id: 'addrDetail' ,:class=>"form-control" %>
+        </div>
+      </div>
+      </div>
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>
+<script>
+    $(document).ready(function(){
+        $('#user_address_form').submit(function(){
+
+        });
+
+        $("#postcode").on("click", function(){
+        if (typeof ReactNativeWebView === 'undefined') {
+            new daum.Postcode({
+                shorthand: false,
+                popupName: 'postcode',
+                oncomplete: function(data){
+                    $("#zonecode").val(data.zonecode);
+                    $("#addrDefault").val(data.address);
+                    $("#addrDetail").focus();
+                }
+            }).open();
+        } else {
+            var element_wrap = document.getElementById('address-wrap');
+            var element_body = document.getElementById('address-wrap-body');
+            element_wrap.style.display = 'block';
+            $("#wrap").addClass("on-modal");
+
+            var width=$('#modal-wrap .modal-body').width()+27;
+
+            new daum.Postcode({
+                width : width,
+                height : 550,
+                shorthand: false,
+                popupName: 'postcode',
+                oncomplete: function(data){
+                    $("#zonecode").val(data.zonecode);
+                    $("#addrDefault").val(data.address);
+                    $("#address-wrap .modal-head .close").click();
+                    $("#addrDetail").focus();
+                }
+            }).embed(element_body);
+        }
+    });
+    });
+</script>

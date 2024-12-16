@@ -1,0 +1,16 @@
+<main id="my-orders" class="container">
+  <section class="row">
+    <h2 class="col-12 text-center"><%=t(:mypage) %></h2>
+    <%= render 'users/nav' %>
+  </section>
+  <section class="row">
+    <% unless @bidding_count.zero? %>
+      <h3 class="col-12 section-header">체결현황</h3>
+      <% @biddings.each do |bidding| %>
+        <%=render 'index_my_media',bidding: bidding %>
+      <% end %>
+    <% else %>
+      <%=render 'index_my_table',biddings: @biddings %>
+    <% end %>
+  </section>
+</main>

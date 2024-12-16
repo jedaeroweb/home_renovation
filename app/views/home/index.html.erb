@@ -1,0 +1,328 @@
+<main id="main-page">
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-2">
+          <% unless @speciality_slide_count.zero? %>
+          <ul id="main-speciality">
+            <% @speciality_slides.each do |speciality| %>
+              <li>
+                <%= link_to ads_path(speciality: speciality) do %>
+                  <figure class="figure">
+                    <%=image_tag speciality.speciality_picture.picture.tiny_thumb.url,width: '30',height: '30' %>
+                    <figcaption><%=speciality.title %></figcaption>
+                  </figure>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+            <% end %>
+        </div>
+        <div id="slides" class="col-xl-10">
+  <%= render :partial => 'slides/index' %>
+          <div class="row">
+            <div class="col-12 flex-grow-1 d-block d-xl-none">
+              <div class="card h-100">
+                <div class="card-body">
+                  <h3>부분시공,인테리어,건축</h3>
+                  <p>부분시공,인테리어,건축 전문가를 호출합니다</p>
+                  <%=link_to '전문가 호출하기',new_ad_path,class: 'btn btn-primary btn-block' %>
+                </div>
+              </div>
+            </div>
+
+          <div class="col-12 col-lg-4 flex-grow-1 d-none d-xl-block">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3>부분시공</h3>
+                <p>도배,타일,도장,문,마루,용접,목수,조적,유리,실리콘,필름,판넬,샷시,전기, 설비</p>
+                <%=link_to '전문가 호출하기',new_ad_path(category: 3),class: 'btn btn-primary btn-block' %>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4 flex-grow-1 d-none d-xl-block">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3>인테리어</h3>
+                <p>마루시공, 욕실세팅, 도배시공, 주방(씽크대), 계단시공, 대리석마감, 드레스룸 시공</p>
+                <%=link_to '업자 호출하기',new_ad_path(category: 2),class: 'btn btn-primary btn-block' %>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-4 flex-grow-1 d-none d-xl-block">
+            <div class="card h-100">
+              <div class="card-body">
+                <h3>건축 공정별 시공</h3>
+                <p>기초토목, 골조시공, 벽체(판넬)시공, 조적시공, 지붕시공, 유리창시공, 마당토목, ACL마감 시공</p>
+                <%=link_to '건축업체 호출하기',new_ad_path(category: 1),class: 'btn btn-primary btn-block' %>
+              </div>
+            </div>
+          </div>
+          </div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <section class="ads">
+    <div class="container">
+      <div class="row">
+        <% if @setting.present? %>
+        <div class="col-12">
+          <marquee><%=@setting.scroll_title %></marquee>
+        </div>
+        <% end %>
+
+
+        <div class="col-12">
+          <nav style="margin-top:2em;margin-bottom:2em">
+      <ul class="nav nav-pills nav-fill nav-point" id="nav-tab" role="tablist">
+        <li class="nav-item"><a href="#" class="nav-link active" id="nav-part-tab" data-toggle="tab" data-target="#nav-part" type="button" role="tab" aria-controls="nav-home" aria-selected="true"><%= t(:menu_part) %></a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="nav-interior-tab" data-toggle="tab" data-target="#nav-interior" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><%= t(:menu_interior) %></a></li>
+        <li class="nav-item"><a href="#" class="nav-link" id="nav-construction-tab" data-toggle="tab" data-target="#nav-construction" type="button" role="tab" aria-controls="nav-profile" aria-selected="false"><%=t(:menu_construction) %></a></li>
+      </ul>
+  </nav>
+        </div>
+
+          <div class="col-12 col-lg-4">
+            <h3>부분시공 의뢰리스트</h3>
+            <%=render 'ad',ads: @parts, ad_count: @apart_count   %>
+          </div>
+          <div class="col-12 col-lg-4">
+            <h3>인테리어 의뢰리스트</h3>
+            <%=render 'ad',ads: @interiors, ad_count: @interior_count  %>
+          </div>
+          <div class="col-12 col-lg-4">
+            <h3>건축 의뢰리스트</h3>
+            <%=render 'ad',ads: @constructions, ad_count: @construction_count  %>
+          </div>
+        <div class="col-12">
+  <div class="tab-content" id="nav-tabContent">
+    <div class="tab-pane fade show active" id="nav-part" role="tabpanel" aria-labelledby="nav-part-tab">
+      <div class="row">
+            <div class="col-12">
+              <h2 class="float-left"><%= t(:menu_part) %></h2>
+              <div class="float-right">
+                <%=link_to ads_path(category:3),class: 'more-link' do %>
+                  <span><%=t(:more) %></span>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-12">
+              <%=render 'ads/index_table',ads: @parts, ad_count: @apart_count %>
+            </div>
+      </div>
+
+    </div>
+    <div class="tab-pane fade" id="nav-interior" role="tabpanel" aria-labelledby="nav-interior-tab">
+
+      <div class="row">
+            <div class="col-12">
+              <h2 class="float-left"><%= t(:menu_interior) %></h2>
+              <div class="float-right">
+                <%=link_to ads_path(category:2),class: 'more-link' do %>
+                  <span><%=t(:more) %></span>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-12">
+              <%=render 'ads/index_table',ads: @interiors, ad_count: @interior_count %>
+            </div>
+      </div>
+
+    </div>
+    <div class="tab-pane fade" id="nav-construction" role="tabpanel" aria-labelledby="nav-construction-tab">
+
+      <div class="row">
+            <div class="col-12">
+              <h2 class="float-left"><%=t(:menu_construction) %></h2>
+              <div class="float-right">
+                <%=link_to ads_path(category:1 ),class: 'more-link' do %>
+                  <span><%=t(:more) %></span>
+                <% end %>
+              </div>
+            </div>
+            <div class="col-12">
+              <%=render 'ads/index_table',ads: @constructions, ad_count: @construction_count %>
+            </div>
+      </div>
+
+    </div>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section style="background-color:#f6f6f6" class="d-none d-xl-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-xl-6 section-header">
+          <ul id="m-banner">
+            <li><%=link_to 'https://www.jedaeroweb.co.kr',target: '_blank' do %>제대로웹<% end %></li>
+            <li><%=link_to 'https://community.jedaeroweb.co.kr  ',target: '_blank' do %>제대로웹 커뮤니티<% end %></li>
+            <li><%=link_to 'https://www.sleepinglion.pe.kr',target: '_blank' do %>잠자는 사자의 집<% end %></li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6 section-header text-right">
+          <iframe width="100%" height="315" src="https://youtube.com/shorts/_H6o7A-0I_c?si=1Rdi0t7EyCkUe_iv?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section id="shoppings">
+    <div class="container">
+      <div class="row">
+    <div class="col-12 section-header">
+      <h2 class="float-left">SHOPPING MALL</h2>
+      <div class="float-right">
+        <%=link_to shoppings_path,class: 'more-link' do %>
+          <span><%=t(:more) %></span>
+        <% end %>
+      </div>
+    </div>
+    <% unless @product_count.zero? %>
+      <% @products.each do |product| %>
+            <%=render 'shoppings/index_media',product: product %>
+      <% end %>
+    <% else %>
+      <div class="product col-12">
+        <%= t(:no_data) %>
+      </div>
+    <% end %>
+      </div>
+    </div>
+  </section>
+
+
+
+
+  <section id="companies" style="background-color:#f6f6f6">
+    <div class="container">
+    <div class="row">
+    <div class="col-12 section-header">
+      <h2 class="float-left"><%= t(:company,scope: [:activerecord,:models]) %></h2>
+      <div class="float-right">
+        <%=link_to companies_path,class: 'more-link' do %>
+          <span><%=t(:more) %></span>
+        <% end %>
+      </div>
+    </div>
+    <% unless @company_count.zero? %>
+      <% @companies.each do |company| %>
+          <%=render 'companies/index_media',company: company %>
+      <% end %>
+    <% else %>
+      <div class="company col-12">
+        <%= t(:no_data) %>
+      </div>
+    <% end %>
+    </div>
+    </div>
+  </section>
+
+
+
+  <section class="blogs" style="padding-top:2em;padding-bottom:2em">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <h2 class="blog-title"><span class="d-none d-lg-block">대표적인</span>우수시공사례</h2>
+          <div class="blog-more">
+            <%=link_to blogs_path(category: 1),class: 'more-link' do %>
+              <span><%=t(:more) %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+        <% unless @blog1_count.zero? %>
+            <div class="row">
+          <% @blog1s.each do |blog| %>
+                <%=render 'blogs/main_index_media',blog: blog %>
+          <% end %>
+            </div>
+        <% else %>
+          <div class="blog col-12">
+            <%= t(:no_data) %>
+          </div>
+        <% end %>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blogs" style="padding-top:2em;padding-bottom:2em">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <h2 class="blog-title"><span class="d-none d-lg-block">대표적인 </span>디자인 설계 사례</h2>
+          <div class="blog-more">
+            <%=link_to blogs_path(category: 2),class: 'more-link' do %>
+              <span><%=t(:more) %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+        <% unless @blog2_count.zero? %>
+            <div class="row">
+          <% @blog2s.each do |blog| %>
+            <%=render 'blogs/main_index_media',blog: blog %>
+          <% end %>
+            </div>
+        <% else %>
+              </div>
+          <div class="blog col-12">
+            <%= t(:no_data) %>
+          </div>
+        <% end %>
+      </div>
+      </div>
+    </div>
+  </section>
+
+
+</main>
+<script>
+    (function() {
+        var w = window;
+        if (w.ChannelIO) {
+            return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
+        }
+        var ch = function() {
+            ch.c(arguments);
+        };
+        ch.q = [];
+        ch.c = function(args) {
+            ch.q.push(args);
+        };
+        w.ChannelIO = ch;
+        function l() {
+            if (w.ChannelIOInitialized) {
+                return;
+            }
+            w.ChannelIOInitialized = true;
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+            s.charset = 'UTF-8';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+        if (document.readyState === 'complete') {
+            l();
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', l);
+        } else {
+            window.addEventListener('DOMContentLoaded', l, false);
+            window.addEventListener('load', l, false);
+        }
+    })();
+    ChannelIO('boot', {
+        "pluginKey": "8e3ab011-1450-4137-944e-20b7c361133c" //please fill with your plugin key
+    });
+</script>

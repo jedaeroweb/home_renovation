@@ -1,0 +1,54 @@
+<section id="review-slide">
+	<div class="container">
+		<div class="row">
+			<div class="col-12 section-header">
+				<h2 class="float-left"><%= t(:review,scope: [:activerecord,:models]) %></h2>
+				<div class="float-right">
+					<%=link_to reviews_path,class: 'more-link' do %>
+						<span><%=t(:more) %></span>
+					<% end %>
+				</div>
+			</div>
+
+			<div class="col-12">
+				<div class="swiper swiper-container" style="margin-top:30px;position:relative;padding-bottom:20px">
+					<div class="swiper-wrapper">
+						<% unless @review_slide_count.zero? %>
+							<% @review_slides.each do |review| %>
+								<div class="swiper-slide">
+									<h3 class="mt-0"><%= link_to  review_path(review) do %>
+											<% unless review.company.company_pictures_count.zero? %><%=image_tag review.company.company_pictures[0].picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %><% end %>
+											<%=review.company.title %>
+										<span style="color:#666;font-weight: normal;font-size:90%;float:right">
+                    <% review.company.company_specialities.each do |company_speciality|  %>
+                    <%=company_speciality.speciality.title %>
+                    <% end %>
+											<% end %>
+                  </span>
+									</h3>
+									<p><span style="display:inline-block;vertical-align: top"><%=t(:rating, scope: [:activerecord, :attributes, :review])%> : </span>  <% (1..review.rating).each do %>
+                  <span class="material-icons" style="color:orange">
+                    star_rate
+                  </span>
+										<% end  %>
+										<span style="float:right;">
+                    <%=t(:user_id, scope: [:activerecord, :attributes, :review]) %>  : <% unless review.user.user_pictures_count.zero? %><%=image_tag review.user.user_picture.picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp; <% end %><%=review.user.name.truncate_bytes(16) %>님
+                  </span>
+									</p>
+									<div><%=simple_format review.review_content.content %></div>
+								</div>
+							<% end %>
+						<% else %>
+							<article class="review col-12">
+								<%= t(:no_data) %>
+							</article>
+						<% end %>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
+			</div>
+	</div>
+	</div>
+</section>

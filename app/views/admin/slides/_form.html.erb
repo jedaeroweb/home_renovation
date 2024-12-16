@@ -1,0 +1,75 @@
+<%= form_with(model: [:admin, slide], local: true) do |form| %>
+  <% if slide.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(slide.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% slide.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-row">
+      <div class="form-group col-12">
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => 'form-control', :required => 'required' %>
+      </div>
+      <div class="form-group col-12">
+          <%= form.label :picture %>
+          <%= form.file_field :picture, :class => "form-control" %>
+      </div>
+
+      <div class="form-group col-12">
+        <%= form.label :link %>
+        <%= form.text_field :link, :class => "form-control" %>
+      </div>
+      <div class="form-group col-12">
+        <%= form.label :notice_id %>
+        <%= form.select :notice_id, options_from_collection_for_select(Notice.where(:enable => true).all, 'id', 'title', slide.notice_id), {}, { :class => "form-control" } %>
+      </div>
+      <%= form.fields_for :slide_description do |p| %>
+        <div class="form-group col-12">
+          <%= p.label :description %>
+          <%= p.text_field :description, :class => "form-control" %>
+        </div>
+          <div class="form-group col-12">
+          <%= p.label :font_id %>
+            <%= p.select :font_id, options_from_collection_for_select(Font.where(:enable => true).all, 'id', 'title', nil), {}, { :class => "form-control" } %>
+          </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :color %>
+          <%= p.color_field :color, :class => "form-control" %>
+        </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :size %>
+          <%= p.number_field :size, :class => "form-control" %>
+        </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :position_v %>
+          <%= p.select :position_v, {'상단':'top','하단':'bottom'},{}, :class => "form-control" %>
+        </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :position_v_px %>
+          <%= p.number_field :position_v_px, :class => "form-control" %>
+        </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :position_h %>
+          <%= p.select :position_h, {'왼쪽':'left','오른쪽':'right'},{}, :class => "form-control" %>
+        </div>
+        <div class="form-group col-12 col-lg-6">
+          <%= p.label :position_h_px %>
+          <%= p.number_field :position_h_px, :class => "form-control" %>
+        </div>
+      <% end %>
+    </div>
+    </div>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

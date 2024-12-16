@@ -1,0 +1,29 @@
+<section id="show-slide" class="col-12">
+  <div class="row">
+    <%= render :partial => 'layouts/notice', :locals => { :notice => notice, :alert => alert } %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <article class="card">
+        <h3 class="card-header"><%=@slide.title %></h3>
+        <div class="card-body">
+          <dl>
+            <dt><%= t(:created_at, scope: [:activerecord, :attributes, :slide]) %></dt>
+            <dd><%= I18n.l @slide.created_at.to_date, :format => :long %></dd>
+            <dt><%= t(:updated_at, scope: [:activerecord, :attributes, :slide]) %></dt>
+            <dd><%= I18n.l @slide.updated_at.to_date, :format => :long %></dd>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <%= link_to t(:link_list), admin_slides_path, class: 'btn btn-secondary' %>
+    </div>
+    <div class="col-12 col-xl-6 text-right">
+      <%= link_to t(:edit), edit_admin_slide_path(@slide), class: 'btn btn-secondary' %>
+      <%= link_to t(:delete), admin_slide_path(@slide), :method => :delete, :data => { :confirm => t(:delete_confirm) }, class: 'btn btn-danger' %>
+    </div>
+  </div>
+</section>

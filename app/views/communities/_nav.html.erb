@@ -1,0 +1,38 @@
+<section class="row">
+  <h2 class="col-12 text-center">커뮤니티</h2>
+  <div class="col-12">
+    <%
+      aa_class='nav-link'
+      bb_class='nav-link'
+      cc_class='nav-link'
+      dd_class='nav-link'
+      ee_class='nav-link'
+      ff_class='nav-link'
+
+      case params[:controller]
+        when 'notices'
+          bb_class+=' active'
+        when 'faqs'
+          cc_class+=' active'
+        when 'questions'
+          dd_class+=' active'
+        when 'reviews'
+          ee_class+=' active'
+        when 'blogs'
+          ff_class+=' active'
+      else
+        aa_class+=' active'
+      end
+      %>
+    <nav class="sub_nav">
+      <ul class="nav nav-pills nav-fill nav-point scroll">
+        <li class="nav-item"><%=link_to t(:all),communities_path,class: aa_class %></li>
+        <li class="nav-item"><%= link_to t(:notice,scope:[:activerecord,:models]), notices_path,class: bb_class %></li>
+        <li class="nav-item"><%= link_to t(:faq,scope:[:activerecord,:models]), faqs_path,class: cc_class %></li>
+        <li class="nav-item"><%= link_to t(:question,scope:[:activerecord,:models]), questions_path,class: dd_class %></li>
+        <li class="nav-item"><%= link_to t(:review,scope:[:activerecord,:models]), reviews_path,class: ee_class %></li>
+        <li class="nav-item"><%= link_to t(:blog,scope:[:activerecord,:models]), blogs_path,class: ff_class %></li>
+      </ul>
+    </nav>
+</div>
+</section>

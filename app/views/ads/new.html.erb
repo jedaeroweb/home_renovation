@@ -1,0 +1,16 @@
+<section id="new-ad" class="container">
+  <div class="row">
+    <h2 class="col-12 col-md-6 di-title"><%=t(:new_ad) %></h2>
+  </div>
+  <div class="row">
+    <% if @speciality.present? %>
+     <% if @address.present? %>
+        <%= render 'form', ad: @ad %>
+      <% else %>
+        <%= render 'address_form' %>
+      <% end %>
+    <% else %>
+      <%= render 'speciality_form' %>
+    <% end %>
+  </div>
+</section>

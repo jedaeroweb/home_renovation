@@ -1,0 +1,81 @@
+<article id="blog-categories" class="col-12">
+  <h2 class="float-left "><%= t(:ad_category_list) %></h2>
+  <div class="float-right">
+    <p class="summary">
+      <span id="list_count" style="display:none"><%= @ad_category_count %></span>
+      <%= raw t(:there_are_n_blog_categories, count: @ad_category_count) %>
+    </p>
+  </div>
+  <table id="prepare_list" class="table table-striped table-hover">
+    <colgroup>
+      <col style="width:120px">
+      <col>
+      <col>
+      <col style="width:200px">
+      <% if can?(:update, BlogCategory) || can?(:delete, BlogCategory) %>
+        <col<%= manage_width(BlogCategory) %>>
+      <% end %>
+    </colgroup>
+    <thead class="thead-default">
+    <tr>
+      <th class="text-center"><%= t(:enable, scope: [:activerecord, :attributes, :ad_category]) %></th>
+      <th><%= t(:title, scope: [:activerecord, :attributes, :ad_category]) %></th>
+      <th class="text-right"><%= t(:blogs_count, scope: [:activerecord, :attributes, :ad_category]) %></th>
+      <th class="text-right"><%= t(:updated_at, scope: [:activerecord, :attributes, :ad_category]) %></th>
+      <% if can?(:update, BlogCategory) || can?(:delete, BlogCategory) %>
+        <th class="text-center"><%= t(:manage) %></th>
+      <% end %>
+    </tr>
+    </thead>
+    <tbody>
+    <% unless @ad_category_count.zero? %>
+      <% @blog_categories.each_with_index do |ad_category, index| %>
+        <tr>
+          <td>
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="ad_category_display<%= index %>" value="<%= ad_category.id %>"
+                     <% if ad_category.enable %> checked
+              <% end %>>
+              <label class="custom-control-label" for="ad_category_display<%= index %>">
+                <% if ad_category.enable %> <%= t(:display) %>
+                <% else %><%= t(:hidden) %>
+                <% end %> </label>
+            </div>
+          </td>
+          <td><%= link_to ad_category.title, admin_ad_category_path(ad_category) %></td>
+          <td class="text-right">
+            <% if ad_category.blogs_count.zero? %>
+              <%= t(:none) %>
+            <% else %>
+              <%= link_to ad_category.blogs_count.to_s + '개', admin_blogs_path(:ad_category_id => ad_category) %>
+            <% end %>
+          </td>
+          <td class="text-right"><%= I18n.l ad_category.created_at.to_date, :format => :long %></td>
+          <% if can?(:update, ad_category) or can?(:delete, ad_category) %>
+            <td class="text-right">
+              <% if can? :update, ad_category %>
+                <%= link_to edit_admin_ad_category_path(ad_category), :class => "btn btn-secondary" do %>
+                  <%= t(:edit) %>
+                <% end %>
+              <% end %>
+              <% if can? :delete, ad_category %>
+                <%= link_to admin_ad_category_path(ad_category), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, :class => "btn btn-danger" do %>
+                  <%= t(:delete) %>
+                <% end %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    <% else %>
+      <tr>
+        <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%= paginate @blog_categories %>
+  <% if can? :create, BlogCategory %>
+  <%= link_to t(:add), new_admin_ad_category_path, :class => "btn btn-primary" %>
+  <% end  %>
+</article>

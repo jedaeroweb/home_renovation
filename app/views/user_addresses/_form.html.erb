@@ -1,0 +1,43 @@
+<%= form_with(model: user_address, local: true) do |form| %>
+  <% if user_address.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(user_address.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% user_address.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <div class="form-row">
+          <div class="col-9">
+            <%= form.label :postcode %>
+            <%= form.text_field :postcode, id: 'zonecode' ,:class=>"form-control" %>
+            <%= hidden_field_tag 'shopping_id',params[:shopping_id] %>
+          </div>
+          <div class="col-3">
+            <label for="validationDefault02" style="display:block;text-indent: -9999px">주소찾기</label>
+            <button type="button" id="postcode" class="bt-main btn btn-secondary">주소찾기</button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= form.label :address %>
+        <%= form.text_field :address, id: 'addrDefault' ,:class=>"form-control" %>
+      </div>
+      <div class="form-group">
+        <%= form.label :address_detail %>
+        <%= form.text_field :address_detail, id: 'addrDetail' ,:class=>"form-control" %>
+      </div>
+    </div>
+    </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

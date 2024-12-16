@@ -1,0 +1,66 @@
+<div class="col-12">
+<%=form_tag companies_path,{method:'get'} do %>
+  <input type="hidden" name="search" value="1">
+
+  <%
+    search_params={search_detail:true}
+
+    unless @speciality_count.zero?
+
+      aa_class='nav-link'
+      if @speciality.present?
+        search_params[:speciality]=@speciality
+      else
+        aa_class+=' active'
+      end
+  %>
+  <nav class="sub_nav">
+    <ul class="nav nav-pills nav-point nav-fill scroll">
+      <li class="nav-item"><%=link_to t(:all),companies_path(category:@speciality_category),class: aa_class %></li>
+        <% @specialities.each do |speciality|
+          a_class='nav-link'
+
+          if @speciality.present?
+            if @speciality.id==speciality.id
+              a_class+=' active'
+            end
+          end
+
+          if speciality.company_specialities_count.zero?
+            a_class+=' disabled'
+          end
+        %>
+          <li class="nav-item">
+            <%=link_to url_for(speciality: speciality),{:class=>a_class} do %>
+            <%=speciality.title %><span>(<%=speciality.company_specialities_count %>)</span>
+            <% end %>
+          </li>
+        <% end %>
+    </ul>
+  </nav>
+    <% unless @speciality.present? %>
+    <% if @speciality_category.present?
+         search_params[:category]=@speciality_category
+    %>
+      <input type="hidden" name="category" value="<%=@speciality_category.id %>">
+      <% end  %>
+      <% end  %>
+    <label><input type="checkbox" name="no_order" value="1"<% if session[:no_order].present? %> checked<% end %>> 체결된것 제외</label>
+<% else %>
+    <nav class="sub_nav">
+      <ul class="nav nav-pills nav-point nav-fill scroll">
+        <li class="nav-item"><%=link_to t(:all),companies_path,class: 'nav-link active' %></li>
+        <% @speciality_categories.each do |speciality_category| %>
+          <li class="nav-item">
+            <%=link_to url_for(category: speciality_category),{:class=>'nav-link'} do %>
+              <%=speciality_category.title %>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+    <label><input type="checkbox" name="no_code" value="1"<% if session[:no_code].present? %> checked<% end %>> 사업자번호미등록 제외</label>
+<% end %>
+  <%=submit_tag t(:search),class: 'btn btn-secondary btn-block btn-search' %>
+<% end %>
+</div>

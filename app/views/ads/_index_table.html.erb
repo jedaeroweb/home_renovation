@@ -1,0 +1,78 @@
+<%
+  n_params={}
+
+  if @speciality.present?
+    n_params[:speciality]=@speciality
+  else
+    if @speciality_category.present?
+      n_params[:category]=@speciality_category
+    end
+  end
+
+%>
+<div class="table-responsive">
+<table class="table table-striped table-borderless table-hover table-td-click">
+  <colgroup>
+    <col>
+    <col>
+    <col>
+    <col>
+    <col>
+    <col style="width:100px" class="none d-lg-table-cell">
+    <col style="width:220px" class="none d-lg-table-cell">
+    <col style="width:220px" class="none d-lg-table-cell">
+  </colgroup>
+  <thead class="thead-default">
+  <tr>
+    <th><%= t(:user_id, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th><%= t(:speciality, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th><%= t(:title, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th><%= t(:ad_category_id, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th><%= t(:address_id, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th class="text-right"><%= t(:budget, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :ad]) %></th>
+    <th class="text-right"><%= t(:bidding) %></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% unless ad_count.zero? %>
+    <% ads.each do |ad| %>
+      <tr>
+        <td<% unless ad.complete %> class="text-secondary"<% end %>><%=display_user_photo(ad.user) %>&nbsp;&nbsp;<%= ad.user.name.truncate_bytes(16) %></td>
+        <td<% unless ad.complete %> class="text-secondary"<% end %>><%=ad.speciality.title %></td>
+        <td>
+          <% if ad.complete %>
+            <span class="badge badge-success"><%=t(:ordered) %></span>
+          <% else %>
+            <% if ad.created_at.to_date==Date.today.to_date %>
+              <span class="badge badge-danger"><%=t(:new) %></span>
+            <% end %>
+          <% end %>
+          <%= link_to ad.title, ad_path(ad, n_params) %></td>
+        <td<% unless ad.complete %> class="text-secondary"<% end %>><%=ad.ad_category.title %></td>
+        <td<% unless ad.complete %> class="text-secondary"<% end %>><% if ad.address.address.present? %><%=ad.address.address.title %> &gt; <% end %><%=ad.address.title %></td>
+        <td class="text-right<% unless ad.complete %> text-secondary<% end %>">
+          <% if ad.budget_propose %>약<% else %>최대<% end %> <%= number_to_currency ad.budget %>
+        </td>
+        <td class="text-right text-secondary"><%= I18n.l ad.created_at.to_date, :format => :long %></td>
+          <% if ad.complete %>
+          <td class="text-center">-</td>
+            <% else %>
+          <td class="text-right">
+            <% if Bidding.where(ad: ad, company_id: session[:company_id] ).count.zero? %>
+              <%=link_to t(:bidding),new_bidding_path(ad: ad),class: 'btn btn-block btn-primary btn-sm' %>
+            <% else %>
+              <%=link_to t(:already_bidding_short),new_bidding_path(ad: ad),class: 'btn btn-block btn-secondary btn-sm' %>
+            <% end %>
+          </td>
+          <% end %>
+      </tr>
+    <% end %>
+  <% else %>
+    <tr>
+      <td colspan="8"><%= t(:no_data) %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+</div>

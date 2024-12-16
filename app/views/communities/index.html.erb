@@ -1,0 +1,166 @@
+<main id="communities">
+  <section>
+    <div class="container">
+      <%=render 'nav' %>
+      <div class="row">
+        <div class="col-12 col-lg-8">
+          <div class="row">
+            <article class="col-12 col-lg-6 community-article">
+                <h3 class="float-left"><%= t(:notice, scope: [:activerecord, :models]) %></h3>
+                <%=link_to notices_path,class: 'more-link', class: "float-right" do %>
+                  <span><%=t(:more) %></span>
+                <% end %>
+              <ul>
+              <% unless @coomunity_notice_count.zero? %>
+                <% @coomunity_notices.each do |notice| %>
+                <li><%=link_to notice.title.truncate(25),notice %></li>
+                <% end %>
+              <% end %>
+              </ul>
+            </article>
+            <article class="col-12 col-lg-6 community-article">
+              <h3 class="float-left"><%= t(:faq, scope: [:activerecord, :models]) %></h3>
+              <%=link_to faqs_path,class: 'more-link', class: "float-right" do %>
+                <span><%=t(:more) %></span>
+              <% end %>
+              <ul>
+              <% unless @faq_count.zero? %>
+                  <% @faqs.each do |faq| %>
+                    <li class="question"><%=link_to faq.title.truncate(35),faq %></li>
+                    <li class="answer"><%=link_to faq.faq_content.content.truncate(35),faq %></li>
+                  <% end %>
+              <% end %>
+              </ul>
+            </article>
+            <article class="col-12 col-lg-6 community-article">
+              <h3 class="float-left"><%= t(:question, scope: [:activerecord, :models]) %></h3>
+              <%=link_to questions_path,class: 'more-link', class: "float-right" do %>
+                <span><%=t(:more) %></span>
+              <% end %>
+              <ul>
+              <% unless @question_count.zero? %>
+                  <% @questions.each do |question| %>
+                    <li class="question"><%=link_to question.title.truncate(35),question %></li>
+                    <li class="answer"><%=link_to question.answers[0].title.truncate(35),question %></li>
+                  <% end %>
+              <% end %>
+              </ul>
+            </article>
+            <article class="col-12 col-lg-6 community-article">
+              <h3 class="float-left"><%= t(:contact, scope: [:activerecord, :models]) %></h3>
+              <%=link_to new_contact_path,class: 'more-link', class: "float-right" do %>
+                <span><%=t(:more) %></span>
+              <% end %>
+              <ul>
+              <% unless @contact_count.zero? %>
+                  <% @contacts.each do |contact| %>
+                    <li><%=contact.title %></li>
+                  <% end %>
+              <% end %>
+              </ul>
+            </article>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-4">
+          <div class="row">
+            <article class="col-6 col-lg-12">
+              <%=link_to new_company_path do %>
+                <figure class="figure float-right">
+                  <%=image_tag 'community1.jpg', class: 'img-fluid ' %>
+                </figure>
+              <% end %>
+            </article>
+            <article class="col-6 col-lg-12">
+              <%=link_to new_reservation_path do %>
+                <figure class="figure float-right">
+                  <%=image_tag 'community2.jpg', class: 'img-fluid' %>
+                </figure>
+              <% end %>
+            </article>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </section>
+
+
+  <section style="background-color:#f6f6f6" class="d-none d-xl-block">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-xl-6 section-header">
+          <ul id="m-banner">
+            <li><%=link_to 'https://www.jedaeroweb.co.kr',target: '_blank' do %>제대로웹<% end %></li>
+            <li><%=link_to 'https://community.jedaeroweb.co.kr  ',target: '_blank' do %>제대로웹 커뮤니티<% end %></li>
+            <li><%=link_to 'https://www.sleepinglion.pe.kr',target: '_blank' do %>잠자는 사자의 집<% end %></li>
+          </ul>
+        </div>
+        <div class="col-12 col-xl-6 section-header d-none d-xl-block text-right">
+          <iframe width="100%" height="315" src="https://youtube.com/shorts/_H6o7A-0I_c?si=1Rdi0t7EyCkUe_iv?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <section class="blogs" style="padding-top:2em;padding-bottom:2em">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <h2 class="blog-title"><span class="d-none d-lg-block">대표적인</span>우수시공사례</h2>
+          <div class="blog-more">
+            <%=link_to blogs_path(category: 1),class: 'more-link' do %>
+              <span><%=t(:more) %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+          <% unless @blog1_count.zero? %>
+            <div class="row">
+              <% @blog1s.each do |blog| %>
+                <%=render 'blogs/main_index_media',blog: blog %>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="blog col-12">
+              <%= t(:no_data) %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="blogs" style="padding-top:2em;padding-bottom:2em">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-3">
+          <h2 class="blog-title"><span class="d-none d-lg-block">대표적인 </span>디자인 설계 사례</h2>
+          <div class="blog-more">
+            <%=link_to blogs_path(category: 2),class: 'more-link' do %>
+              <span><%=t(:more) %></span>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+          <% unless @blog2_count.zero? %>
+            <div class="row">
+              <% @blog2s.each do |blog| %>
+                <%=render 'blogs/main_index_media',blog: blog %>
+              <% end %>
+            </div>
+          <% else %>
+            </div>
+            <div class="blog col-12">
+              <%= t(:no_data) %>
+            </div>
+          <% end %>
+          </div>
+    </div>
+    </div>
+  </section>
+
+</main>

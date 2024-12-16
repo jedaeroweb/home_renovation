@@ -1,0 +1,56 @@
+<%
+  a_class='nav-link'
+  b_class='nav-link'
+  c_class='nav-link'
+  d_class='nav-link'
+  e_class='nav-link'
+  f_class='nav-link'
+  g_class='nav-link'
+  h_class='nav-link'
+
+  if params[:controller]=='admin/admins'
+    a_class+=' active'
+  end
+
+  if params[:controller]=='admin/specialities'
+    b_class+=' active'
+  end
+
+  if params[:controller]=='admin/speciality_categories'
+    c_class+=' active'
+  end
+
+  if params[:controller]=='admin/sizes'
+    d_class+=' active'
+  end
+
+  if params[:controller]=='admin/materials'
+    e_class+=' active'
+  end
+
+  if params[:controller]=='admin/addresses'
+    f_class+=' active'
+  end
+
+  if params[:controller]=='admin/address_levels'
+    g_class+=' active'
+  end
+
+  if params[:controller]=='admin/charge_points'
+    h_class+=' active'
+  end
+%>
+<div class="col-12">
+  <nav class="sub-nav">
+    <ul class="nav nav-pills">
+      <!-- <li class="nav-item"><%=link_to t(:admin, scope: [:activerecord, :models]),admin_admins_path,{:class=>a_class} %></li> -->
+      <li class="nav-item"><%=link_to t(:speciality, scope: [:activerecord, :models]),admin_specialities_path,{:class=>b_class} %></li>
+      <li class="nav-item"><%=link_to t(:speciality_category, scope: [:activerecord, :models]),admin_speciality_categories_path,{:class=>c_class} %></li>
+      <li class="nav-item"><%=link_to t(:size, scope: [:activerecord, :models]),admin_sizes_path,{:class=>d_class} %></li>
+      <li class="nav-item"><%=link_to t(:material, scope: [:activerecord, :models]),admin_materials_path,{:class=>e_class} %></li>
+      <li class="nav-item"><%=link_to t(:address, scope: [:activerecord, :models]),admin_addresses_path,{:class=>f_class} %></li>
+      <li class="nav-item"><%=link_to t(:address_level, scope: [:activerecord, :models]),admin_address_levels_path,{:class=>g_class} %></li>
+      <li class="nav-item"><%=link_to t(:charge_point, scope: [:activerecord, :models]),admin_charge_points_path,{:class=>h_class} %></li>
+    </ul>
+  </nav>
+</div>

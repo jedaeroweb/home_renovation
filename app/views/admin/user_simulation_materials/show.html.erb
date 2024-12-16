@@ -1,0 +1,31 @@
+<section id="show-user_simulation_material" class="col-12">
+  <div class="row">
+    <%= render :partial => 'layouts/notice', :locals => {  :notice => notice, :alert => alert } %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <article class="card">
+        <h3 class="card-header"><%=@user_simulation_material.simulation_material.simulation.title+'+'+@user_simulation_material.simulation_material.material.title %></h3>
+        <div class="card-body">
+          <dl>
+            <dt><%= t(:user_id, scope: [:activerecord, :attributes, :user_simulation_material]) %></dt>
+            <dd><%=link_to @user_simulation_material.user.name+' / '+@user_simulation_material.user.phone, admin_user_path(@user_simulation_material.user) %></dd>
+            <dt><%= t(:created_at, scope: [:activerecord, :attributes, :user_simulation_material]) %></dt>
+            <dd><%= I18n.l @user_simulation_material.created_at.to_date, :format => :long %></dd>
+            <dt><%= t(:updated_at, scope: [:activerecord, :attributes, :user_simulation_material]) %></dt>
+            <dd><%= I18n.l @user_simulation_material.updated_at.to_date, :format => :long %></dd>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <%= link_to t(:link_list), admin_user_simulation_materials_path, class: 'btn btn-secondary' %>
+    </div>
+    <div class="col-12 col-xl-6 text-right">
+      <%= link_to t(:edit), edit_admin_user_simulation_material_path(@user_simulation_material), class: 'btn btn-secondary' %>
+      <%= link_to t(:delete), admin_user_simulation_material_path(@user_simulation_material), :method => :delete, :data => { :confirm => t(:delete_confirm) }, class: 'btn btn-danger' %>
+    </div>
+  </div>
+</section>

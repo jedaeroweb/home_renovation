@@ -1,0 +1,60 @@
+<section id="show-review" class="col-12">
+  <div class="row">
+    <%= render :partial => 'layouts/notice', :locals => { :notice => notice, :alert => alert } %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <article class="card">
+        <h3 class="card-header"><%=@company.title %></h3>
+        <div class="card-body">
+          <dl>
+            <dt><%=t(:name,scope: [:activerecord,:attributes,:user]) %></dt>
+            <dd><%=@company.user.name %></dd>
+            <dt><%=t(:phone,scope: [:activerecord,:attributes,:company]) %></dt>
+            <dd><%=@company.phone %></dd>
+            <dt><%=t(:speciality,scope: [:activerecord,:models]) %></dt>
+            <dd>
+              <% @company.specialities.each do |speciality| %>
+                <%= speciality.title %>
+              <% end %>
+            </dd>
+            <dt><%=t(:code,scope: [:activerecord,:attributes,:company]) %></dt>
+            <dd>
+              <% if @company.code.present? %>
+                <%= @company.code %> &gt; <%=link_to '사업자번호확인','https://www.ftc.go.kr/bizCommPop.do?wrkr_no='+@company.code, title: '사업자번호확인해보기',target: '_blank' %>
+              <% else %>
+               사업자번호 미입력
+              <% end %>
+            </dd>
+            <% unless @company.company_addresses_count.zero? %>
+              <dt><%=t(:company_address,scope: [:activerecord,:models]) %></dt>
+              <dd><% @company.company_addresses.each do |company_address| %>
+                  <%= company_address.address.address.title %> &gt; <%= company_address.address.title %> &nbsp;
+                <% end %>
+              </dd>
+            <% end %>
+            <dt>업무시간</dt>
+            <dd><%=@company.start_time.to_time.strftime("%I'") %> ~ <%=@company.end_time.to_time.strftime("%I'") %></dd>
+            <dt><%=t(:view_count) %></dt>
+            <dd><%=@company.impressionist_count(:filter=>:ip_address) %></dd>
+            <dt><%=t(:orders_count,scope: [:activerecord,:attributes,:company]) %></dt>
+            <dd><%=@company_accept_bidding.to_i %>건</dd>
+            <dt><%= t(:created_at, scope: [:activerecord, :attributes, :company]) %></dt>
+            <dd><%= I18n.l @company.created_at.to_date, :format => :long %></dd>
+            <dt><%= t(:updated_at, scope: [:activerecord, :attributes, :company]) %></dt>
+            <dd><%= I18n.l @company.updated_at.to_date, :format => :long %></dd>
+          </dl>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <%= link_to t(:link_list), admin_companies_path, class: 'btn btn-secondary' %>
+    </div>
+    <div class="col-12 col-xl-6 text-right">
+      <%= link_to t(:edit), edit_admin_company_path(@company), class: 'btn btn-secondary' %>
+      <%= link_to t(:delete), admin_company_path(@company), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, class: 'btn btn-danger' %>
+    </div>
+  </div>
+</section>

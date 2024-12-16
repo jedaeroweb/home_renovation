@@ -1,0 +1,33 @@
+<article class="product col-12 col-sm-3 col-md-2">
+  <div class="row">
+    <div class="col-5 col-sm-12">
+      <%= link_to shopping_path(product) do %>
+        <figure class="figure">
+          <%= image_tag product.product_pictures[0].picture.medium_thumb.url,class: 'figure-img img-fluid rounded'  %>
+        </figure>
+      <% end %>
+    </div>
+    <div class="col-7 col-sm-12">
+      <h3><%= link_to product.title, shopping_path(product) %></h3>
+      <% if product.description.present? %>
+        <p><%= link_to product.description, shopping_path(product) %></p>
+      <% end %>
+      <% unless params[:category].present? %>
+      <p><%=product.product_category.title %></p>
+        <% end %>
+      <p>
+        <%
+          if product.discount.zero?
+            certain_price = product.price
+          else
+            certain_price =  product.price - product.discount
+        %>
+          <span style="text-decoration: line-through"><%= number_to_currency product.price %></span>
+          &nbsp;&nbsp;
+        <% end %>
+        <span><%= number_to_currency (certain_price) %></span>
+
+      </p>
+    </div>
+  </div>
+</article>

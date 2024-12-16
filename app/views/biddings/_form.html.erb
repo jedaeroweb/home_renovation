@@ -1,0 +1,72 @@
+<div class="col-12">
+<%= form_with(model: bidding, local: true) do |form| %>
+  <% if bidding.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(bidding.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% bidding.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<%
+  if bidding.ad.present?
+    ad_id=bidding.ad.id
+  else
+    if params[:ad].present?
+        ad_id=params[:ad]
+    end
+  end
+
+  ad = Ad.where(id: ad_id).first
+
+
+  point_available=false
+
+  if  current_user.point > 10000
+    point_available=true
+  end
+%>
+  <%= form.hidden_field :ad_id, value: ad_id, :class => 'form-control', :required => 'required' %>
+  <% if ad.budget_propose %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group">
+        <h3>내 포인트</h3>
+        <p><%=ActiveSupport::NumberHelper.number_to_delimited(current_user.point) %>P</p>
+        <p>입찰시 포인트 사용 : 10,000P /
+        <% if point_available %>
+          입찰후 잔여 포인트 : <%= ActiveSupport::NumberHelper.number_to_delimited(current_user.point-10000) %>P
+          <% else %>
+          <span class="text-danger">포인트가 부족합니다</span>  &gt;  <%=link_to '포인트 충전',point_charge_path,class: 'btn btn-lg btn-primary' %>
+          <% end %>
+        </p>
+      </div>
+      <div class="form-group">
+        <%= form.label :budget %>
+        <%= form.number_field :budget, value: ad.budget, :class => 'form-control' %>
+      </div>
+    </div>
+  </div>
+    <% end %>
+  <div class="form-group actions">
+    <% if Bidding.where(ad: ad, company_id: session[:company_id] ).count.zero? %>
+    <% if point_available %>
+      <%= form.submit :value=>t(:bidding),:class => "btn btn-primary btn-block btn-lg" %>
+    <% else %>
+      <%= form.button :value=>false,:class => "btn btn-primary btn-block btn-lg",disabled: true do %>
+      <%=t(:bidding) %>
+      <% end %>
+    <% end %>
+      <% else %>
+      <%= form.button :value=>false,:class => "btn btn-secondary btn-block btn-lg",disabled: true do %>
+        <%=t(:already_bidding) %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+</div>

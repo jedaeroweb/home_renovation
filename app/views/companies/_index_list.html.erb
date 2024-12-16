@@ -1,0 +1,66 @@
+<div class="row">
+  <div class="col-12">
+    <div class="table-responsive">
+      <table class="table table-striped table-borderless table-hover">
+        <colgroup>
+          <col>
+          <col>
+          <col>
+          <col style="width:100px">
+          <col style="width:220px">
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th><%= t(:title, scope: [:activerecord, :attributes, :company]) %></th>
+          <th><%= t(:speciality_id, scope: [:activerecord, :attributes, :company_speciality]) %></th>
+          <th class="text-right"><%= t(:picture, scope: [:activerecord, :attributes, :company_picture]) %></th>
+          <th class="text-right"><%= t(:label_count) %></th>
+          <th class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :company]) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @company_count.zero? %>
+          <% @companies.each do |company| %>
+            <tr>
+              <td><%=display_company_photo(company) %>&nbsp;&nbsp;<%= link_to display_company_title(company.title,company.id).truncate_bytes(16) %></td>
+              <td>
+                <% company.company_specialities.each do |company_speciality| %>
+                  <% if @speciality.present? %>
+                    <% if @speciality.id==company_speciality.speciality_id %>
+                      <strong><%=company_speciality.speciality.title %></strong>
+                    <% else %>
+                      <span><%=company_speciality.speciality.title %></span>
+                    <% end  %>
+
+                  <% else %>
+                    <span><%=company_speciality.speciality.title %></span>
+                  <% end %>
+                <% end %>
+              </td>
+              <td class="text-right">
+                <% unless company.company_pictures_count.zero? %>
+                  <%= image_tag company.company_pictures[0].picture.small_thumb.url, width:50, height:50,class: 'figure-img img-fluid rounded'  %>
+                <% else %>
+                    <%= image_tag 'none.gif', width:50, height:50,class: 'figure-img img-fluid rounded' %>
+                <% end %>
+              </td>
+              <td class="text-right"><%= company.impressionist_count(:filter => :ip_address) %></td>
+              <td class="text-right text-secondary"><%= I18n.l company.created_at.to_date, :format => :long %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="4"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div id="sl_bottom_menu">
+        <%= paginate @companies %>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <%=link_to t(:new_company),new_company_path,class: 'btn btn-primary btn-large' %>
+  </div>
+</div>

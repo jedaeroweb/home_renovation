@@ -1,0 +1,29 @@
+<section id="new-payment" class="container">
+  <div class="row">
+    <h2 class="col-12"><%= t(:new_payment) %></h2>
+  </div>
+  <div class="row">
+    <div class="col-12">
+       <form action="<%=payment_callback_path %>" class ="col-12" method="post">
+        <div class="form-group">
+          <label>imp_uid</label><br />
+          <input type="text" name="merchant_uid" value="imp_186458940198">
+        </div>
+        <div class="form-group">
+          <label>merchant_uid</label><br />
+          <!-- <input type="text" name="merchant_uid" value="point_charge_20"> -->
+          <input type="text" name="merchant_uid" value="order_product_10">
+        </div>
+        <div class="form-group">
+          <label>status</label><br />
+          <select name="status">
+            <option value="paid" selected>paid</option>
+          </select>
+        </div>
+        <div class="actions">
+          <input type="submit" class="bnt btn-primary btn-lg">
+        </div>
+        </form>
+    </div>
+  </div>
+</section>

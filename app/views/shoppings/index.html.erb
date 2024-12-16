@@ -1,0 +1,80 @@
+<%
+  render_templete='index_default'
+
+  if session[:product_list_type].present?
+    if session[:product_list_type]=='list'
+      render_templete='index_list'
+    end
+  end
+
+%>
+<main id="shoppings">
+  <section>
+    <div class="container">
+      <div class="row">
+    <h2 class="col-12 text-center"><%= t(:shopping, scope: [:activerecord, :models]) %></h2>
+        <% if session[:search_detail].present? %>
+          <%=render 'search_form' %>
+        <%  else %>
+          <%=render 'search_form' %>
+        <% end %>
+    <div class="col-12">
+      <ul class="type-selector">
+        <li><%=link_to url_for(list_type: 'list') do %><span class="material-icons">view_list</span><% end %></li>
+        <li><%=link_to url_for(list_type: 'module') do %><span class="material-icons">view_module</span><% end %></li>
+      </ul>
+    </div>
+    <div class="col-12">
+      <h2 class="float-left hidden-title"><%= t(:shopping,scope: [:activerecord,:models]) %></h2>
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @product_count %></span>
+          <%= raw t(:there_are_n_products, count: @product_count) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <%=render render_templete %>
+    </div>
+  </section>
+</main>
+<script>
+    (function() {
+        var w = window;
+        if (w.ChannelIO) {
+            return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
+        }
+        var ch = function() {
+            ch.c(arguments);
+        };
+        ch.q = [];
+        ch.c = function(args) {
+            ch.q.push(args);
+        };
+        w.ChannelIO = ch;
+        function l() {
+            if (w.ChannelIOInitialized) {
+                return;
+            }
+            w.ChannelIOInitialized = true;
+            var s = document.createElement('script');
+            s.type = 'text/javascript';
+            s.async = true;
+            s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+            s.charset = 'UTF-8';
+            var x = document.getElementsByTagName('script')[0];
+            x.parentNode.insertBefore(s, x);
+        }
+        if (document.readyState === 'complete') {
+            l();
+        } else if (window.attachEvent) {
+            window.attachEvent('onload', l);
+        } else {
+            window.addEventListener('DOMContentLoaded', l, false);
+            window.addEventListener('load', l, false);
+        }
+    })();
+    ChannelIO('boot', {
+        "pluginKey": "8e3ab011-1450-4137-944e-20b7c361133c" //please fill with your plugin key
+    });
+</script>

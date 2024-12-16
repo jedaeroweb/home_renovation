@@ -1,0 +1,31 @@
+<aside>
+  <nav>
+    <ul>
+      <li><%=link_to new_ad_path(category: params['category'], speciality: params['speciality']) do %>
+          <%=image_tag 'icon-add.png' %>
+          <span><%=t(:new_ad) %></span>
+        <% end %>
+      </li>
+      <li><%=link_to new_contact_path do %>
+          <%=image_tag 'icon-contact.png' %>
+        <span><%=t(:contact, scope: [:activerecord, :models]) %></span>
+          <% end  %>
+      </li>
+      <li><%=link_to new_reservation_path do %>
+          <%=image_tag 'icon-reservation.png' %>
+        <span><%=t(:reservation, scope: [:activerecord, :models]) %></span>
+        <% end %>
+      </li>
+      <li><%=link_to 'tel://031-503-1513' do %>
+          <%=image_tag 'icon-tel.png' %>
+          <span>031-503-1513</span>
+        <% end %>
+          </li>
+      <li><%=link_to '#header',id: 'to-top' do %>
+          <i class="material-icons">keyboard_arrow_up</i>
+        <span><%=t(:top) %></span>
+        <% end %>
+          </li>
+    </ul>
+  </nav>
+</aside>

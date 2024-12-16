@@ -1,0 +1,30 @@
+<%= form_with(model: [:admin, user_simulation_material], local: true) do |form| %>
+  <% if user_simulation_material.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(user_simulation_material.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% user_simulation_material.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card">
+    <div class="card-body">
+      <div class="form-group col-12 col-lg-4">
+        <%= form.label :user_id  %>
+        <%= form.select 'user_id',options_from_collection_for_select(User.where(:enable => true), 'id', 'name', nil), {  :include_blank => t(:all),:class => "form-control"} %>
+      </div>
+      <div class="form-group col-12 col-lg-4">
+        <%= form.label :simulation_material_id %>
+        <%= form.select 'simulation_material_id',options_from_collection_for_select(SimulationMaterial.where(:enable => true), 'id', 'id', nil) , {  :include_blank => t(:all),:class => "form-control"} %>
+      </div>
+    </div>
+  </div>
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

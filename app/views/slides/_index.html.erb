@@ -1,0 +1,32 @@
+
+        <div class="swiper swiper-container" style="position:relative;padding-bottom:20px">
+          <div class="swiper-wrapper">
+            <% unless @slide_count.zero? %>
+              <% @slides.each do |slide| %>
+                <div class="swiper-slide">
+                  <%
+                    if slide.link.present?
+                      slink=slide.link
+                    else
+                      slink=notice_path(slide.notice)
+                    end
+                  %>
+                  <%= link_to slink do %>
+                    <figure>
+                      <%=image_tag slide.picture.large_thumb.url,{class: "img-fluid rounded"} %>
+                    </figure>
+                    <% if slide.slide_description.present? %>
+                    <% slide_description=slide.slide_description %>
+                      <span style="position:absolute;color:<%=slide_description.color %>;font-family: '<%=slide_description.font.font %>';font-size:<%=slide_description.size %>px;<%=slide_description.position_v %>:<%=slide_description.position_v_px %>px ;<%=slide_description.position_h %>: <%=slide_description.position_h_px %>px"><%=raw slide_description.description %></span>
+                    <% end %>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <article class="review col-12">
+                <%= t(:no_data) %>
+              </article>
+            <% end %>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>

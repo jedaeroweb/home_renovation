@@ -1,0 +1,61 @@
+<div class="card" style="margin:0">
+  <div class="card-body">
+
+    <section id="share">
+      <div class="popup-head">
+        <h3><%=t(:share) %></h3>
+        <button type="button" class="close btn-close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div>
+        <ul>
+          <li><a id="btnKakao" class="kakao-b-icon" href="javascript:shareKakao('<%=params[:url] %>');">카카오톡</a></li>
+          <li><a id="btnFacebook" class="facebook-b-icon" href="javascript:shareFacebook('<%=params[:url] %>');">페이스북</a></li>
+          <li><a id="btnTwitter" class="twitter-b-icon" href="javascript:shareTwitter('<%=params[:url] %>');">트위터</a></li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</div>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script>
+
+    function shareKakao(sendUrl) {
+
+        // 사용할 앱의 JavaScript 키 설정
+        Kakao.init('8e238b998d0e8616ab8d904a8cbd2294');
+
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: '상품 공유',
+                description: '상품 공유하기입니다.',
+                imageUrl:
+                    'https://www.buildworld.co.kr/favicon.ico',
+                link: {
+                    mobileWebUrl: sendUrl,
+                    webUrl: sendUrl,
+                },
+            },
+            buttons: [
+                {
+                    title: '웹으로 이동',
+                    link: {
+                        mobileWebUrl: sendUrl,
+                        webUrl: sendUrl,
+                    },
+                }
+            ],
+        });
+    }
+
+    function shareTwitter(sendUrl) {
+        var sendText = "공유"; // 전달할 텍스트
+        window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
+    }
+
+    function shareFacebook(sendUrl) {
+        window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+    }
+</script>

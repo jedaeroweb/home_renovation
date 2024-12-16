@@ -1,0 +1,14 @@
+<div id="ad-complete" class="container">
+  <section class="row">
+    <h3 class="col-12">공고 등록이 완료 되없습니다.</h3>
+    <p class="col-12"></p>
+  </section>
+  <section class="row">
+    <h3 class="col-12 section-header"><%=@speciality.title %>에 이런 상품은 어떠세요?</h3>
+    <% unless @product_count.zero? %>
+      <% @products.each do |product| %>
+        <%=render 'shoppings/index_media',product: product %>
+      <% end %>
+    <% end %>
+  </section>
+</div>

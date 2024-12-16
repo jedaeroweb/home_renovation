@@ -1,0 +1,81 @@
+<div class="col-12">
+      <h2 class="float-left"><%= t(:review_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@review_count %></span>
+          <%=raw t(:there_are_n_reviews,count: @review_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col>
+          <col style="width:100px">
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, Review) || can?(:delete, Review) %>
+            <col<%=manage_width(Review) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:review]) %></th>
+          <th><%=t(:user_id,scope:[:activerecord,:attributes,:review]) %></th>
+          <th><%=t(:company_id,scope:[:activerecord,:attributes,:review]) %></th>
+          <th><%=t(:title,scope:[:activerecord,:attributes,:review]) %></th>
+          <th class="text-right"><%= t(:rating,scope:[:activerecord,:attributes,:review]) %></th>
+          <th class="text-right"><%= t(:label_count) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:review]) %></th>
+          <% if can?(:update, Review) || can?(:delete, Review) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @reviews.empty? %>
+          <% @reviews.each_with_index do |review,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="review_display<%=index %>" value="<%=review.id %>" <% if review.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="review_display<%=index %>"><% if review.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%=link_to admin_review_path(review) do %><%=display_user_photo(review.user) %>&nbsp;&nbsp;<%= review.user.name.truncate_bytes(16) %><% end %></td>
+              <td><%=link_to admin_review_path(review) do %><%=display_company_photo(review.company) %>&nbsp;&nbsp;<%= review.company.title.truncate_bytes(16) %><% end %></td>
+              <td><%= link_to review.title,admin_review_path(review) %></td>
+              <td class="text-right"><%= review.rating %></td>
+              <td class="text-right"><%= review.impressionist_count(:filter => :ip_address) %></td>
+              <td class="text-right"><%= I18n.l review.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, review) or can?(:delete, review) %>
+                <td class="text-right">
+                  <% if can? :update, review %>
+                    <%= link_to edit_admin_review_path(review), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, review %>
+                    <%= link_to admin_review_path(review), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @reviews %>
+      </div>
+      <%= link_to t(:add), new_admin_review_path, :class => "btn btn-primary" %>
+    </article>

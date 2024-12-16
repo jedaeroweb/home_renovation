@@ -1,0 +1,34 @@
+<article class="company col-12 col-sm-3 col-md-2">
+  <div class="row">
+    <div class="col-5 col-sm-12">
+      <%= link_to company_path(company) do %>
+      <% if company.company_pictures.present? %>
+          <figure class="figure">
+            <%= image_tag company.company_pictures[0].picture.medium_thumb.url,class: 'figure-img img-fluid rounded'  %>
+          </figure>
+      <% else %>
+        <figure class="figure">
+          <%= image_tag 'none.gif',width:300,height:300,class: 'figure-img img-fluid rounded' %>
+        </figure>
+      <% end %>
+      <% end %>
+    </div>
+    <div class="col-7 col-sm-12">
+      <h3><%= link_to display_company_title(company.title,company.id), company_path(company) %></h3>
+      <p>
+        <% company.company_specialities.each do |company_speciality| %>
+          <% if @speciality.present? %>
+            <% if @speciality.id==company_speciality.speciality_id %>
+              <strong><%=company_speciality.speciality.title %></strong>
+            <% else %>
+              <span><%=company_speciality.speciality.title %></span>
+            <% end  %>
+
+            <% else %>
+            <span><%=company_speciality.speciality.title %></span>
+            <% end %>
+        <% end %>
+      </p>
+    </div>
+  </div>
+</article>

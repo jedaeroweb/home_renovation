@@ -1,0 +1,27 @@
+<%
+    a_class = 'nav-link'
+    b_class = 'nav-link'
+    c_class = 'nav-link'
+
+    if params[:controller] == 'admin/ads'
+      a_class += ' active'
+    end
+
+    if params[:controller] == 'admin/biddings'
+      b_class += ' active'
+    end
+
+    if params[:controller] == 'admin/accepted_biddings'
+      c_class += ' active'
+    end
+
+  %>
+  <div class="col-12">
+    <nav class="sub-nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><%= link_to t(:ad, scope: [:activerecord, :models]), admin_ads_path, { :class => a_class } %></li>
+        <li class="nav-item"><%= link_to t(:bidding, scope: [:activerecord, :models]), admin_biddings_path, { :class => b_class } %></li>
+        <li class="nav-item"><%= link_to t(:accepted_bidding, scope: [:activerecord, :models]), admin_accepted_biddings_path, { :class => c_class } %></li>
+      </ul>
+    </nav>
+  </div>

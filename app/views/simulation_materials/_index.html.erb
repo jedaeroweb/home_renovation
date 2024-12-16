@@ -1,0 +1,20 @@
+<section class="row simulation-materials">
+  <h3 class="col-12"><%=@simulation.title %> 적용가능 재료  / 클릭해서 적용해봐요~</h3>
+  <div class="col-12">
+    <% unless @simulation.simulation_materials_count.zero? %>
+      <ul class="row">
+        <% @simulation.simulation_materials.each do |simulation_material| %>
+          <li class="col-6 col-lg-4 col-xxl-3" style="padding:30px<% if @simulation_material.present? %><% if @simulation_material.id==simulation_material.id %>;border:3px solid red<% end %><% end %>">
+            <%= link_to simulations_path(id: @simulation.id, simulation_material: simulation_material) do %>
+              <figure class="image-rounded">
+                <%=image_tag simulation_material.material.picture.small_thumb.url,class: 'figure-img img-fluid rounded-circle'  %>
+              </figure>
+              <span><%=simulation_material.material.title %></span><br />
+              <span>1Mx1M당 <%=number_to_currency simulation_material.material.price %></span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </div>
+</section>

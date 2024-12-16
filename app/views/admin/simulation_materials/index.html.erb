@@ -1,0 +1,81 @@
+<div class="col-12">
+  <h2 class="float-left hidden-title"><%= t(:simulation_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@simulation_material_count %></span>
+          <%=raw t(:there_are_n_simulation_materials,count: @simulation_material_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col>
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, SimulationMaterial) || can?(:delete, SimulationMaterial) %>
+            <col<%=manage_width(SimulationMaterial) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:simulation]) %></th>
+          <th class="text-right"><%= t(:simulation_id,scope:[:activerecord,:attributes,:simulation_material]) %></th>
+          <th class="text-right"><%= t(:material_id,scope:[:activerecord,:attributes,:simulation_material]) %></th>
+          <th class="text-right"><%= t(:picture,scope:[:activerecord,:attributes,:simulation_material_picture]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:simulation_material]) %></th>
+          <% if can?(:update, SimulationMaterial) || can?(:delete, SimulationMaterial) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @simulation_material_count.zero? %>
+          <% @simulation_materials.each_with_index do |simulation_material,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="simulation_material_display<%=index %>" value="<%=simulation_material.id %>" <% if simulation_material.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="simulation_material_display<%=index %>"><% if simulation_material.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td class="text-right"><%= link_to simulation_material.simulation.title,admin_simulation_material_path(simulation_material) %></td>
+              <td class="text-right"><%= link_to simulation_material.material.title,admin_simulation_material_path(simulation_material) %></td>
+              <td class="text-right">
+                <% if simulation_material.simulation_material_pictures.present? %>
+                  <%= image_tag simulation_material.simulation_material_pictures[0].picture.small_thumb.url %>
+                <% else %>
+                  <%= t(:not_insert) %>
+                <% end %>
+              </td>
+              <td class="text-right"><%= I18n.l simulation_material.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, simulation_material) or can?(:delete, simulation_material) %>
+                <td class="text-right">
+                  <% if can? :update, simulation_material %>
+                    <%= link_to edit_admin_simulation_material_path(simulation_material), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, simulation_material %>
+                    <%= link_to admin_simulation_material_path(simulation_material), :method => :delete, :data => { :confirm => t(:delete_cascade_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @simulation_materials %>
+      </div>
+      <%= link_to t(:add), new_admin_simulation_material_path, :class => "btn btn-primary" %>
+    </article>

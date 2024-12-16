@@ -1,0 +1,31 @@
+<div id="show-user" class="container sub-main">
+  <div class="row">
+    <article class="col-12">
+      <div class="sl_content_header">
+        <h3 itemprop="name"><%= @user.name %></h3>
+        <p class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :user]) %> : <%= I18n.l @user.created_at.to_date, :format => :long %></p>
+      </div>
+      <div class="sl_content_main">
+        <div class="sl_content_text" itemprop="text">
+          <% unless @user.user_pictures_count.zero? %><%=image_tag @user.user_picture.picture.small_thumb.url,class: "rounded-circle" %>&nbsp;&nbsp;<% end %>
+
+        </div>
+      </div>
+    </article>
+  </div>
+  <section class="row">
+    <h3 class="col-12"><%= @user.name %>의 공고</h3>
+    <% unless @ad_count.zero? %>
+      <% @ads.each do |ad| %>
+        <%=render 'ads/index_media',ad: ad %>
+      <% end %>
+      <div class="col-12">
+        <%= paginate @ads %>
+      </div>
+    <% else %>
+      <div class="ad col-12">
+        <%= t(:no_data) %>
+      </div>
+    <% end %>
+  </section>
+</div>

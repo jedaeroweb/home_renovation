@@ -1,0 +1,17 @@
+<section class="row">
+  <% if @product_count %>
+    <% @products.each do |product| %>
+      <%=render 'index_media',product: product %>
+    <% end %>
+    <div class="col-12">
+      <%= paginate @products %>
+    </div>
+    <div class="col-12">
+      <%=link_to '상품올리기',new_product_path, class: 'btn btn-primary' %>
+    </div>
+  <% else %>
+    <div class="product col-12">
+      <%= t(:no_data) %>
+    </div>
+  <% end %>
+</section>

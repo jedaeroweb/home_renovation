@@ -1,0 +1,55 @@
+<main id="my-ads" class="container">
+  <section class="row">
+    <h2 class="col-12 text-center"><%=t(:mypage) %></h2>
+    <%= render 'users/nav' %>
+    <div class="col-12">
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @ad_count %></span>
+          <%= raw t(:there_are_n_ads, count: @ad_count) %>
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table">
+          <colgroup>
+            <col>
+            <col style="width:100px">
+            <col style="width:100px">
+            <col style="width:220px" class="d-none d-lg-table-cell">
+          </colgroup>
+          <thead class="thead-default">
+          <tr>
+            <th><%= t(:title, scope: [:activerecord, :attributes, :ad]) %></th>
+            <th class="text-right"><%= t(:label_count) %></th>
+            <th class="text-right"><%= t(:biddings_count, scope: [:activerecord, :attributes, :ad]) %></th>
+            <th class="text-right d-none d-lg-table-cell"><%= t(:created_at, scope: [:activerecord, :attributes, :ad]) %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% unless @ad_count.zero? %>
+            <% @ads.each do |ad| %>
+              <tr>
+                <td><%= link_to ad.title, ad %></td>
+                <td class="text-right"><%= ad.impressionist_count(:filter => :ip_address) %></td>
+                <td class="text-right"><%= ad.biddings_count %></td>
+                <td class="text-right text-secondary d-none d-lg-table-cell"><%= I18n.l ad.created_at.to_date, :format => :long %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4"><%= t(:no_data) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <div id="sl_bottom_menu">
+          <%= paginate @ads %>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

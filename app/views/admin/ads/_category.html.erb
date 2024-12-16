@@ -1,0 +1,28 @@
+<%
+    a_class = 'nav-link'
+
+    unless params[:category].present?
+      a_class += ' active'
+    end
+
+  %>
+  <div class="col-12">
+    <nav class="sub-nav">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><%= link_to t(:all), admin_ads_path, { :class => a_class } %></li>
+        <% unless @speciality_category_count.zero? %>
+          <% @speciality_categories.each do |speciality_category|
+
+            b_class = 'nav-link'
+            if params[:category].present?
+              if params[:category].to_i==speciality_category.id
+                b_class += ' active'
+              end
+            end
+          %>
+          <li class="nav-item"><%= link_to speciality_category.title, admin_ads_path(category: speciality_category), { :class => b_class } %></li>
+          <% end %>
+        <% end %>
+      </ul>
+    </nav>
+  </div>

@@ -1,0 +1,64 @@
+<main id="simulations">
+  <section class="container">
+    <div class="row">
+      <h2 class="col-12 text-center"><%= t(:request,scope: [:activerecord,:models]) %></h2>
+    <%= render 'nav' %>
+    <div class="col-12">
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @request_count %></span>
+          <%= raw t(:there_are_n_requests, count: @request_count) %>
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="table-responsive">
+        <table class="table table-striped table-borderless table-hover table-td-click">
+          <colgroup>
+            <% unless params[:category].present? %>
+              <col>
+            <% end %>
+            <col>
+            <col style="width:100px">
+            <col style="width:220px">
+          </colgroup>
+          <thead class="thead-default">
+          <tr>
+            <% unless params[:category].present? %>
+              <th><%= t(:request_category_id, scope: [:activerecord, :attributes, :request]) %></th>
+            <% end %>
+            <th><%= t(:title, scope: [:activerecord, :attributes, :request]) %></th>
+            <th class="text-right"><%= t(:label_count) %></th>
+            <th class="text-right d-none d-lg-table-cell"><%= t(:created_at, scope: [:activerecord, :attributes, :request]) %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% unless @request_count.zero? %>
+            <% @requests.each do |request| %>
+              <tr>
+                <% unless params[:category].present? %>
+                <td><%=request.request_category.title %></td>
+                <% end %>
+                <td><%= link_to request.title, request %></td>
+                <td class="text-right"><%= request.impressionist_count(:filter => :ip_address) %></td>
+                <td class="text-right text-secondary d-none d-lg-table-cell"><%= I18n.l request.created_at.to_date, :format => :long %></td>
+              </tr>
+            <% end %>
+          <% else %>
+            <tr>
+              <td colspan="4"><%= t(:no_data) %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+        <div id="sl_bottom_menu">
+          <%= paginate @requests %>
+        </div>
+        <%= link_to t(:add), new_request_path, :class => "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</section>
+</main>

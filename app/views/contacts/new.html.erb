@@ -1,0 +1,13 @@
+<% if params[:popup].present? %>
+  <%= render 'popup_form', contact: @contact %>
+  <% else %>
+<main id="add-contact" class="container">
+  <%= render 'communities/nav' %>
+  <section class="row">
+    <h2 class="col-12"><%=t(:new_contact) %></h2>
+    <div class="col-12">
+      <%= render 'form', contact: @contact %>
+    </div>
+  </section>
+</main>
+<% end %>

@@ -1,0 +1,31 @@
+<%
+  render_templete='index_default'
+
+  if session[:review_list_type].present?
+    if session[:review_list_type]=='list'
+      render_templete='index_list'
+    end
+  end
+
+%>
+<main id="reviews" class="container">
+  <%= render 'communities/nav' %>
+  <section class="row">
+    <div class="col-12">
+      <ul class="type-selector">
+        <li><%=link_to url_for(list_type: 'list') do %><span class="material-icons">view_list</span><% end %></li>
+        <li><%=link_to url_for(list_type: 'module') do %><span class="material-icons">view_module</span><% end %></li>
+      </ul>
+    </div>
+    <div class="col-12">
+      <h2 class="float-left d-none d-lg-block"><%= t(:review,scope: [:activerecord,:models]) %></h2>
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @review_count %></span>
+          <%= raw t(:there_are_n_reviews, count: @review_count) %>
+        </p>
+      </div>
+    </div>
+  </section>
+  <%=render render_templete %>
+</main>

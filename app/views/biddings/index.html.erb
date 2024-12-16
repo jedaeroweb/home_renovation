@@ -1,0 +1,70 @@
+<main id="biddings" class="container">
+  <section class="row">
+    <%= render 'ads/show' %>
+  </section>
+  <section class="row">
+    <div class="col-12">
+      <h2 class="float-left d-none d-lg-block">
+        <% if @ad.present? %>
+          <%=@ad.title %>
+          <% end %>
+        <%= t(:bidding,scope: [:activerecord,:models]) %>
+      </h2>
+      <div class="float-right">
+        <p class="summary text-right">
+          <span id="list_count" style="display:none"><%= @bidding_count %></span>
+          <%= raw t(:there_are_n_biddings, count: @bidding_count) %>
+        </p>
+      </div>
+    </div>
+  </section>
+  <section class="row">
+    <article class="col-12">
+      <h3>입찰업체목록</h3>
+      <% unless @bidding_count.zero? %>
+      <ul style="margin:0;padding:0;">
+        <% @biddings.each do |bidding|
+
+          badge=false
+
+          if @ad.complete
+            b_class=' disabled'
+            if bidding.accept
+              b_class=''
+              badge=true
+            end
+          else
+            b_class=''
+
+          end
+        %>
+        <li class="card">
+          <div class="card-body<%=b_class %>">
+            <%=display_company_photo(bidding.company) %>
+            <%=bidding.company.title %>
+            <% if bidding.company.phone.present? %>
+              <br />
+            <%=bidding.company.phone %>
+            <% end %>
+            <% if badge %><span class="badge-success"><%=t(:ordered) %></span><% end %>
+            <div class="float-right">
+              <%= I18n.l bidding.created_at.to_date, :format => :long %>
+              <% unless @ad.complete %>
+                <% if @ad.user_id==current_user.id %>
+              <%=render 'accepted_biddings/form', bidding: bidding %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </li>
+        <% end %>
+      </ul>
+      <% end %>
+    </article>
+  </section>
+  <section class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:go_list),:back,{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </section>
+</main>

@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-12">
+    <div id="review_main" class="table-responsive">
+      <table class="table table-striped table-borderless table-hover">
+        <colgroup>
+          <col>
+          <col>
+          <col>
+          <col>
+          <col style="width:100px" class="none d-lg-table-cell">
+          <col style="width:220px" class="none d-lg-table-cell">
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th><%= t(:user_id, scope: [:activerecord, :attributes, :review]) %></th>
+          <th><%= t(:company_id, scope: [:activerecord, :attributes, :review]) %></th>
+          <th><%= t(:title, scope: [:activerecord, :attributes, :review]) %></th>
+          <th><%= t(:rating, scope: [:activerecord, :attributes, :review]) %></th>
+          <th class="text-right"><%= t(:label_count) %></th>
+          <th class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :review]) %></th>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @review_count.zero? %>
+          <% @reviews.each do |review| %>
+            <tr>
+              <td><%=display_user_photo(review.user) %>&nbsp;&nbsp;<%= review.user.name.truncate_bytes(16) %></td>
+              <td><%=display_company_photo(review.company) %>&nbsp;&nbsp;<%= review.company.title.truncate_bytes(16) %></td>
+              <td><%= link_to review.title, review %></td>
+              <td><%=review.rating %>개</td>
+              <td class="text-right"><%= review.impressionist_count(:filter => :ip_address) %></td>
+              <td class="text-right text-secondary"><%= I18n.l review.created_at.to_date, :format => :long %></td>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="4"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div id="sl_bottom_menu">
+        <%= paginate @reviews %>
+      </div>
+    </div>
+  </div>
+</div>

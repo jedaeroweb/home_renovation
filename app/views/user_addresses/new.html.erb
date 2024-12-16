@@ -1,0 +1,13 @@
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<% if params[:popup].present? %>
+  <%= render 'popup_form', user_address: @user_address %>
+<% else %>
+  <main id="new-user-address" class="container">
+    <section class="row">
+      <h2 class="col-12"><%=t(:new_user_address) %></h2>
+      <div class="col-12">
+        <%= render 'form', user_address: @user_address %>
+      </div>
+    </section>
+  </main>
+<% end %>

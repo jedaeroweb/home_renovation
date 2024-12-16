@@ -1,0 +1,116 @@
+source "https://rubygems.org"
+
+ruby "3.3.4"
+
+# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+gem "rails", "~> 7.1.5"
+
+# The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
+gem "sprockets-rails"
+
+# Use sqlite3 as the database for Active Record
+gem "sqlite3", ">= 1.4"
+
+# Use the Puma web server [https://github.com/puma/puma]
+gem "puma", ">= 5.0"
+
+# Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
+gem "jsbundling-rails"
+
+# Hotwire's SPA-like page accelerator [https://turbo.hotwired.dev]
+#gem "turbo-rails"
+
+# Hotwire's modest JavaScript framework [https://stimulus.hotwired.dev]
+#gem "stimulus-rails"
+
+# Bundle and process CSS [https://github.com/rails/cssbundling-rails]
+gem "cssbundling-rails"
+
+# Build JSON APIs with ease [https://github.com/rails/jbuilder]
+gem "jbuilder"
+
+# Use Redis adapter to run Action Cable in production
+# gem "redis", ">= 4.0.1"
+
+# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
+# gem "kredis"
+
+# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# gem "bcrypt", "~> 3.1.7"
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem "tzinfo-data", platforms: %i[ windows jruby ]
+
+# Reduces boot times through caching; required in config/boot.rb
+# Reduces boot times through caching; required in config/boot.rb
+gem "bootsnap", require: false
+gem 'sprockets', '~> 3.7.2'
+gem 'devise'
+gem 'cancancan'
+gem 'kaminari'
+gem 'carrierwave', '~> 2.0'
+gem 'mini_magick'
+gem 'sitemap_generator'
+gem 'meta-tags'
+gem 'gretel'
+gem 'nokogiri', '>= 1.12.5'
+gem 'impressionist'
+gem 'i18n-js'
+gem 'acts_as_shopping_cart'
+
+#gem 'acts-as-taggable-on', '~> 9.0'
+gem 'dotenv-rails'
+
+gem 'omniauth'
+gem 'oauth2'
+gem 'omniauth-oauth2'
+gem 'omniauth-rails_csrf_protection'
+gem 'omniauth-facebook'
+gem 'omniauth-naver'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-apple'
+gem 'omniauth-twitter'
+
+gem 'httparty'
+gem 'iamport'
+
+group :development, :test do
+  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  gem "debug", platforms: %i[ mri windows ]
+end
+
+group :development do
+  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "web-console"
+
+  # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
+  # gem "rack-mini-profiler"
+
+  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
+  # gem "spring"
+  #
+  # Capistrano
+  gem 'capistrano'
+  gem 'capistrano-rbenv'
+  gem 'capistrano-yarn'
+  gem 'capistrano-bundler'
+  gem 'capistrano-passenger'
+  gem 'capistrano-rails'
+end
+
+group :test do
+  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
+  gem "capybara"
+  gem "selenium-webdriver"
+end
+
+group :production do
+  gem 'asset_sync'
+  gem 'fog-azure-rm', git: 'https://github.com/sleepinglion/fog-azure-rm'
+  gem 'mysql2'
+  gem "redis", "~> 5.0" # Redis client for Ruby
+  gem "redis-actionpack", "~> 5.3" # Redis session store for ActionPack
+  gem 'dotenv-rails'
+  gem 'recaptcha', :require => 'recaptcha/rails'
+  gem 'rails-letsencrypt'
+end

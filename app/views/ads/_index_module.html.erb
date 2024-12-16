@@ -1,0 +1,14 @@
+<section class="row">
+  <% unless @ad_count.zero? %>
+    <% @ads.each do |ad| %>
+      <%=render 'ads/index_media',ad: ad %>
+    <% end %>
+    <div class="col-12">
+      <%= paginate @ads %>
+    </div>
+  <% else %>
+    <div class="ad col-12">
+      <%= t(:no_data) %>
+    </div>
+  <% end %>
+</section>

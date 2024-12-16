@@ -1,0 +1,57 @@
+<main id="mypage"  class="container">
+  <section class="row">
+    <h2 class="col-12 text-center"><%=t(:mypage) %></h2>
+    <%= render 'nav' %>
+    <article class="col-12">
+      <div class="jumbotron">
+    <h4> <%=@user.name %> 회원님은
+    <% if session[:company_id].present? %>
+        <strong class="text-primary">전문가,업체 회원</strong>입니다.
+    <% else %>
+        <strong class="text-primary">일반 회원</strong>입니다.  <%=link_to '전문가, 업체 등록',new_company_path %>하시면 입찰 및 쇼핑몰 제품 등록을 하실 수 있습니다.
+    <% end %>
+    </h4>
+        <p><%=@user.name %> 회원님의 포인트는 <%=link_to @user.point,point_charge_path %>P 입니다.</p>
+      </div>
+    </article>
+  </section>
+  <section class="row">
+    <h3 class="col-12" style="margin-bottom:15px;">나의 활동내역</h3>
+    <article class="col-12">
+      <h4>공고작성</h4>
+      <div class="card">
+        <div class="card-body">
+      <% unless @ad_count.zero? %>
+      <ul style="list-style:none">
+        <% @ads.each do |ad| %>
+        <li><%=link_to ad.title,ad %> / <span class="text-secondary"><%= I18n.l ad.created_at.to_date, :format => :long %></span></li>
+        <% end %>
+      </ul>
+      <% else  %>
+      <%=t(:no_data) %>
+            <br>
+            <%=link_to '공고작성하러가기',new_ad_path,class:'btn btn-lg btn-primary' %>
+      <% end %>
+        </div>
+      </div>
+    </article>
+    <% if session[:company_id].present? %>
+    <article class="col-12">
+      <% unless @bidding_count.zero? %>
+      <h4>입찰내역</h4>
+        <div class="card">
+          <div class="card-body">
+      <ul style="list-style:none">
+        <% @biddings.each do |bidding| %>
+          <li><%=link_to bidding.ad.title,bidding %> / <span class="text-secondary"><%= I18n.l bidding.created_at.to_date, :format => :long %></span></li>
+        <% end %>
+      </ul>
+      <% else %>
+        <%=t(:no_data) %>
+      <% end %>
+      </div>
+      </div>
+    </article>
+    <% end %>
+  </section>
+</main>

@@ -1,0 +1,69 @@
+<main id="my">
+  <section class="container">
+    <div class="row">
+      <h2 class="col-12 text-center"><%=t(:mypage) %></h2>
+      <%= render 'users/nav' %>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3><% if session[:company_id].present? %>사용자 정보<% else %><%=@user.name %><% end %></h3>
+          </div>
+          <div class="card-body">
+        <% unless @user.user_pictures_count.zero? %>
+          <figure>
+          <%=image_tag @user.user_picture.picture.small_thumb.url,class: "rounded-circle" %>
+            <figcaption>프로필이미지</figcaption>
+          </figure>
+        <% end %>
+        <dl>
+          <% if session[:company_id].present? %>
+            <dt><%= t(:name, scope: [:activerecord, :attributes, :user]) %></dt>
+            <dd><%=@user.name %></dd>
+          <% end %>
+          <% if @user.email.present? %>
+            <dt><%= t(:email, scope: [:activerecord, :attributes, :user]) %></dt>
+            <dd><%= @user.email %></dd>
+          <% end %>
+          <% if @user.phone.present? %>
+          <dt><%= t(:phone, scope: [:activerecord, :attributes, :user]) %></dt>
+          <dd><%= @user.phone %></dd>
+          <% end %>
+          <dt><%= t(:created_at, scope: [:activerecord, :attributes, :user]) %></dt>
+          <dd><%= I18n.l @user.created_at.to_date, :format => :long %></dd>
+          <dt><%= t(:sign_in_count, scope: [:activerecord, :attributes, :user]) %></dt>
+          <dd><%= @user.sign_in_count %></dd>
+        </dl>
+        </div>
+
+          <div class="btn-group btn-group-lg" role="group" style="margin:1rem">
+            <%=link_to t(:edit),edit_user_registration_path,{class: 'btn btn-secondary btn-large btn-block',style: 'margin-top:0.5rem'} %>
+            <%=link_to t(:delete_user),user_delete_confirm_path,{class: 'btn btn-danger btn-large btn-block'} %>
+          </div>
+        </div>
+
+      </div>
+
+      <% if session[:company_id].present? %>
+        <div id="show-company"class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h3>회사,전문가 정보</h3>
+        </div>
+        <div class="card-body">
+          <% @company=@user.company %>
+          <%=render 'companies/show' %>
+
+          <div class="btn-group btn-group-lg" role="group" style="margin:1rem">
+            <%=link_to t(:edit),edit_company_path(@company),{class: 'btn btn-secondary btn-large btn-block',style: 'margin-top:0.5rem'} %>
+          </div>
+
+        </div>
+      </div>
+        </div>
+      <% end %>
+
+
+
+    </div>
+  </section>
+</main>

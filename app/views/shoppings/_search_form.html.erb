@@ -1,0 +1,42 @@
+<div class="col-12">
+<%=form_tag shoppings_path,{method:'get'} do %>
+  <input type="hidden" name="search" value="1">
+    <%
+      search_params={search_detail:true}
+
+      aa_class='nav-link'
+      if @product_category.present?
+        search_params[:category]=@product_category
+      else
+        aa_class+=' active'
+      end
+      %>
+    <nav class="sub_nav">
+      <ul class="nav nav-pills nav-fill scroll nav-point">
+        <li class="nav-item"><%=link_to t(:all),shoppings_path,class: aa_class %></li>
+        <% @product_categories.each do |product_category|
+          a_class='nav-link'
+
+          if @product_category.present?
+            if @product_category.id==product_category.id
+              a_class+=' active'
+            end
+          end
+
+          if product_category.products_count.zero?
+            a_class+=' disabled'
+          end
+
+        %>
+          <li class="nav-item">
+            <%=link_to url_for(category: product_category),{:class=>a_class} do %>
+              <%=product_category.title %>(<%=product_category.products_count %>)
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  <!-- <%=link_to shoppings_path(search_params),id: "search-detail" do %><span class="material-icons">search</span><%=t(:search) %><% end  %> -->
+  <!-- <%=submit_tag t(:search),class: 'btn btn-secondary btn-block btn-search' %> -->
+  <% end %>
+</div>

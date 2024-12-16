@@ -1,0 +1,75 @@
+<%= form_with(model: company, local: true) do |form| %>
+  <% if company.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(company.errors.count, "개의 애러") %>로 실행하지 못했습니다</h2>
+      <ul>
+        <% company.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <h3>필수입력</h3>
+  <div class="card">
+    <div class="card-body">
+      <% SpecialityCategory.where(enable:true).each do |speciality_category| %>
+      <div class="form-group">
+        <h4><%=speciality_category.title %></h4>
+        <%=form.collection_check_boxes(:speciality_ids, Speciality.where(speciality_category_id: speciality_category, enable: true), :id, :title) do |b| %>
+          <div class="form-check form-check-inline"><%= b.label(class: "check_box") do %><%= b.check_box(class: "check_box") %> <%= b.object.title %><% end %></div>
+        <% end %>
+      </div>
+      <% end %>
+      <div class="form-group">
+        <%= form.label :title %>
+        <%= form.text_field :title, :class => 'form-control', :required => 'required' %>
+      </div>
+      <div class="form-group">
+        <%= form.label :phone %>
+        <%= form.text_field :phone, :class => 'form-control', :required => 'required' %>
+      </div>
+    </div>
+  </div>
+  <h3>선택입력</h3>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-row">
+          <div class="col-12 form-group">
+            <%= form.fields_for :company_pictures  do |pp| %>
+              <%= pp.label :picture %><% if current_user.companies_count.zero? %> / <span class="text-secondary">최초 1회 입력시 5000포인트 지급, 미입력시 검색 제외될수 있음</span><% end %>
+              <%= pp.file_field :picture, :class => "form-control-file" %>
+            <% end %>
+          </div>
+      <div class="col-12 col-lg-6 form-group">
+        <%= form.label :code %><% if current_user.companies_count.zero? %> / <span class="text-secondary">최초 1회 입력시 5000포인트 지급, 미입력시 검색 제외될수 있음</span><% end %>
+        <%= form.text_field :code, :class => 'form-control' %>
+      </div>
+            <div class="col-12 col-lg-6 form-group">
+              <%= form.fields_for :company_code do |cp| %>
+                <%= cp.label :picture %><% if current_user.companies_count.zero? %> / <span class="text-secondary">최초 1회 입력시 10000포인트 지급</span><% end %>
+                <%= cp.file_field :picture, :class => "form-control-file" %>
+              <% end %>
+            </div>
+      <div class="col-12 col-lg-6 form-group">
+        <%= form.label :start_time %>
+        <%= form.time_field :start_time, :class => 'form-control' %>
+      </div>
+          <div class="col-12 col-lg-6 form-group">
+            <%= form.label :end_time %>
+            <%= form.time_field :end_time, :class => 'form-control' %>
+          </div>
+          </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <h3><%= form.label :content %></h3>
+    <%= form.rich_text_area :content, style: 'min-height:20em;background:#fff' %>
+  </div>
+
+  <div class="form-group actions">
+    <%= form.submit :class => "btn btn-primary btn-block btn-lg" %>
+  </div>
+<% end %>

@@ -1,0 +1,45 @@
+<%
+  n_params={}
+
+  if @speciality.present?
+    n_params[:speciality]=@speciality
+  else
+    if @speciality_category.present?
+      n_params[:category]=@speciality_category
+    end
+  end
+
+%>
+<article class="ad col-12 col-sm-6 col-md-3 col-xxl-2<% if ad.complete %> disabled<% end %>">
+  <div class="row">
+    <div class="col-5 col-sm-12">
+      <%= link_to ad_path(ad,params: n_params) do %>
+    <% if ad.ad_pictures.present? %>
+      <figure class="figure">
+        <%= image_tag ad.ad_pictures[0].picture.medium_thumb.url,class: 'figure-img img-fluid rounded' %>
+      </figure>
+        <% else %>
+        <figure class="figure">
+          <%= image_tag 'none.gif',width:300,height:300,class: 'figure-img img-fluid rounded' %>
+        </figure>
+        <% end %>
+  <% end %>
+    </div>
+  <div class="col-7 col-sm-12">
+    <h3>
+      <%= link_to ad.title, ad_path(ad,params: n_params) %>
+      <% if ad.complete %>
+        <span class="badge badge-success"><%=t(:ordered) %></span>
+      <% else %>
+        <% if ad.created_at.to_date==Date.today.to_date %>
+          <span class="badge badge-danger"><%=t(:new) %></span>
+        <% end %>
+      <% end %>
+    </h3>
+    <p>
+      <span><%=ad.speciality.title %></span> | <span><%=ad.address.title %></span>
+    </p>
+    <p><%= number_to_currency ad.budget %> | <%=t(:view_count) %> : <%=ad.impressionist_count(:filter=>:ip_address) %></p>
+  </div>
+  </div>
+</article>

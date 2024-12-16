@@ -1,0 +1,11 @@
+<div class="col-12">
+  <nav class="nav nav-pills">
+    <ul class="nav nav-pills ">
+      <% unless @speciality_category_count.zero? %>
+        <% @speciality_categories.each do |speciality_category| %>
+          <li class="nav-item"><%=link_to speciality_category.title,new_ad_path(category: speciality_category) %></li>
+        <% end %>
+        <% end %>
+    </ul>
+  </nav>
+</div>

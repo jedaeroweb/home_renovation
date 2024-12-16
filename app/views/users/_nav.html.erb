@@ -1,0 +1,45 @@
+<div class="col-12">
+<%
+  summary_class='nav-link'
+  order_class='nav-link'
+  my_class='nav-link'
+  ads_class='nav-link'
+
+  if current_page?(mypage_path)
+    summary_class+=' active'
+  end
+
+  if params[:controller]=='accepted_biddings'
+    order_class+=' active'
+  end
+
+  if params[:controller]=='ads'
+    ads_class+=' active'
+  end
+
+  if current_page?(my_path)
+    my_class+=' active'
+  end
+
+%>
+  <nav class="sub_nav">
+    <ul class="nav nav-pills nav-fill nav-point">
+      <li class="nav-item"><%=link_to t(:summary),mypage_path,class: summary_class %></li>
+      <li class="nav-item"><%=link_to t(:ad,scope: [:activerecord,:models]),my_ads_path,class: ads_class %></li>
+      <% if session[:company_id].present?
+           bidding_class='nav-link'
+           comapny_class='nav-link'
+
+           if current_page?(my_biddings_path)
+             bidding_class+=' active'
+           end
+
+      %>
+        <li class="nav-item"><%=link_to t(:bidding,scope: [:activerecord,:models]),my_biddings_path,class: bidding_class %></li>
+      <% end %>
+      <li class="nav-item"><%=link_to t(:accepted_bidding,scope: [:activerecord,:models]),my_accepted_biddings_path,class: order_class %></li>
+
+      <li class="nav-item"><%=link_to t(:myinfo),my_path,class: my_class %></li>
+    </ul>
+  </nav>
+</div>

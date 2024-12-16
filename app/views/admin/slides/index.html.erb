@@ -1,0 +1,74 @@
+<div class="col-12">
+  <h2 class="float-left"><%= t(:slide_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@slide_count %></span>
+          <%=raw t(:there_are_n_slides,count: @slide_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col style="width:120px">
+          <col>
+          <col style="width:100px">
+          <col style="width:200px">
+          <% if can?(:update, Slide) || can?(:delete, Slide) %>
+            <col<%=manage_width(Slide) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th class="text-center"><%= t(:enable,scope:[:activerecord,:attributes,:slide]) %></th>
+          <th><%= t(:title,scope:[:activerecord,:attributes,:slide]) %></th>
+          <th><%= t(:picture,scope:[:activerecord,:attributes,:slide]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:slide]) %></th>
+          <% if can?(:update, Slide) || can?(:delete, Slide) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @slide_count.zero? %>
+          <% @slides.each_with_index do |slide,index| %>
+            <tr>
+              <td>
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="slide_display<%=index %>" value="<%=slide.id %>" <% if slide.enable %> checked<% end %>>
+                  <label class="custom-control-label" for="slide_display<%=index %>"><% if slide.enable %> <%=t(:display) %><% else %><%=t(:hidden) %><% end %> </label>
+                </div>
+              </td>
+              <td><%= link_to slide.title,admin_slide_path(slide) %></td>
+              <td class="text-right">
+                  <%= image_tag slide.picture.small_thumb.url %>
+              </td>
+              <td class="text-right"><%= I18n.l slide.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, slide) or can?(:delete, slide) %>
+                <td class="text-right">
+                  <% if can? :update, slide %>
+                    <%= link_to edit_admin_slide_path(slide), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, slide %>
+                    <%= link_to admin_slide_path(slide), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @slides %>
+      </div>
+      <%= link_to t(:add), new_admin_slide_path, :class => "btn btn-primary" %>
+    </article>

@@ -1,0 +1,50 @@
+<%
+  aa_class='nav-link'
+  unless @request_category.present?
+    aa_class+=' active'
+  end
+%>
+<div class="col-12">
+  <select class="form-control mobile-sub-menu d-block d-lg-none">
+    <option><%=t(:all) %></option>
+    <% unless @request_categories.empty? %>
+      <% @request_categories.each do |request_category|
+        a_class=''
+
+        if @request_category.present?
+          if @request_category.id==request_category.id
+            a_class=' selected'
+          end
+        end
+
+        if request_category.requests_count.zero?
+          a_class=' disabled'
+        end
+      %>
+        <option value="<%=url_for(:category=>request_category) %>"<%=a_class %>><%= request_category.title %></option>
+      <% end %>
+    <% end %>
+  </select>
+  <nav class="sub_nav d-none d-lg-block">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><%=link_to t(:all),requests_path,class: aa_class %></li>
+      <% unless @request_categories.empty? %>
+        <% @request_categories.each do |request_category|
+          a_class='nav-link'
+
+          if @request_category.present?
+            if @request_category.id==request_category.id
+              a_class+=' active'
+            end
+          end
+
+          if request_category.requests_count.zero?
+            a_class+=' disabled'
+          end
+        %>
+          <li class="nav-item"><%=link_to request_category.title,url_for(category: request_category),{:class=>a_class} %></li>
+        <% end %>
+      <% end %>
+    </ul>
+  </nav>
+</div>

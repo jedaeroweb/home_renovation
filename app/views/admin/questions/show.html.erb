@@ -1,0 +1,47 @@
+<section id="show-question" class="col-12">
+  <div class="row">
+    <%= render :partial => 'layouts/notice', :locals => {:notice => notice, :alert => alert } %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <article class="card">
+        <h3 class="card-header"><%=@question.title %></h3>
+        <div class="card-body">
+          <dl>
+            <dt><%= t(:content, scope: [:activerecord, :attributes, :question]) %></dt>
+            <dd><%= @question.content %></dd>
+            <dt><%= t(:created_at, scope: [:activerecord, :attributes, :question]) %></dt>
+            <dd><%= I18n.l @question.created_at.to_date, :format => :long %></dd>
+            <dt><%= t(:updated_at, scope: [:activerecord, :attributes, :question]) %></dt>
+            <dd><%= I18n.l @question.updated_at.to_date, :format => :long %></dd>
+          </dl>
+
+          <% unless @question.answers_count.zero? %>
+            <% @question.answers.each do |answer| %>
+            <%=answer.title  %>
+            <%=answer.content %>
+            <ul>
+                <li style="list-style: none">
+                  <%= link_to t(:edit), edit_admin_answer_path(answer), :class => "btn btn-link" %>
+                  |
+                  <%= link_to t(:delete), admin_answer_path(answer), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-link"  %>
+                </li>
+            </ul>
+          <% end %>
+            <% end %>
+
+          <%= link_to t(:new_answer),new_admin_answer_path(question_id: @question) %>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6">
+      <%= link_to t(:link_list), admin_questions_path, class: 'btn btn-secondary' %>
+    </div>
+    <div class="col-12 col-xl-6 text-right">
+      <%= link_to t(:edit), edit_admin_question_path(@question), class: 'btn btn-secondary' %>
+      <%= link_to t(:delete), admin_question_path(@question), :method => :delete, :data => { :confirm => t(:delete_confirm) }, class: 'btn btn-danger' %>
+    </div>
+  </div>
+</section>

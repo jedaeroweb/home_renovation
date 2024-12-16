@@ -1,0 +1,80 @@
+<div class="col-12">
+  <div class="card">
+    <div class="card-body" style="margin-bottom:10px">
+      <div class="form-row">
+        <div class="col-12" style="margin-bottom:20px">
+      <h3 class="float-left">상세검색</h3>
+      <%=form_tag ads_path,:method => 'get', :class=>"float-right" do %>
+        <input type="hidden" name="search_summary" value="1">
+        <% if @speciality.present? %>
+          <input type="hidden" name="speciality" value="<%=@speciality.id %>">
+        <% else %>
+          <%  if @speciality_category.present? %>
+            <input type="hidden" name="category" value="<%=@speciality_category.id %>">
+          <% end %>
+        <% end %>
+        <button type="submit" value="close" style="background-color: Transparent;background-repeat:no-repeat;border: none; "><i class="material-icons">close</i></button>
+      <% end %>
+        </div>
+      </div>
+      <%=form_tag ads_path,{method:'get', class: 'search_form_show'} do %>
+        <input type="hidden" name="search" value="1">
+        <% if @speciality.present? %>
+          <input type="hidden" name="speciality" value="<%=@speciality.id %>">
+        <% else %>
+          <%  if @speciality_category.present? %>
+            <input type="hidden" name="category" value="<%=@speciality_category.id %>">
+          <% end %>
+        <% end %>
+        <div class="form-row">
+          <div class="form-group col-12 col-lg-4">
+            <%= label_tag 'parent_address_id',t(:parent_address_id,scope: [:activerecord,:attributes,:address]) %>
+            <%= select_tag 'parent_address_id',options_from_collection_for_select(Address.where(address_level_id: 1, :enable => true), 'id', 'title', params[:parent_address_id]), {  :include_blank => t(:all),:class => "form-control"} %>
+          </div>
+          <div class="form-group col-12 col-lg-8">
+            <%= label_tag 'address_id',t(:title,scope: [:activerecord,:attributes,:address])  %>
+            <% if params[:parent_address_id].present? %>
+              <%= select_tag 'address_id',options_from_collection_for_select(Address.where(address_level_id: 2, parent_address_id: params[:parent_address_id],:enable => true), 'id', 'title', params[:address_id]), { :include_blank => t(:all),:class => "form-control"} %>
+              <% else %>
+              <%= select_tag 'address_id',nil, { :include_blank => '상위지역을 선택해주세요',:class => "form-control"} %>
+              <% end %>
+          </div>
+        </div>
+        <div class="form-row">
+          <% if @speciality_category.present? %>
+            <div class="form-group col-12">
+              <%= label_tag 'speciality',t(:speciality,scope: [:activerecord,:models]),class: 'form-label' %>
+              <div>
+              <% Speciality .where(speciality_category_id: @speciality_category.id, enable: true).each do |b|
+                checked=nil
+
+                if params[:speciality_ids].present?
+                  checked=params[:speciality_ids].include?(b.id.to_s)
+                end
+
+              %>
+                <div class="form-check form-check-inline"><%= label_tag('',class: "check_box") do %><%= check_box_tag('speciality_ids[]',b.id,checked,class: "check_box") %> <%= b.title %><% end %></div>
+              <% end %>
+              </div>
+            </div>
+            <% else %>
+            <div class="form-group col-12 col-lg-4">
+              <%= label_tag 'category',t(:speciality_category,scope: [:activerecord,:models]) %>
+              <%= select_tag 'category',options_from_collection_for_select(SpecialityCategory.where( :enable => true), 'id', 'title', params[:category]), {  :include_blank => t(:all), :class => "form-control"} %>
+            </div>
+            <div class="form-group col-12 col-lg-8">
+              <%= label_tag 'speciality',t(:speciality,scope: [:activerecord,:models]) %>
+              <%= select_tag 'speciality',options_from_collection_for_select(Speciality.where(:enable => true), 'id', 'title', params[:speciality]), {  :include_blank => t(:all), :class => "form-control"} %>
+            </div>
+          <% end %>
+        </div>
+
+    <label><input type="checkbox" name="no_order" value="1"<% if session[:no_order].present? %> checked<% end %>> 체결된것 제외</label>
+
+        <%=submit_tag t(:search),class: 'btn btn-secondary btn-lg btn-block btn-search' %>
+      <% end %>
+    </div>
+  </div>
+
+
+</div>

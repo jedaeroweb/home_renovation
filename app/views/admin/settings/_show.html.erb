@@ -1,0 +1,23 @@
+<section id="show-setting" class="col-12">
+  <div class="row">
+    <%= render :partial => 'layouts/notice', :locals => { :notice => notice, :alert => alert } %>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <h3 class="card-header"><%= t(:scroll_title, scope: [:activerecord, :attributes, :setting]) %></h3>
+        <div class="card-body">
+          <dl>
+            <dt><%= t(:scroll_title, scope: [:activerecord, :attributes, :setting]) %></dt>
+            <dd><%=@setting.scroll_title %></dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12 col-xl-6 text-right">
+      <%= link_to t(:edit), edit_admin_setting_path(@setting), class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</section>

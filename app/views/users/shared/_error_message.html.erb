@@ -1,0 +1,13 @@
+<% if object.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger">
+      <a href="#" class="close" data-dismiss="alert">&times;</a>
+      <h2><%= pluralize(resource.errors.count, "개의 문제") %>로 진행할 수 없습니다.</h2>
+      <ul>
+        <% object.errors.full_messages.each do |msg| %>
+          <li>
+            <%= msg %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>

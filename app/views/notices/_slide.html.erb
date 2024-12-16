@@ -1,0 +1,31 @@
+<section id="notice-slide">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="swiper swiper-container" style="position:relative;padding-bottom:20px">
+          <div class="swiper-wrapper">
+            <% unless @notice_slide_count.zero? %>
+              <% @notice_slides.each do |notice| %>
+                <div class="swiper-slide">
+                  <%= link_to notice_path(notice) do %>
+                    <figure>
+                      <%=image_tag notice.notice_picture.picture.large_thumb.url,{class: "img-fluid rounded"} %>
+                      <figcaption><%=notice.title %></figcaption>
+                    </figure>
+                  <% end %>
+                </div>
+              <% end %>
+            <% else %>
+              <article class="review col-12">
+                <%= t(:no_data) %>
+              </article>
+            <% end %>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+      </div>
+    </div>
+  </div>
+</section>

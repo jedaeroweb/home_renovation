@@ -1,0 +1,28 @@
+<div id="show-request" class="container sub-main">
+  <div class="row">
+    <article class="col-12" itemscope itemprop="article" itemtype="http://schema.org/Article">
+      <div class="sl_content_header">
+        <h3 itemprop="name"><%= @request.title %></h3>
+        <p class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :request]) %> : <%= I18n.l @request.created_at.to_date, :format => :long %></p>
+      </div>
+      <div class="sl_content_main">
+        <dl>
+          <% if @request.size.present? %>
+          <dt><%= t(:size, scope: [:activerecord, :attributes, :request]) %></dt>
+          <dd><%=@request.size %></dd>
+          <% end %>
+          <% if @request.address.present? %>
+          <dt><%= t(:address, scope: [:activerecord, :attributes, :request]) %></dt>
+          <dd><%=@request.address %></dd>
+          <% end %>
+        </dl>
+        <div class="sl_content_text" itemprop="text"><%=@request.content %></div>
+      </div>
+    </article>
+  </div>
+  <div class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:link_list),requests_path,{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </div>
+</div>

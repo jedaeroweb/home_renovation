@@ -1,0 +1,50 @@
+<div class="col-12">
+    <section class="row">
+        <div class="col-12">
+            <div class="float-right">
+                <p class="summary text-right">
+                    <span id="list_count" style="display:none"><%= @bidding_count %></span>
+                    <%= raw t(:there_are_n_accepted_biddings, count: @bidding_count) %>
+                </p>
+            </div>
+        </div>
+    </section>
+    <section class="row">
+        <div class="col-12">
+            <div class="table-responsive">
+                <table class="table">
+                    <colgroup>
+                        <col>
+                        <col style="width:100px">
+                        <col style="width:220px" class="d-none d-lg-table-cell">
+                    </colgroup>
+                    <thead class="thead-default">
+                    <tr>
+                        <th><%= t(:ad, scope: [:activerecord, :models]) %></th>
+                        <th class="text-right"></th>
+                        <th class="text-right d-none d-lg-table-cell"><%= t(:created_at, scope: [:activerecord, :attributes, :notice]) %></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% unless @bidding_count.zero? %>
+                    <% @biddings.each do |bidding| %>
+                    <tr>
+                        <td><%= link_to bidding.ad.title, bidding.ad %></td>
+                        <td class="text-right"></td>
+                        <td class="text-right text-secondary text-secondary d-none d-lg-table-cell"><%= I18n.l bidding.created_at.to_date, :format => :long %></td>
+                    </tr>
+                    <% end %>
+                    <% else %>
+                    <tr>
+                        <td colspan="4"><%= t(:no_data) %></td>
+                    </tr>
+                    <% end %>
+                    </tbody>
+                </table>
+                <div id="sl_bottom_menu">
+                    <%= paginate @biddings %>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

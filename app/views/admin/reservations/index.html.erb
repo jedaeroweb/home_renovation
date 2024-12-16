@@ -1,0 +1,73 @@
+<div class="col-12">
+      <h2 class="float-left hidden-title"><%= t(:reservation_list) %></h2>
+      <div class="float-right">
+        <p class="summary">
+          <span id="list_count" style="display:none"><%=@reservation_count %></span>
+          <%=raw t(:there_are_n_reservations,count: @reservation_count) %>
+        </p>
+      </div>
+    </div>
+    <article class="col-12">
+      <table id="prepare_list" class="table table-striped table-hover">
+        <colgroup>
+          <col>
+          <col>
+          <col>
+          <col>
+          <% if can?(:update, Reservation) || can?(:delete, Reservation) %>
+            <col<%=manage_width(Reservation) %>>
+          <% end %>
+        </colgroup>
+        <thead class="thead-default">
+        <tr>
+          <th><%=t(:title,scope:[:activerecord,:attributes,:reservation]) %></th>
+          <th class="text-right"><%= t(:name,scope:[:activerecord,:attributes,:reservation]) %></th>
+          <th class="text-right"><%= t(:visit_time,scope:[:activerecord,:attributes,:reservation]) %></th>
+          <th class="text-right"><%= t(:created_at,scope:[:activerecord,:attributes,:reservation]) %></th>
+          <% if can?(:update, Reservation) || can?(:delete, Reservation) %>
+            <th class="text-center"><%= t(:manage) %></th>
+          <% end %>
+        </tr>
+        </thead>
+        <tbody>
+        <% unless @reservation_count.zero? %>
+          <% @reservations.each_with_index do |reservation,index| %>
+            <tr>
+              <td><%= link_to reservation.title,admin_reservation_path(reservation) %></td>
+              <td class="text-right">
+                <% if reservation.user.present? %>
+                <%=reservation.user.name %>
+                  <% else %>
+                <%=reservation.name %>
+                <% end %>
+              </td>
+              <td class="text-right"><%=reservation.visit_time %></td>
+              <td class="text-right"><%= I18n.l reservation.created_at.to_date, :format => :long %></td>
+              <% if can?(:update, reservation) or can?(:delete, reservation) %>
+                <td class="text-right">
+                  <% if can? :update, reservation %>
+                    <%= link_to edit_admin_review_path(reservation), :class => "btn btn-secondary" do %>
+                      <%= t(:edit) %>
+                    <% end %>
+                  <% end %>
+                  <% if can? :delete, reservation %>
+                    <%= link_to admin_reservation_path(reservation), :method => :delete, :data => { :confirm => t(:delete_confirm) }, :class => "btn btn-danger" do %>
+                      <%= t(:delete) %>
+                    <% end %>
+                  <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        <% else %>
+          <tr>
+            <td colspan="8" class="text-center"><%= t(:no_data) %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+      <div class="pagination justify-content-center">
+        <%= paginate @reservations %>
+      </div>
+      <%= link_to t(:add), new_admin_reservation_path, :class => "btn btn-primary" %>
+    </article>

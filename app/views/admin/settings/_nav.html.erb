@@ -1,0 +1,21 @@
+<%
+  a_class = 'nav-link'
+  b_class = 'nav-link'
+
+  if params[:controller] == 'admin/slides'
+    a_class += ' active'
+  end
+
+  if params[:controller] == 'admin/settings'
+    b_class += ' active'
+  end
+
+%>
+<div class="col-12">
+  <nav class="sub-nav">
+    <ul class="nav nav-pills">
+      <li class="nav-item"><%= link_to t(:slide, scope: [:activerecord, :models]), admin_slides_path, { :class => a_class } %></li>
+      <li class="nav-item"><%= link_to t(:scroll_title, scope: [:activerecord, :attributes, :setting]), admin_settings_path, { :class => b_class } %></li>
+    </ul>
+  </nav>
+</div>

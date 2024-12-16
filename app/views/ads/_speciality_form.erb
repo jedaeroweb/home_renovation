@@ -1,0 +1,41 @@
+<%
+  progress=1
+  f_progress=5
+  percentage=20
+
+  if params[:category].present?
+    progress=2
+  end
+
+%>
+<section id="speciality-form" class="col-12 ad-pre-form">
+  <article class="row">
+  <% if params[:category].present? %>
+      <h3 class="col-12">분야을 선택해주세요</h3>
+      <div class="col-12">
+      <ul class="row">
+  <% Speciality.where(speciality_category_id: params[:category] ,enable: true).each do |speciality| %>
+      <li class="col-12 col-sm-6 col-md-4 col-lg-3"><%=link_to speciality.title, new_ad_path(speciality: speciality.id),class: 'btn btn-light btn-block btn-large' %></li>
+  <% end %>
+      </ul>
+      </div>
+<% else %>
+      <h3 class="col-12">분야분류를 선택해주세요</h3>
+      <div class="col-12">
+        <ul class="row">
+  <% SpecialityCategory.where(enable: true).each do |speciality_category| %>
+  <li class="col-12 col-sm-6 col-md-4 col-lg-3"><%=link_to speciality_category.title, new_ad_path(category: speciality_category.id ),class: 'btn btn-light btn-block btn-large' %></li>
+  <% end %>
+      </ul>
+      </div>
+<% end %>
+  </article>
+  <div class="row">
+    <div class="col-12">
+      <h3>공고작성 단계 <%=progress %> / <%=f_progress %></h3>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: <%=percentage*progress%>%" aria-valuenow="<%=percentage*progress%>" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
+</section>

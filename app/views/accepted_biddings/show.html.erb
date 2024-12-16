@@ -1,0 +1,36 @@
+<div id="show-order" class="container">
+  <div class="row">
+    <article class="col-12" itemscope itemprop="article" itemtype="http://schema.org/Article">
+      <div class="sl_content_header">
+        <h3 itemprop="name"><%= @accepted_bidding.ad.title %></h3>
+        <p class="text-right"><%= t(:created_at, scope: [:activerecord, :attributes, :order]) %> : <%= I18n.l @accepted_bidding.created_at.to_date, :format => :long %></p>
+      </div>
+      <div class="sl_content_main">
+        <div class="sl_content_text" itemprop="text">
+          <dl>
+            <dt><%= t(:user_id, scope: [:activerecord, :attributes, :order]) %></dt>
+            <dd><%=link_to user_info_path(@accepted_bidding.user)  do %><% unless @accepted_bidding.user.user_pictures_count.zero? %><%=image_tag @accepted_bidding.user.user_picture.picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp;&nbsp;<% end %><%= @accepted_bidding.user.name %>  /  <%=@accepted_bidding.user.ads_count %>개의 공고 작성함<% end %></dd>
+            <dt><%= t(:ad_id, scope: [:activerecord, :attributes, :bidding]) %></dt>
+            <dd><%=link_to ad_path(@accepted_bidding.ad) do %><%=@accepted_bidding.ad.title %><% end %> -  <%=link_to biddings_path(ad: @accepted_bidding.ad) do %>입찰내역보기<% end %></dd>
+            <dt><%= t(:company_id, scope: [:activerecord, :attributes, :bidding]) %></dt>
+            <dd><%=link_to company_path(@accepted_bidding.company)  do %><% unless @accepted_bidding.company.company_pictures_count.zero? %><%=image_tag @accepted_bidding.company.company_pictures[0].picture.tiny_thumb.url,class: "rounded-circle",height: '30px',width: '30px' %>&nbsp;&nbsp;<% end %><%= @accepted_bidding.company.title %><% end %>
+              <% if user_signed_in? %>
+              <% if @accepted_bidding.ad.user_id==current_user.id %>
+              <% if @accepted_bidding.company.phone.present?  %>
+                  <br />
+                <%=@accepted_bidding.company.phone %>
+                <% end %>
+              <% end %>
+              <% end %>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+  </div>
+  <div class="row">
+    <div class="btn-group btn-group-lg col-12" role="group" style="margin-top:3rem">
+      <%=link_to t(:go_list),:back,{class: 'btn btn-secondary btn-large btn-block'} %>
+    </div>
+  </div>
+</div>
