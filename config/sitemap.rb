@@ -16,7 +16,7 @@ SitemapGenerator::Sitemap.create do
   # Examples:
   #
  # Add '/blogs'
-  add intro_index_path, :priority => 0.9, :changefreq => 'monthly'
+  add intro_path, :priority => 0.9, :changefreq => 'monthly'
 
   add blogs_path, :priority => 0.9, :changefreq => 'daily'
 
