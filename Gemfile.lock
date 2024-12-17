@@ -504,6 +504,13 @@ GEM
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
+    sprockets (4.2.1)
+      concurrent-ruby (~> 1.0)
+      rack (>= 2.2.4, < 4)
+    sprockets-rails (3.5.2)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      sprockets (>= 3.0.0)
     sqlite3 (2.4.1-aarch64-linux-gnu)
     sqlite3 (2.4.1-aarch64-linux-musl)
     sqlite3 (2.4.1-arm-linux-gnu)
@@ -610,6 +617,7 @@ DEPENDENCIES
   redis-actionpack (~> 5.3)
   selenium-webdriver
   sitemap_generator
+  sprockets-rails
   sqlite3 (>= 1.4)
   tzinfo-data
   web-console
