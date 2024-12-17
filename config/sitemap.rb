@@ -30,10 +30,10 @@ SitemapGenerator::Sitemap.create do
     add question_path(question), :lastmod => question.updated_at
   end
 
-  add guest_books_path
+  add reviews_path
 
-  GuestBook.find_each do |guest_book|
-    add guest_book_path(guest_book), :lastmod => guest_book.updated_at
+  Review.find_each do |review|
+    add review_path(review), :lastmod => review.updated_at
   end
 
   add notices_path
