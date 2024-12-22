@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+ruby "3.3.4"
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 7.1.5"
 
@@ -50,13 +52,12 @@ gem 'mini_magick'
 gem 'sitemap_generator'
 gem 'meta-tags'
 gem 'gretel'
-gem 'nokogiri', '>= 1.12.5'
+gem 'nokogiri', '>= 1.14.2'
 gem 'impressionist'
 gem 'i18n-js'
 gem 'acts_as_shopping_cart'
 
 #gem 'acts-as-taggable-on', '~> 9.0'
-gem 'dotenv-rails'
 
 gem 'omniauth'
 gem 'oauth2'
