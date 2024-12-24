@@ -14,8 +14,8 @@
 
 @charset "utf-8";
 
-@use '../jquery.fancybox';
-@use 'bootstrap/scss/bootstrap';
+@import "bootstrap";
+@import "./fancybox";
 
 @font-face {
   font-family: 'Nanum Gothic';

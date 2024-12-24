@@ -1,10 +1,10 @@
 # What is Jedaeroweb Home Renoation
 
-[interior.jedaeroweb.co.kr](https://www.sleepinglion.pe.kr) Source
+[interior.jedaeroweb.co.kr](https://www.sleepinglion.pe.kr) source
 
-[interior.jedaeroweb.co.kr](https://www.sleepinglion.pe.kr) is home_renovation brokerage site 
+[interior.jedaeroweb.co.kr](https://www.sleepinglion.pe.kr) is home renovation brokerage site 
 
-This Application is composed of [Rails](http://rubyonrails.org/) + UI [Boostrap](http://getbootstrap.com)
+this application is composed of [Rails](http://rubyonrails.org/) + UI [Boostrap](http://getbootstrap.com)
 
 ## Server Requirements
 
