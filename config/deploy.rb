@@ -24,7 +24,7 @@ set :rbenv_type, :user
 set :rbenv_ruby, "3.3.4"
 set :ssh_options, verify_host_key: :never
 set :default_env, {'NODE_OPTIONS'=>'--openssl-legacy-provider'}
-
+set :bundle_path, '/usr/local/bundle'
 
 # Default value for :linked_files is []
 append :linked_files, "config/database.yml", "config/master.key", ".env"
@@ -39,7 +39,7 @@ append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/uplo
 # set :local_user, -> { `git config user.name`.chomp }
 
 # Default value for keep_releases is 5
-set :keep_releases, 5
+set :keep_releases, 3
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
