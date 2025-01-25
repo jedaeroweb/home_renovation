@@ -1,7 +1,7 @@
 class PortfolioPictureUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
-  include CarrierWave::MiniMagick
+  include CarrierWave::RMagick
+  #include CarrierWave::MiniMagick
 
   storage :file
 
