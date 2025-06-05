@@ -32,11 +32,8 @@
 /* Common Class */
 $main_light_background: #f6f6f6;
 $main_dark_background: #242629;
-$main_light_font: #333;
-$main_dark_font: #fff;
 $header_light_background: #900020;
 $header_light_background2 : #ccc;
-$header_light_default_color: #fff;
 $header_light_point_color: #fff;
 $header_dark_background: #333;
 
@@ -70,15 +67,15 @@ $point-font-color :#fff;
 
 
 html,body {margin:0;padding:0;height: 100%}
-body { font-family: "Noto Sans KR","Nanum Gothic","나눔고딕","Malgun Gothic","맑은 고딕","굴림",gulim,"돋움",Dotum,Arial,Helvetica, sans-serif;color:$main_light_font;}
+body { font-family: "Noto Sans KR","Nanum Gothic","나눔고딕","Malgun Gothic","맑은 고딕","굴림",gulim,"돋움",Dotum,Arial,Helvetica, sans-serif}
 label {vertical-align:middle;cursor:pointer}
 a img {border:none}
 input {vertical-align:middle}
 fieldset {border:none}
 legend {display:none}
-a{color:#666;text-decoration:none;}
+a{text-decoration:none;}
 a:active {color:red}
-a:hover{color:#333;text-decoration:underline;}
+a:hover{text-decoration:none;}
 a img {border:none}
 
 h1 {font-size :160%}
@@ -114,13 +111,8 @@ mark, rp, rt, ruby, summary, time {display:inline;}
 
 .table thead th { border-top:1px solid $point-color;border-bottom:1px solid $point-color;background:#fff;color:#333}
 .table th, .table td {border-color: $header_light_background}
-.sl_content_header h3 {padding:0.7em;background-color:$header_light_background;color:$header_light_default_color}
+.sl_content_header h3 {padding:0.7em;background-color:$header_light_background}
 
-
-
-header .nav > li > a {
-  color:#333;
-}
 
 
 .nav-pills > li + li {
@@ -169,12 +161,12 @@ header .nav > li > a {
 .nav-point li a.nav-link.active {background:$point-color;color:#fff}
 
 /* header */
-header {position:relative;z-index:8;border-bottom:2px solid $point-color;overflow-y: hidden;background:#fff}
+header {position:relative;z-index:8;border-bottom:2px solid $point-color;overflow-y: hidden}
 header h1 {margin-top:0.7em;margin-bottom: 0.5em;padding:0}
-header h1 a {display:block;text-indent: -9999px;width:210px;height:56px;background-repeat: no-repeat;background-position: top left;background-image: image_url('logo.jpg')}
-header nav .active>a.main-menu {font-weight: bold;color:#000  }
-header nav ul li ul li a {font-wegiht:normal;color:#333;border:none}
-header nav ul li ul li.active a {font-wegiht:normal;color:#000}
+header h1 a {display:block;width:210px;height:56px}
+header nav .active>a.main-menu {font-weight: bold  }
+header nav ul li ul li a {font-wegiht:normal;border:none}
+header nav ul li ul li.active a {font-wegiht:normal}
 header .nav > li {
   position: relative
 }
@@ -184,8 +176,7 @@ header .nav > li.sl-dropdown > .sl-dropdown-menu {
   top: 40px;
   left: 0;
   z-index: 8;
-  border: 1px solid #ccc;
-  background: #fff;
+  border: 1px solid var(--bs-border-color);
   padding: 0;
   display: none;
 }
@@ -205,10 +196,6 @@ header nav ul {
   border-radius: 4px;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-}
-
-header nav ul.nav-pills > li.active > a, header nav ul.nav-pills > li.active > a:hover, header nav ul.nav-pills > li.active > a:focus {
-  color: #333
 }
 
 header nav ul li a {
@@ -260,7 +247,7 @@ header nav ul.nav li.sl-dropdown {
 main section h2.text-center {font-size: 140%;margin-bottom:1em}
 main section nav ul.nav {margin-bottom:1.5em}
 
-footer {position:relative;background:#f5f5f5;padding-top:2em;color:#010101}
+footer {position:relative;padding-top:2em}
 footer h3 {text-transform: uppercase;color:#666}
 footer nav ul {margin:0.5em 0;padding: 0.5em 0;list-style: none}
 footer nav ul li {display:inline-block;margin:0 2em 0 0;paddinig:0}
@@ -288,6 +275,13 @@ footer  dt {
   display:block;height:1px;width:1px;text-indent: -9999px;
 }
 
+.top-border {
+  border-top:1px solid var(--bs-border-color);height:1px;
+}
+
+.left-border {
+  border-left:1px solid var(--bs-border-color);
+}
 
 
 
@@ -428,7 +422,7 @@ aside nav ul li a:hover{text-decoration: none;color:#000}
 
 #top-menu li#p_logout_l {border-left:1px solid #ccc;line-height:100%;padding-left:30px;margin-left:30px}
 
-#show-menu {border:1px solid #ccc;height:100%;border-top:none;border-bottom:none;overflow-y:hidden}
+#show-menu {border:1px solid var(--bs-border-color);height:100%;border-top:none;border-bottom:none;overflow-y:hidden}
 #show-menu i {float:left;height:100%;font-size:150%;line-height:120%;padding:15px;cursor:pointer;color:$point-color}
 #show-menu h4 {margin:0;padding:15px;text-indent:30px}
 
@@ -668,7 +662,7 @@ aside nav ul li a:hover{text-decoration: none;color:#000}
   .sub-main {padding-top:1.5em;padding-bottom:1.5em}
   #ads .ad,.ads .ad {margin-bottom:50px}
   footer {display:block}
-  #show-menu i {border-right:1px solid #ccc}
+  #show-menu i {border-right:1px solid var(--bs-border-color)}
 
 
   .visible-xl-block,
@@ -945,3 +939,30 @@ aside nav ul li a:hover{text-decoration: none;color:#000}
   header {margin-bottom:0}
   .sub-main {padding-bottom:3rem}
 }
+
+@include color-mode(dark) {
+  body {
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+  }
+
+  .page-header h1, .page-header h2 {color: var(--bs-body-color)}
+  header,.jumbotron,.media,.card-body,aside article,#faqList dt a.title,.modal-body, .modal-footer,.sl_content_header,.thead-default th,.breadcrumb,.box_content,.card {background-color:var(--bs-secondary-bg)}
+  .box_header , .section-header h2,#no-sns-id-l {border-color:var(--bs-border-color)}
+  .box_header {background: #666;}
+  .box_header h2 {text-shadow: none;color:#ccc}
+  header nav .active > a.main-menu {color:#0cf}
+  footer {color:#666;border-top:1px solid #666}
+  .bg-second {background-color: #333}
+}
+
+@include color-mode(light) {
+  footer {color:#666;border-top:1px solid #ddd}
+  .nav-link.disabled {color:#eee}
+  .sl_content_header,.sl_content_main,.media {background-color:#f1f1f1}
+  .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link,.nav-tabs {border-color:#ccc}
+  .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {border-bottom-color:#f1f1f1}
+  a.btn-primary,a.btn-primary:visited {color:#ccc}
+  .bg-second {background-color: #f6f6f6}
+}
+

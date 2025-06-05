@@ -1,32 +1,46 @@
 
-        <div class="swiper swiper-container" style="position:relative;padding-bottom:20px">
-          <div class="swiper-wrapper">
-            <% unless @slide_count.zero? %>
-              <% @slides.each do |slide| %>
-                <div class="swiper-slide">
-                  <%
-                    if slide.link.present?
-                      slink=slide.link
-                    else
-                      slink=notice_path(slide.notice)
-                    end
-                  %>
-                  <%= link_to slink do %>
-                    <figure>
-                      <%=image_tag slide.picture.large_thumb.url,{class: "img-fluid rounded"} %>
-                    </figure>
-                    <% if slide.slide_description.present? %>
-                    <% slide_description=slide.slide_description %>
-                      <span style="position:absolute;color:<%=slide_description.color %>;font-family: '<%=slide_description.font.font %>';font-size:<%=slide_description.size %>px;<%=slide_description.position_v %>:<%=slide_description.position_v_px %>px ;<%=slide_description.position_h %>: <%=slide_description.position_h_px %>px"><%=raw slide_description.description %></span>
-                    <% end %>
-                  <% end %>
-                </div>
-              <% end %>
-            <% else %>
-              <article class="review col-12">
-                <%= t(:no_data) %>
-              </article>
-            <% end %>
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
+
+<div id="carouselExample" class="carousel slide">
+  <% unless @slide_count.zero? %>
+    <div class="carousel-indicators">
+      <% @slides.each_with_index do |slide,index| %>
+      <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="<%=index %>" <% if index.zero? %>class="active" aria-current="true"<% end %> aria-label="Slide <%=index %>"></button>
+      <% end %>
+    </div>
+  <div class="carousel-inner">
+      <% @slides.each_with_index do |slide,index| %>
+      <div class="carousel-item<% if index.zero? %> active<% end %>">
+        <%
+          if slide.link.present?
+            slink=slide.link
+          else
+            slink=notice_path(slide.notice)
+          end
+        %>
+        <%= link_to slink do %>
+          <figure>
+            <%=image_tag slide.picture.large_thumb.url,{class: "img-fluid rounded"} %>
+          </figure>
+          <% if slide.slide_description.present? %>
+            <% slide_description=slide.slide_description %>
+            <span style="position:absolute;color:<%=slide_description.color %>;font-family: '<%=slide_description.font.font %>';font-size:<%=slide_description.size %>px;<%=slide_description.position_v %>:<%=slide_description.position_v_px %>px ;<%=slide_description.position_h %>: <%=slide_description.position_h_px %>px"><%=raw slide_description.description %></span>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+  <% else %>
+    <article class="review col-12">
+      <%= t(:no_data) %>
+    </article>
+  <% end %>
+</div>
+

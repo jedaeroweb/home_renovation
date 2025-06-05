@@ -36,10 +36,6 @@ class HomeController < ApplicationController
 
     @setting= Setting.first
   end
-
-  def layout
-      return 'home'
-  end
   
   def no_auth
 
