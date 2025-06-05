@@ -21,7 +21,7 @@
 <header id="header">
   <div id="hm-hide" class="container">
     <div class="row">
-      <div class="col-12 col-xl-2">
+      <div class="col-12 col-xl-4">
         <% unless current_page?(root_path) %>
           <div id="mobile-back">
             <%=link_to 'javascript:history.go(-1);' do %>
@@ -78,7 +78,7 @@
         </div>
         <h1><%=link_to t(:service_name),'/' %></h1>
       </div>
-      <div class="col-12 col-xl-10 text-right">
+      <div class="col-12 col-xl-8 text-right">
         <ul id="top-menu" class="d-none d-xl-block">
           <% if user_signed_in? %>
             <li id="user-info">

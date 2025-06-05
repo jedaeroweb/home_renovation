@@ -163,7 +163,7 @@ mark, rp, rt, ruby, summary, time {display:inline;}
 /* header */
 header {position:relative;z-index:8;border-bottom:2px solid $point-color;overflow-y: hidden}
 header h1 {margin-top:0.7em;margin-bottom: 0.5em;padding:0}
-header h1 a {display:block;width:210px;height:56px}
+header h1 a {text-align:left;display:block;height:56px;background-image: url('logo.png');background-repeat: no-repeat;line-height:55px;text-indent:75px}
 header nav .active>a.main-menu {font-weight: bold  }
 header nav ul li ul li a {font-wegiht:normal;border:none}
 header nav ul li ul li.active a {font-wegiht:normal}
@@ -551,8 +551,7 @@ aside nav ul li a:hover{text-decoration: none;color:#000}
 }
 
 @media (max-width: 991px) {
-  header {background-color:#fff}
-  header h1 a {margin:0 auto;height:40px;width:150px;background-image: image_url('logo-mobile.png')}
+  header h1 a {margin:0;height:40px;text-align:left;background-image: image_url('logo-mobile.png');line-height:40px;font-size:22px;text-indent:55px}
   #show-ad h2, #show-company h2 {margin-bottom:5px}
   .ad-add-button {position: fixed;margin-right:0.5rem;z-index:6;text-align: center;background: none;border:none;bottom:10rem;right:5px}
   .ad-add-button:before {content: '+';font-size:30px;font-weight:bold;line-height:100%;background-color:$header_light_background;display:block;color:$point-font-color;padding:10px;margin:0 auto;height:50px;width:50px;border-radius: 50px}
