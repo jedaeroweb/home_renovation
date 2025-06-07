@@ -102,7 +102,6 @@ mark, rp, rt, ruby, summary, time {display:inline;}
 .modal-header * {color:#eee}
 .modal-body,.modal-footer {background:#eee}
 .thead-default th {
-  color: #fff;
   font-weight:600;
   border-bottom:1px solid $point-color
 }
@@ -956,6 +955,7 @@ aside nav ul li a:hover{text-decoration: none;color:#000}
 }
 
 @include color-mode(light) {
+  body {background-color: #f6f6f6}
   footer {color:#666;border-top:1px solid #ddd}
   .nav-link.disabled {color:#eee}
   .sl_content_header,.sl_content_main,.media {background-color:#f1f1f1}

@@ -33,7 +33,7 @@
   </div>
   <div class="col-12">
     <% if @simulation.simulation_content.present? %>
-      <div style="background:#eee;padding:15px;margin-top:30px">
+      <div class="card-body" style="padding:20px;margin-top:30px;border-radius: 10px">
         <%= simple_format @simulation.simulation_content.content %>
       </div>
     <% end %>
