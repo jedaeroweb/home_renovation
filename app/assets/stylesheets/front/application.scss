@@ -288,11 +288,11 @@ aside {position: fixed;top:150px;right:10px;border:1px solid $point-color;backgr
 aside nav ul {margin:0;padding:0}
 aside nav ul li {margin:0;padding:0;list-style: none;border-bottom:1px solid $point-color}
 aside nav ul li:first-child {border: 2px solid  $point-color}
-aside nav ul li a {display:block;text-align: center;padding:10px 0px;}
+aside nav ul li a {display:block;text-align: center;padding:10px 0}
 aside nav ul li a img {display:block;margin:0 auto 10px}
 aside nav ul li a i.material-icons {display:block;margin:0 auto;line-height:100%}
-aside nav ul li a:hover{text-decoration: none;color:#000}
-#to-top {text-transform: uppercase;color:#fff}
+aside nav ul li a:hover{text-decoration: none}
+#to-top {text-transform: uppercase}
 
 
 #m-banner {margin:0;padding:0;list-style: none}
