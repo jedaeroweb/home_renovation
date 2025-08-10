@@ -54,6 +54,7 @@ namespace :deploy do
     end
   end
 
+
   desc 'Refresh sitemap'
   task :refresh_sitemap do
     on roles(:app), in: :sequence, wait: 1 do
