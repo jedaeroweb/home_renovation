@@ -3,12 +3,21 @@ class SimulationPictureUploader < CarrierWave::Uploader::Base
   include CarrierWave::RMagick
   #include CarrierWave::MiniMagick
 
-  storage :file
+  if Rails.env.production?
+    storage :fog
+  else
+    storage :file
+  end
 
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
-    return "uploads/#{model.class.to_s.underscore}/#{model.id}"
+    upload_dir="#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
+    unless Rails.env.production?
+      upload_dir='uploads/'+upload_dir
+    end
+
+    return upload_dir
   end
 
   def size_range
