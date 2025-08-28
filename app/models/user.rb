@@ -28,7 +28,7 @@ class User < ApplicationRecord
   end
 
   def remember_me
-    true
+    super || false
   end
 
   private
