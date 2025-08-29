@@ -10,6 +10,15 @@ var ready=function(){
             }
         }
     });
+
+    if (!sessionStorage.getItem('modalShown')) {
+        $('#myModal').load('/home/demo', function () {
+            let myModal = new bootstrap.Modal(document.getElementById('myModal'));
+            myModal.show();
+        });
+        // 모달을 표시했다고 세션에 기록
+        sessionStorage.setItem('modalShown', 'true')
+    }
 }
 
 document.addEventListener("turbo:load", ready);

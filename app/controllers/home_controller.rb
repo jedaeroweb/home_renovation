@@ -36,6 +36,10 @@ class HomeController < ApplicationController
 
     @setting= Setting.first
   end
+
+  def demo
+    render layout: false  # 레이아웃 없이 내용만 렌더링
+  end
   
   def no_auth
 

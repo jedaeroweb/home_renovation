@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'home#index'
+  get 'home/demo', to: 'home#demo'
 
   resources :ads
   get 'ad-complete',to: 'ads#complete', as: 'ad_complete'

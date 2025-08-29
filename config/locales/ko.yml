@@ -14,6 +14,7 @@ ko:
   choose_file: '파일선택'
   browse: '찾기'
   setting: '설정'
+  confirm : '확인'
 
   menu_ad: '공고'
   menu_construction: '건축'
