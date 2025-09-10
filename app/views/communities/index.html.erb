@@ -88,15 +88,15 @@
   <section class="d-none d-xl-block bg-second">
     <div class="container">
       <div class="row">
-        <div class="col-12 col-xl-6 section-header">
+        <div class="col-12 col-lg-4 col-xl-3 section-header">
           <ul id="m-banner">
             <li><%=link_to 'https://www.jedaeroweb.co.kr',target: '_blank' do %>제대로웹<% end %></li>
             <li><%=link_to 'https://community.jedaeroweb.co.kr  ',target: '_blank' do %>제대로웹 커뮤니티<% end %></li>
             <li><%=link_to 'https://www.sleepinglion.pe.kr',target: '_blank' do %>잠자는 사자의 집<% end %></li>
           </ul>
         </div>
-        <div class="col-12 col-xl-6 section-header d-none d-xl-block text-right">
-          <iframe width="100%" height="315" src="https://youtube.com/shorts/_H6o7A-0I_c?si=1Rdi0t7EyCkUe_iv?autoplay=1&mute=1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="col-12 col-lg-8 col-xl-9 section-header text-right">
+          <%=render 'layouts/ad' %>
         </div>
       </div>
     </div>
