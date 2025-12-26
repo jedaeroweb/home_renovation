@@ -32,8 +32,8 @@ this application is composed of [Rails](http://rubyonrails.org/) + UI [Boostrap]
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/yourname/interior-reverse-auction.git
-cd interior-reverse-auction
+git clone https://github.com/jedaeroweb/home_renovation.git
+cd home_renovation
 bundle install
 rails db:setup
 rails server
