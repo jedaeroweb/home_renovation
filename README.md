@@ -49,7 +49,7 @@ http://localhost:3000
 
 ## License
 
-MIT, All Free
+MIT License – completely free to use and modify
 
 ## Author
 
