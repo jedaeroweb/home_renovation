@@ -2,7 +2,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Template](https://img.shields.io/badge/Template-Repository-blue)
 
-## Overview
+## 🔭 Overview
 
 An interior renovation reverse auction platform built with Ruby on Rails.
 
@@ -24,7 +24,7 @@ This model encourages transparency, competition, and cost efficiency in interior
 ---
 
 
-## Demo
+## 👀 Demo
 
 [Demo page](https://interior.jedaeroweb.co.kr)
 
