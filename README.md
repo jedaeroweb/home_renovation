@@ -55,7 +55,14 @@ http://localhost:3000
 [Rails](http://rubyonrails.org/) version 7 or newer is recommended.
 > Rails 7 이상 환경을 권장합니다.
 
-## 📄 License
+## 🛠 Tech Stack
+
+- Ruby on Rails
+- MySQL / PostgreSQL / SQLite (any database supported by Rails)
+- HTML / CSS
+- JavaScript
+
+## 📜 License
 
 MIT License – completely free to use and modify
 > 개인·상업적 사용 모두 완전히 자유롭습니다.
