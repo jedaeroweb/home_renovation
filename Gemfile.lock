@@ -637,7 +637,7 @@ DEPENDENCIES
   omniauth-rails_csrf_protection
   omniauth-twitter
   puma (>= 5.0)
-  rails (~> 7.1.5, >= 7.1.5.1)
+  rails (~> 7.1.5)
   recaptcha
   redis (~> 5.0)
   redis-actionpack (~> 5.3)
