@@ -30,6 +30,7 @@ This model encourages transparency, competition, and cost efficiency in interior
 
 > 실제 동작 화면을 확인할 수 있는 데모 페이지입니다.
 
+---
 
 ## 🚀 Getting Started
 
