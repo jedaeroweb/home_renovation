@@ -38,7 +38,7 @@ This model encourages transparency, competition, and cost efficiency in interior
 git clone https://github.com/jedaeroweb/home_renovation.git
 cd home_renovation
 bundle install
-rails db:setup
+rails db:create db:migrate db:seed
 rails server
 ```
 then visit
