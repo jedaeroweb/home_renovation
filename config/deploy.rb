@@ -77,16 +77,6 @@ namespace :deploy do
     end
   end
 
-  desc "Upload fonts to Azure Blob Storage"
-  task :upload_fonts do
-    on roles(:web) do
-      within release_path do
-        info "Uploading fonts to Azure..."
-        execute :ruby, "lib/tasks/upload_fonts_script.rb"
-      end
-    end
-  end
-
   after :finishing, 'deploy:refresh_sitemap'
   after :finishing, 'deploy:cleanup'
 end

@@ -89,7 +89,6 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
-  gem 'azure-storage-blob'
 end
 
 group :test do
@@ -100,9 +99,9 @@ end
 
 group :production do
   gem 'asset_sync'
+  gem 'fog-azure-rm', git: 'https://github.com/sleepinglion/fog-azure-rm'
   gem 'mysql2'
   gem "redis", "~> 5.0" # Redis client for Ruby
   gem "redis-actionpack", "~> 5.3" # Redis session store for ActionPack
   gem 'dotenv-rails'
-  gem 'azure-storage-blob'
 end
