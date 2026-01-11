@@ -87,7 +87,7 @@ namespace :deploy do
     end
   end
 
-  before 'deploy:assets:precompile', 'deploy:copy_fonts'
+  after 'yarn:install', 'deploy:copy_fonts'
   after :finishing, 'deploy:refresh_sitemap'
   after :finishing, 'deploy:cleanup'
 end
