@@ -77,17 +77,6 @@ namespace :deploy do
     end
   end
 
-  desc "Copy material icons fonts before assets:precompile"
-  task :copy_fonts do
-    on roles(:web) do
-      within release_path do
-        execute :mkdir, "-p app/assets/builds/fonts"
-        execute :cp, "node_modules/material-icons/iconfont/*.woff2 app/assets/builds/fonts/"
-      end
-    end
-  end
-
-  after 'yarn:install', 'deploy:copy_fonts'
   after :finishing, 'deploy:refresh_sitemap'
   after :finishing, 'deploy:cleanup'
 end
