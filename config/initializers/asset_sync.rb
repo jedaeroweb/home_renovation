@@ -6,7 +6,7 @@ if defined?(AssetSync)
     config.fog_directory = ENV['FOG_DIRECTORY']
 
     # ❗ Propshaft는 삭제 안 하는 게 안전
-    config.existing_remote_files = "keep"
+    config.existing_remote_files = "delete"
 
     # ❗ CDN/Azure가 gzip하면 끄는 게 좋음
     config.gzip_compression = false
