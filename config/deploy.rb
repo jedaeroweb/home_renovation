@@ -52,12 +52,6 @@ end
 
 after 'bundler:install', 'rbenv:rehash'
 
-set :default_env, {
-  'AZURE_STORAGE_ACCOUNT_NAME' => ENV['AZURE_STORAGE_ACCOUNT_NAME'],
-  'AZURE_STORAGE_ACCESS_KEY' => ENV['AZURE_STORAGE_ACCESS_KEY'],
-  'FOG_DIRECTORY' => ENV['FOG_DIRECTORY']
-}
-
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 #

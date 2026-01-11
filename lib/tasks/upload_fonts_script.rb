@@ -1,9 +1,9 @@
-# lib/tasks/upload_fonts_script.rb
+require 'dotenv/load'
 require 'azure/storage/blob'
 
 account_name = ENV['AZURE_STORAGE_ACCOUNT_NAME']
 access_key   = ENV['AZURE_STORAGE_ACCESS_KEY']
-container    = ENV['FOG_DIRECTORY'] || 'assets'
+container    = ENV['FOG_DIRECTORY']
 
 blob_client = Azure::Storage::Blob::BlobService.create(
   storage_account_name: account_name,
