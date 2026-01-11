@@ -8,7 +8,11 @@ server "deploy_server", user: "deploy", roles: %w{app db web}
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 
-
+set :default_env, {
+  'AZURE_STORAGE_ACCOUNT_NAME' => ENV['AZURE_STORAGE_ACCOUNT_NAME'],
+  'AZURE_STORAGE_ACCESS_KEY'   => ENV['AZURE_STORAGE_ACCESS_KEY'],
+  'FOG_DIRECTORY'              => ENV['FOG_DIRECTORY']
+}
 # role-based syntax
 # ==================
 
