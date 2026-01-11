@@ -1,4 +1,4 @@
-require 'dotenv/load'
+# lib/tasks/upload_fonts_script.rb
 require 'azure/storage/blob'
 
 account_name = ENV['AZURE_STORAGE_ACCOUNT_NAME']
