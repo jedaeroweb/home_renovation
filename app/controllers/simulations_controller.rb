@@ -1,5 +1,4 @@
 class SimulationsController < ApplicationController
-  before_action :set_simulation, only: [:show, :edit, :update, :destroy]
 
   # GET /notices
   # GET /notices.json
