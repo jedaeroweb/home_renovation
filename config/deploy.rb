@@ -52,6 +52,12 @@ end
 
 after 'bundler:install', 'rbenv:rehash'
 
+set :default_env, {
+  'AZURE_STORAGE_ACCOUNT_NAME' => ENV['AZURE_STORAGE_ACCOUNT_NAME'],
+  'AZURE_STORAGE_ACCESS_KEY' => ENV['AZURE_STORAGE_ACCESS_KEY'],
+  'FOG_DIRECTORY' => ENV['FOG_DIRECTORY']
+}
+
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 #
@@ -77,6 +83,17 @@ namespace :deploy do
     end
   end
 
+  desc "Upload fonts to Azure Blob Storage"
+  task :upload_fonts do
+    on roles(:web) do
+      within release_path do
+        info "Uploading fonts to Azure..."
+        execute :ruby, "lib/tasks/upload_fonts_script.rb"
+      end
+    end
+  end
+
+  after 'deploy:finished', 'deploy:upload_fonts'
   after :finishing, 'deploy:refresh_sitemap'
   after :finishing, 'deploy:cleanup'
 end

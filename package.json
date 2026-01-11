@@ -1,11 +1,10 @@
 {
   "scripts": {
-    "build:css": "mkdir -p ./app/assets/builds/fonts && cp node_modules/material-icons/iconfont/*.woff2 ./app/assets/builds/fonts/ && sass ./app/assets/stylesheets:./app/assets/builds --load-path=node_modules",
-    "build:css:watch": "sass --watch ./app/assets/stylesheets:./app/assets/builds --load-path=node_modules"
+    "build:css": "sass ./app/assets/stylesheets:./app/assets/builds --no-source-map --load-path=node_modules",
+    "build:css:watch": "yarn build:css --watch"
   },
   "dependencies": {
     "bootstrap": "^5.3.8",
-    "material-icons": "^1.13.14",
     "sass": "^1.97.2"
   }
 }

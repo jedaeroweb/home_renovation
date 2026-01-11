@@ -89,6 +89,7 @@ group :development do
   gem 'capistrano-bundler'
   gem 'capistrano-passenger'
   gem 'capistrano-rails'
+  gem 'azure-storage-blob'
 end
 
 group :test do
