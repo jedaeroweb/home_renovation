@@ -25,5 +25,14 @@ if defined?(AssetSync)
         Dir['assets/**/*']
       end
     end
+
+    config.add_local_file_paths do
+      Dir.chdir(Rails.root.join('public')) do
+        Dir['assets/**/*'] + Dir['fonts/**/*']
+      end
+    end
+
+    # fonts는 digest 없이 올리기
+    config.non_digest_assets = Dir['public/fonts/**/*'].map { |f| f.sub(Rails.root.join('public').to_s + '/', '') }
   end
 end
