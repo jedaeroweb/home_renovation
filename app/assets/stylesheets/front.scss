@@ -25,7 +25,9 @@
 
 @font-face {
   font-family: 'Material Icons';
-  src: url('../node_modules/material-icons/iconfont/MaterialIcons-Regular.woff2') format('woff2');
+  src: url('./fonts/material-icons.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
 /* Common Class */
