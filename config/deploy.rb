@@ -87,7 +87,6 @@ namespace :deploy do
     end
   end
 
-  after 'deploy:finished', 'deploy:upload_fonts'
   after :finishing, 'deploy:refresh_sitemap'
   after :finishing, 'deploy:cleanup'
 end
